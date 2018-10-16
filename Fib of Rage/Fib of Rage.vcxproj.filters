@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Game.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderProgram.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="TileMap.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AnimKeyframes.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderProgram.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="TileMap.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header">
+      <UniqueIdentifier>{b8cd4eb6-2191-4618-a95f-8d24e037759c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources">
+      <UniqueIdentifier>{d629d775-ad7b-4396-8f92-bebbc8e4f6ea}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
