@@ -6,6 +6,8 @@
 #include "ShaderProgram.h"
 #include "TileMap.h"
 #include "Player.h"
+#include "Quad.h"
+#include "TexturedQuad.h"
 
 
 // Scene contains all the entities of our game.
@@ -35,16 +37,22 @@ public:
 
 private:
 	void initShaders();
+	void setBackground();
 
 private:
 
 	FullMap fullMap;
-
 	Player *player;
 	ShaderProgram texProgram;
 	float currentTime;
 	glm::mat4 projection;
 	bool showCollisions = 0;
+
+
+	Quad *quad;
+	Texture texs[2];
+	TexturedQuad *texQuad[3];
+
 public:
 	int cameraLeft;
 	int cameraRight;

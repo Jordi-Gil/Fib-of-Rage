@@ -26,6 +26,12 @@
     <ClCompile Include="TileMap.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
+    <ClCompile Include="TexturedQuad.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Quad.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimKeyframes.h">
@@ -53,6 +59,12 @@
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="TileMap.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="TexturedQuad.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Quad.h">
       <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>
