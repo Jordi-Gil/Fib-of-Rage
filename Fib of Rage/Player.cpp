@@ -54,22 +54,22 @@ void Player::update(int deltaTime)
 		if(sprite->animation() != MOVE_LEFT)
 			sprite->changeAnimation(MOVE_LEFT);
 		posPlayer.x -= 2;
-		if(map->collisionMoveLeft(posPlayer, glm::ivec2(32, 32)))
+		/*if(map->collisionMoveLeft(posPlayer, glm::ivec2(32, 32)))
 		{
 			posPlayer.x += 2;
 			sprite->changeAnimation(STAND_LEFT);
-		}
+		}*/
 	}
 	else if(Game::instance().getSpecialKey(GLUT_KEY_RIGHT))
 	{
 		if(sprite->animation() != MOVE_RIGHT)
 			sprite->changeAnimation(MOVE_RIGHT);
 		posPlayer.x += 2;
-		if(map->collisionMoveRight(posPlayer, glm::ivec2(32, 32)))
+		/*if(map->collisionMoveRight(posPlayer, glm::ivec2(32, 32)))
 		{
 			posPlayer.x -= 2;
 			sprite->changeAnimation(STAND_RIGHT);
-		}
+		}*/
 	}
 	else
 	{
@@ -79,7 +79,7 @@ void Player::update(int deltaTime)
 			sprite->changeAnimation(STAND_RIGHT);
 	}
 	
-	if(bJumping)
+	/*if(bJumping)
 	{
 		jumpAngle += JUMP_ANGLE_STEP;
 		if(jumpAngle == 180)
@@ -106,7 +106,7 @@ void Player::update(int deltaTime)
 				startY = posPlayer.y;
 			}
 		}
-	}
+	}*/
 	
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
 }
