@@ -24,7 +24,8 @@ TileMap::TileMap(const string &levelFile, const glm::vec2 &minCoords, ShaderProg
 
 TileMap::~TileMap()
 {
-	
+	if(map != NULL)
+		delete map;
 }
 
 
@@ -60,13 +61,13 @@ bool TileMap::loadLevel(const string &levelFile)
 		return false;
 	getline(fin, line);
 	sstream.str(line);
-	sstream >> mapSize.x >> mapSize.y; //32 28
+	sstream >> mapSize.x >> mapSize.y; 
 	getline(fin, line);
 	sstream.str(line);
-	sstream >> tileSize >> blockSize; // 16 32
+	sstream >> tileSize >> blockSize; 
 	getline(fin, line);
 	sstream.str(line);
-	sstream >> tilesheetFile; //images/blocks.png
+	sstream >> tilesheetFile; 
 	tilesheet.loadFromFile(tilesheetFile, TEXTURE_PIXEL_FORMAT_RGBA);
 	tilesheet.setWrapS(GL_CLAMP_TO_EDGE);
 	tilesheet.setWrapT(GL_CLAMP_TO_EDGE);

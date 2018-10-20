@@ -22,6 +22,7 @@ Scene::Scene(int left, int right, int bottom, int top)
 	cameraRight = right;
 	cameraBottom = bottom;
 	cameraTop = top;
+
 }
 Scene::Scene()
 {
@@ -44,8 +45,8 @@ void Scene::init()
 {
 	initShaders();
 	fullMap.scenario = TileMap::createTileMap("levels/level01_object.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
-	//fullMap.collision = TileMap::createTileMap("levels/level01_collision.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
-	setBackground();
+	fullMap.collision = TileMap::createTileMap("levels/level01_collision.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+	setBackground("Resources/LevelBackground/Level_Bridge/bridge.png");
 	player = new Player();
 	player->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 	player->setPosition(glm::vec2(INIT_PLAYER_X_TILES * fullMap.scenario->getTileSize(), INIT_PLAYER_Y_TILES * fullMap.scenario->getTileSize()));
@@ -70,6 +71,7 @@ void Scene::render()
 	modelview = glm::mat4(1.0f);
 	texProgram.setUniformMatrix4f("modelview", modelview);
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
+	background[0]->render(texs[0]);
 	fullMap.scenario->render();
 	if(showCollisions) fullMap.collision->render();
 	player->render();
@@ -120,21 +122,13 @@ void Scene::moveCamera(int left, int right, int bottom, int top) {
 	}
 }
 
-void Scene::setBackground()
+bool Scene::setBackground(const string &filename)
 {
-	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(128.f, 128.f) };
+	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(2080.f, 547.f) };
 	glm::vec2 texCoords[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
 
-	quad = Quad::createQuad(0.f, 0.f, 128.f, 128.f, texProgram);
-	texCoords[0] = glm::vec2(0.f, 0.f); texCoords[1] = glm::vec2(0.5f, 0.5f);
-	texQuad[0] = TexturedQuad::createTexturedQuad(geom, texCoords, texProgram);
-	texCoords[0] = glm::vec2(0.5f, 0.5f); texCoords[1] = glm::vec2(1.f, 1.f);
-	texQuad[1] = TexturedQuad::createTexturedQuad(geom, texCoords, texProgram);
-	texCoords[0] = glm::vec2(0.f, 0.f); texCoords[1] = glm::vec2(2.f, 2.f);
-	texQuad[2] = TexturedQuad::createTexturedQuad(geom, texCoords, texProgram);
-	// Load textures
-	texs[0].loadFromFile("images/varied.png", TEXTURE_PIXEL_FORMAT_RGBA);
-	texs[1].loadFromFile("images/rocks.jpg", TEXTURE_PIXEL_FORMAT_RGB);
+	background[0] = TexturedQuad::createTexturedQuad(geom, texCoords, texProgram);
+	texs[0].loadFromFile(filename, TEXTURE_PIXEL_FORMAT_RGBA);
+
+	return true;
 }
-
-

@@ -3,6 +3,7 @@
 
 
 #include <glm/glm.hpp>
+#include <SOIL.h>
 #include "ShaderProgram.h"
 #include "TileMap.h"
 #include "Player.h"
@@ -37,7 +38,7 @@ public:
 
 private:
 	void initShaders();
-	void setBackground();
+	bool setBackground(const string &filename);
 
 private:
 
@@ -49,9 +50,8 @@ private:
 	bool showCollisions = 0;
 
 
-	Quad *quad;
-	Texture texs[2];
-	TexturedQuad *texQuad[3];
+	TexturedQuad *background[1];
+	Texture texs[1];
 
 public:
 	int cameraLeft;
