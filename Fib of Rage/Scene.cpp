@@ -50,7 +50,7 @@ void Scene::init()
 	setBackground("Resources/LevelBackground/Level_Bridge/bridge.png");
 	player = new Player();
 	player->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-	player->setPosition(glm::vec2(INIT_PLAYER_X_TILES * fullMap.scenario->getTileSize(), INIT_PLAYER_Y_TILES * fullMap.scenario->getTileSize()));
+	player->setPosition(glm::vec2(INIT_PLAYER_X_TILES , INIT_PLAYER_Y_TILES));
 	player->setTileMap(fullMap.scenario);
 	projection = glm::ortho(float(cameraLeft), float(cameraRight), float(cameraBottom), float(cameraTop));
 	currentTime = 0.0f;
@@ -72,8 +72,8 @@ void Scene::render()
 	modelview = glm::mat4(1.0f);
 	texProgram.setUniformMatrix4f("modelview", modelview);
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
-	//background[0]->render(texs[0]);
-	//fullMap.scenario->render();
+	background[0]->render(texs[0]);
+	fullMap.scenario->render();
 	if(showCollisions) fullMap.collision->render();
 	player->render();
 }
