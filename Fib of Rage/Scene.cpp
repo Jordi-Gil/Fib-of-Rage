@@ -45,7 +45,8 @@ void Scene::init()
 {
 	initShaders();
 	fullMap.scenario = TileMap::createTileMap("levels/level01_object.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
-	fullMap.collision = TileMap::createTileMap("levels/level01_collision.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+	//fullMap.collision = TileMap::createTileMap("levels/level01_collision.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+	
 	setBackground("Resources/LevelBackground/Level_Bridge/bridge.png");
 	player = new Player();
 	player->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
@@ -71,8 +72,8 @@ void Scene::render()
 	modelview = glm::mat4(1.0f);
 	texProgram.setUniformMatrix4f("modelview", modelview);
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
-	background[0]->render(texs[0]);
-	fullMap.scenario->render();
+	//background[0]->render(texs[0]);
+	//fullMap.scenario->render();
 	if(showCollisions) fullMap.collision->render();
 	player->render();
 }

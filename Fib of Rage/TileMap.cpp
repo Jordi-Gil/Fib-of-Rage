@@ -92,12 +92,6 @@ bool TileMap::loadLevel(const string &levelFile)
 		
 	}
 	fin.close();
-	
-	Texture bridge;
-	bridge.setTexId(0);
-	bridge.use();
-	bridge.loadFromFile("Resources/LevelBackground/Level_Bridge/bridge.png", TEXTURE_PIXEL_FORMAT_RGBA);
-	
 
 	return true;
 }
