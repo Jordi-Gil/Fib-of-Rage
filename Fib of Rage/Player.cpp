@@ -82,6 +82,22 @@ void Player::update(int deltaTime)
 			sprite->changeAnimation(STAND_RIGHT);
 		}
 	}
+	else if (Game::instance().getSpecialKey(GLUT_KEY_DOWN))
+	{
+		posPlayer.y += 2;
+		if (map->collisionMoveDown(posPlayer, glm::ivec2(90 * 2, 120 * 2)))
+		{
+			posPlayer.y -= 2;
+		}
+	}
+	else if (Game::instance().getSpecialKey(GLUT_KEY_UP))
+	{
+		posPlayer.y -= 2;
+		if (map->collisionMoveUp(posPlayer, glm::ivec2(90 * 2, 120 * 2)))
+		{
+			posPlayer.y += 2;
+		}
+	}
 	else
 	{
 		if(sprite->animation() == MOVE_LEFT)
