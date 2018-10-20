@@ -151,14 +151,15 @@ void TileMap::prepareArrays(const glm::vec2 &minCoords, ShaderProgram &program)
 
 bool TileMap::collisionMoveLeft(const glm::ivec2 &pos, const glm::ivec2 &size) const
 {
-	int x, y0, y1;
+	int x0, x1, y0, y1;
 	
-	x = pos.x / tileSize;
+	x0 = (pos.x+68) / tileSize; //68 is aprox the exactly point where the food reach the left side of screen
+	x1 = (x0 + size.x - 134) / tileSize;
 	y0 = pos.y / tileSize;
 	y1 = (pos.y + size.y - 1) / tileSize;
-	for(int y=y0; y<=y1; y++)
+	for(int x=x0; x<=x1; x++)
 	{
-		if(map[y*mapSize.x+x] != 0)
+		if(map[y1*mapSize.x+x0] != 0)
 			return true;
 	}
 	
@@ -167,17 +168,18 @@ bool TileMap::collisionMoveLeft(const glm::ivec2 &pos, const glm::ivec2 &size) c
 
 bool TileMap::collisionMoveRight(const glm::ivec2 &pos, const glm::ivec2 &size) const
 {
-	int x, y0, y1;
-	
-	x = (pos.x + size.x - 1) / tileSize;
+	int x0, x1, y0, y1;
+
+	x0 = (pos.x+68) / tileSize; //68 is aprox the exactly point where the food reach the left side of screen
+	x1 = (x0 + size.x-134) / tileSize;
 	y0 = pos.y / tileSize;
 	y1 = (pos.y + size.y - 1) / tileSize;
-	for(int y=y0; y<=y1; y++)
+	for (int x = x0; x <= x1; x++)
 	{
-		if(map[y*mapSize.x+x] != 0)
+		if (map[y1*mapSize.x + x1] != 0)
 			return true;
 	}
-	
+
 	return false;
 }
 

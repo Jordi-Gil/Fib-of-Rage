@@ -44,12 +44,11 @@ void Game::keyReleased(int key)
 
 void Game::specialKeyPressed(int key)
 {
-	/*
 	if (key == GLUT_KEY_LEFT)
-		scene.moveCamera(scene.cameraLeft-50,scene.cameraRight-50,scene.cameraBottom,scene.cameraTop);
+		scene.moveCamera(scene.cameraLeft-4,scene.cameraRight-4,scene.cameraBottom,scene.cameraTop);
 	if (key == GLUT_KEY_RIGHT)
-		scene.moveCamera(scene.cameraLeft + 50, scene.cameraRight + 50, scene.cameraBottom, scene.cameraTop);
-		*/
+		scene.moveCamera(scene.cameraLeft + 4, scene.cameraRight + 4, scene.cameraBottom, scene.cameraTop);
+		
 	specialKeys[key] = true;
 }
 

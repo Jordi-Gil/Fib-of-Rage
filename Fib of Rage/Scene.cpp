@@ -10,7 +10,7 @@
 #define SCREEN_Y 0
 
 #define INIT_PLAYER_X_TILES 4
-#define INIT_PLAYER_Y_TILES 100
+#define INIT_PLAYER_Y_TILES 250
 
 
 Scene::Scene(int left, int right, int bottom, int top)
@@ -45,13 +45,13 @@ void Scene::init()
 {
 	initShaders();
 	fullMap.scenario = TileMap::createTileMap("levels/level01_object.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
-	//fullMap.collision = TileMap::createTileMap("levels/level01_collision.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+	fullMap.collision = TileMap::createTileMap("levels/level01_collision.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 	
 	setBackground("Resources/LevelBackground/Level_Bridge/bridge.png");
 	player = new Player();
 	player->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 	player->setPosition(glm::vec2(INIT_PLAYER_X_TILES , INIT_PLAYER_Y_TILES));
-	player->setTileMap(fullMap.scenario);
+	player->setTileMap(fullMap.collision);//channge for scenario when collision load is diseabled
 	projection = glm::ortho(float(cameraLeft), float(cameraRight), float(cameraBottom), float(cameraTop));
 	currentTime = 0.0f;
 }
