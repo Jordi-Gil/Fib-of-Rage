@@ -16,6 +16,10 @@
 #define KEY_J 106
 #define KEY_K 107
 #define KEY_L 108
+#define KEY_W 119
+#define KEY_A 97
+#define KEY_S 115
+#define KEY_D 100
 
 enum PlayerAnims
 {
@@ -100,7 +104,7 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 void Player::update(int deltaTime)
 {
 	sprite->update(deltaTime);
-	if(Game::instance().getSpecialKey(GLUT_KEY_LEFT))
+	if(Game::instance().getKey(KEY_A))
 	{
 		if(sprite->animation() != MOVE_LEFT)
 			sprite->changeAnimation(MOVE_LEFT);
@@ -111,7 +115,7 @@ void Player::update(int deltaTime)
 			sprite->changeAnimation(STAND_LEFT);
 		}
 	}
-	else if(Game::instance().getSpecialKey(GLUT_KEY_RIGHT))
+	else if(Game::instance().getKey(KEY_D))
 	{
 		if(sprite->animation() != MOVE_RIGHT)
 			sprite->changeAnimation(MOVE_RIGHT);
@@ -122,7 +126,7 @@ void Player::update(int deltaTime)
 			sprite->changeAnimation(STAND_RIGHT);
 		}
 	}
-	else if (Game::instance().getSpecialKey(GLUT_KEY_DOWN))
+	else if (Game::instance().getKey(KEY_S))
 	{
 		posPlayer.y += 2;
 		if (map->collisionMoveDown(posPlayer, glm::ivec2(WIDTH_PLAYER, HEIGHT_PLAYER)))
@@ -130,7 +134,7 @@ void Player::update(int deltaTime)
 			posPlayer.y -= 2;
 		}
 	}
-	else if (Game::instance().getSpecialKey(GLUT_KEY_UP))
+	else if (Game::instance().getKey(KEY_W))
 	{
 		posPlayer.y -= 2;
 		if (map->collisionMoveUp(posPlayer, glm::ivec2(WIDTH_PLAYER, HEIGHT_PLAYER)))

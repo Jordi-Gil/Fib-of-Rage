@@ -33,6 +33,10 @@ void Game::keyPressed(int key)
 		else
 			scene.enableCollisionView(true);
 	}
+	if (key == 'a')
+		scene.moveCamera(scene.cameraLeft - 4, scene.cameraRight - 4, scene.cameraBottom, scene.cameraTop);
+	if (key == 'd')
+		scene.moveCamera(scene.cameraLeft + 4, scene.cameraRight + 4, scene.cameraBottom, scene.cameraTop);
 	keys[key] = true;
 	
 }
@@ -43,12 +47,7 @@ void Game::keyReleased(int key)
 }
 
 void Game::specialKeyPressed(int key)
-{
-	if (key == GLUT_KEY_LEFT)
-		scene.moveCamera(scene.cameraLeft-4,scene.cameraRight-4,scene.cameraBottom,scene.cameraTop);
-	if (key == GLUT_KEY_RIGHT)
-		scene.moveCamera(scene.cameraLeft + 4, scene.cameraRight + 4, scene.cameraBottom, scene.cameraTop);
-		
+{		
 	specialKeys[key] = true;
 }
 
