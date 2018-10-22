@@ -35,7 +35,7 @@ void Game::keyPressed(int key)
 	}
 	if (key == 'a')
 		scene.moveCamera(scene.cameraLeft - 4, scene.cameraRight - 4, scene.cameraBottom, scene.cameraTop);
-	if (key == 'd')
+	else if (key == 'd')
 		scene.moveCamera(scene.cameraLeft + 4, scene.cameraRight + 4, scene.cameraBottom, scene.cameraTop);
 	keys[key] = true;
 	

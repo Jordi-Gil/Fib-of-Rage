@@ -42,6 +42,7 @@ void Sprite::update(int deltaTime)
 		while(timeAnimation > animations[currentAnimation].millisecsPerKeyframe)
 		{
 			timeAnimation -= animations[currentAnimation].millisecsPerKeyframe;
+			if (currentKeyframe == animations[currentAnimation].keyframeDispl.size() - 1) animationFinished = true;
 			currentKeyframe = (currentKeyframe + 1) % animations[currentAnimation].keyframeDispl.size();
 		}
 		texCoordDispl = animations[currentAnimation].keyframeDispl[currentKeyframe];
@@ -92,6 +93,7 @@ void Sprite::changeAnimation(int animId)
 		currentAnimation = animId;
 		currentKeyframe = 0;
 		timeAnimation = 0.f;
+		animationFinished = false;
 		texCoordDispl = animations[animId].keyframeDispl[0];
 	}
 }
@@ -107,4 +109,10 @@ void Sprite::setPosition(const glm::vec2 &pos)
 }
 
 
+bool Sprite::getAnimationFinished() {
+	return animationFinished;
+}
 
+void Sprite::setAnimationFinished(bool value) {
+	 animationFinished=value;
+}

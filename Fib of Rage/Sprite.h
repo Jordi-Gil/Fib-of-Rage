@@ -33,6 +33,8 @@ public:
 	int animation() const;
 	
 	void setPosition(const glm::vec2 &pos);
+	bool getAnimationFinished();
+	void setAnimationFinished(bool value);
 
 private:
 	Texture *texture;
@@ -45,6 +47,7 @@ private:
 	float timeAnimation;
 	glm::vec2 texCoordDispl;
 	vector<AnimKeyframes> animations;
+	bool animationFinished;
 
 };
 

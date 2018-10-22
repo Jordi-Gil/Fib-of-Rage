@@ -104,69 +104,95 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 void Player::update(int deltaTime)
 {
 	sprite->update(deltaTime);
-	if(Game::instance().getKey(KEY_A))
-	{
-		if(sprite->animation() != MOVE_LEFT)
-			sprite->changeAnimation(MOVE_LEFT);
-		posPlayer.x -= 2;
-		if(map->collisionMoveLeft(posPlayer, glm::ivec2(WIDTH_PLAYER, HEIGHT_PLAYER)))
-		{
-			posPlayer.x += 2;
-			sprite->changeAnimation(STAND_LEFT);
+	if (sprite->getAnimationFinished() || (sprite->animation() != KICK_LEFT && sprite->animation() != KICK_RIGHT && sprite->animation() != PUNCH_RIGHT && sprite->animation() != PUNCH_LEFT && sprite->animation() != HADOUKEN_LEFT && sprite->animation() != HADOUKEN_RIGHT)) {
+		if(!Game::instance().getKey(KEY_J) && !Game::instance().getKey(KEY_K) && !Game::instance().getKey(KEY_L)){
+			if (Game::instance().getKey(KEY_A))
+			{
+				if (sprite->animation() != MOVE_LEFT)
+					sprite->changeAnimation(MOVE_LEFT);
+				posPlayer.x -= 2;
+				if (map->collisionMoveLeft(posPlayer, glm::ivec2(WIDTH_PLAYER, HEIGHT_PLAYER)))
+				{
+					posPlayer.x += 2;
+					sprite->changeAnimation(STAND_LEFT);
+				}
+			}
+			else if (Game::instance().getKey(KEY_D))
+			{
+				if (sprite->animation() != MOVE_RIGHT)
+					sprite->changeAnimation(MOVE_RIGHT);
+				posPlayer.x += 2;
+				if (map->collisionMoveRight(posPlayer, glm::ivec2(WIDTH_PLAYER, HEIGHT_PLAYER)))
+				{
+					posPlayer.x -= 2;
+					sprite->changeAnimation(STAND_RIGHT);
+				}
+			}
+			else if (Game::instance().getKey(KEY_S))
+			{
+				if (sprite->animation() == STAND_RIGHT || (sprite->getAnimationFinished() && sprite->animation() == MOVE_RIGHT) || sprite->animation()== KICK_RIGHT || sprite->animation() == PUNCH_RIGHT || sprite->animation() == HADOUKEN_RIGHT) {
+					sprite->changeAnimation(MOVE_RIGHT);
+				}
+				else if (sprite->animation() == STAND_LEFT || (sprite->getAnimationFinished() && sprite->animation() == MOVE_LEFT) || sprite->animation() == KICK_LEFT || sprite->animation() == PUNCH_LEFT || sprite->animation() == HADOUKEN_LEFT) {
+					sprite->changeAnimation(MOVE_LEFT);
+				}
+				posPlayer.y += 2;
+				if (map->collisionMoveDown(posPlayer, glm::ivec2(WIDTH_PLAYER, HEIGHT_PLAYER)))
+				{
+					posPlayer.y -= 2;
+					if (sprite->animation() == MOVE_RIGHT)
+						sprite->changeAnimation(STAND_RIGHT);
+					else if (sprite->animation() == MOVE_LEFT)
+						sprite->changeAnimation(STAND_LEFT);
+				}
+			}
+			else if (Game::instance().getKey(KEY_W))
+			{
+				if (sprite->animation() == STAND_RIGHT || (sprite->getAnimationFinished() && sprite->animation() == MOVE_RIGHT) || sprite->animation() == KICK_RIGHT || sprite->animation() == PUNCH_RIGHT || sprite->animation() == HADOUKEN_RIGHT) {
+					sprite->changeAnimation(MOVE_RIGHT);
+				}
+				else if (sprite->animation() == STAND_LEFT || (sprite->getAnimationFinished() && sprite->animation() == MOVE_LEFT) || sprite->animation() == KICK_LEFT || sprite->animation() == PUNCH_LEFT || sprite->animation() == HADOUKEN_LEFT) {
+					sprite->changeAnimation(MOVE_LEFT);
+				}
+				posPlayer.y -= 2;
+				if (map->collisionMoveUp(posPlayer, glm::ivec2(WIDTH_PLAYER, HEIGHT_PLAYER)))
+				{
+					posPlayer.y += 2;
+					if (sprite->animation() == MOVE_RIGHT)
+						sprite->changeAnimation(STAND_RIGHT);
+					else if (sprite->animation() == MOVE_LEFT)
+						sprite->changeAnimation(STAND_LEFT);
+				}
+			}
+			else
+			{
+				if (sprite->animation() == MOVE_LEFT || sprite->animation() == KICK_LEFT || sprite->animation() == PUNCH_LEFT || sprite->animation() == HADOUKEN_LEFT)
+					sprite->changeAnimation(STAND_LEFT);
+				else if (sprite->animation() == MOVE_RIGHT || sprite->animation() == KICK_RIGHT || sprite->animation() == PUNCH_RIGHT || sprite->animation() == HADOUKEN_RIGHT)
+					sprite->changeAnimation(STAND_RIGHT);
+			}
+		}
+		if (Game::instance().getKey(KEY_K)) {
+			if (sprite->animation() == STAND_LEFT || sprite->animation() == MOVE_LEFT)
+				sprite->changeAnimation(KICK_LEFT);
+			else if (sprite->animation() == STAND_RIGHT || sprite->animation() == MOVE_RIGHT)
+				sprite->changeAnimation(KICK_RIGHT);
+		}
+		else if (Game::instance().getKey(KEY_J)) {
+			if (sprite->animation() == STAND_LEFT || sprite->animation() == MOVE_LEFT)
+				sprite->changeAnimation(PUNCH_LEFT);
+			else if (sprite->animation() == STAND_RIGHT || sprite->animation() == MOVE_RIGHT)
+				sprite->changeAnimation(PUNCH_RIGHT);
+		}
+		else if (Game::instance().getKey(KEY_L)) {
+			if (sprite->animation() == STAND_LEFT || sprite->animation() == MOVE_LEFT)
+				sprite->changeAnimation(HADOUKEN_LEFT);
+			else if (sprite->animation() == STAND_RIGHT || sprite->animation() == MOVE_RIGHT)
+				sprite->changeAnimation(HADOUKEN_RIGHT);
 		}
 	}
-	else if(Game::instance().getKey(KEY_D))
-	{
-		if(sprite->animation() != MOVE_RIGHT)
-			sprite->changeAnimation(MOVE_RIGHT);
-		posPlayer.x += 2;
-		if(map->collisionMoveRight(posPlayer, glm::ivec2(WIDTH_PLAYER, HEIGHT_PLAYER)))
-		{
-			posPlayer.x -= 2;
-			sprite->changeAnimation(STAND_RIGHT);
-		}
-	}
-	else if (Game::instance().getKey(KEY_S))
-	{
-		posPlayer.y += 2;
-		if (map->collisionMoveDown(posPlayer, glm::ivec2(WIDTH_PLAYER, HEIGHT_PLAYER)))
-		{
-			posPlayer.y -= 2;
-		}
-	}
-	else if (Game::instance().getKey(KEY_W))
-	{
-		posPlayer.y -= 2;
-		if (map->collisionMoveUp(posPlayer, glm::ivec2(WIDTH_PLAYER, HEIGHT_PLAYER)))
-		{
-			posPlayer.y += 2;
-		}
-	}
-	else if (Game::instance().getKey(KEY_K)) {
-		if (sprite->animation() == STAND_LEFT || sprite->animation() == MOVE_LEFT)
-			sprite->changeAnimation(KICK_LEFT);
-		else if (sprite->animation() == STAND_RIGHT || sprite->animation() == MOVE_RIGHT)
-			sprite->changeAnimation(KICK_RIGHT);
-	}
-	else if (Game::instance().getKey(KEY_J)) {
-		if (sprite->animation() == STAND_LEFT || sprite->animation() == MOVE_LEFT)
-			sprite->changeAnimation(PUNCH_LEFT);
-		else if (sprite->animation() == STAND_RIGHT || sprite->animation() == MOVE_RIGHT)
-			sprite->changeAnimation(PUNCH_RIGHT);
-	}
-	else if (Game::instance().getKey(KEY_L)){
-		if (sprite->animation() == STAND_LEFT || sprite->animation() == MOVE_LEFT)
-			sprite->changeAnimation(HADOUKEN_LEFT);
-		else if (sprite->animation() == STAND_RIGHT || sprite->animation() == MOVE_RIGHT)
-			sprite->changeAnimation(HADOUKEN_RIGHT);
-	}
-	else
-	{
-		if(sprite->animation() == MOVE_LEFT || sprite->animation() == KICK_LEFT || sprite->animation() == PUNCH_LEFT || sprite->animation() == HADOUKEN_LEFT)
-			sprite->changeAnimation(STAND_LEFT);
-		else if(sprite->animation() == MOVE_RIGHT || sprite->animation() == KICK_RIGHT || sprite->animation() == PUNCH_RIGHT || sprite->animation() == HADOUKEN_RIGHT)
-			sprite->changeAnimation(STAND_RIGHT);
-	}
+
+
 	
 	/*if(bJumping)
 	{
