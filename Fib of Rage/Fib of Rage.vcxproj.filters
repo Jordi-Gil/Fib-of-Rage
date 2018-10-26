@@ -34,6 +34,9 @@
     <ClCompile Include="main.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimKeyframes.h">
@@ -67,6 +70,9 @@
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="Quad.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu.h">
       <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>
