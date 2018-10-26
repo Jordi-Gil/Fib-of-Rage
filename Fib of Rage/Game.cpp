@@ -7,36 +7,36 @@ void Game::init()
 {
 	bPlay = true;
 	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
-	gameScenes[0].init();
+	gameScenes[scene]->init();
+	
 }
 
 bool Game::update(int deltaTime)
 {
-	scene.update(deltaTime);
-	
+	gameScenes[scene]->update(deltaTime);
 	return bPlay;
 }
 
 void Game::render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	scene.render();
+	gameScenes[scene]->render();
 }
 
 void Game::keyPressed(int key)
 {
-	if(key == 27) // Escape code
+	if(key == 27) 
 		bPlay = false;
 	if (key == 'c') {
-		if (scene.getCollisionView() == true)
-			scene.enableCollisionView(false);
+		if (gameScenes[scene]->getCollisionView() == true)
+			gameScenes[scene]->enableCollisionView(false);
 		else
-			scene.enableCollisionView(true);
+			gameScenes[scene]->enableCollisionView(true);
 	}
 	if (key == 'a')
-		scene.moveCamera(scene.cameraLeft - 4, scene.cameraRight - 4, scene.cameraBottom, scene.cameraTop);
+		gameScenes[scene]->moveCamera(gameScenes[scene]->cameraLeft - 4, gameScenes[scene]->cameraRight - 4, gameScenes[scene]->cameraBottom, gameScenes[scene]->cameraTop);
 	else if (key == 'd')
-		scene.moveCamera(scene.cameraLeft + 4, scene.cameraRight + 4, scene.cameraBottom, scene.cameraTop);
+		gameScenes[scene]->moveCamera(gameScenes[scene]->cameraLeft + 4, gameScenes[scene]->cameraRight + 4, gameScenes[scene]->cameraBottom, gameScenes[scene]->cameraTop);
 	keys[key] = true;
 	
 }

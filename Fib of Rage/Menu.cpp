@@ -81,4 +81,6 @@ bool Menu::setBackground(const string &filename)
 
 	background = TexturedQuad::createTexturedQuad(geom, texCoords, texProgram);
 	tex.loadFromFile(filename, TEXTURE_PIXEL_FORMAT_RGBA);
+
+	return true;
 }

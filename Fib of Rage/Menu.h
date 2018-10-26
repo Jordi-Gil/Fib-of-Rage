@@ -4,8 +4,9 @@
 #include "TexturedQuad.h"
 #include "Texture.h"
 #include "ShaderProgram.h"
+#include "Scene.h"
 
-class Menu
+class Menu : public Scene
 {
 public:
 	Menu(int left, int right, int bottom, int top);

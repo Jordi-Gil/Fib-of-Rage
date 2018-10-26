@@ -1,24 +1,26 @@
 #ifndef _GAME_INCLUDE
 #define _GAME_INCLUDE
 
-
 #include "Scene.h"
+#include "Level.h"
+#include "Menu.h"
 
 
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 547
 
-
-// Game is a singleton (a class with a single instance) that represents our whole application
-
+enum GameScences
+{
+	MENU, LEVEL_1
+};
 
 class Game
 {
 
 public:
-	Game() : scene(0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1, 0)
+	Game()
 	{
-		
+		gameScenes[LEVEL_1] = new Level(0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1, 0);
 	}
 	
 	
@@ -33,7 +35,6 @@ public:
 	bool update(int deltaTime);
 	void render();
 	
-	// Input callback methods
 	void keyPressed(int key);
 	void keyReleased(int key);
 	void specialKeyPressed(int key);
@@ -46,11 +47,11 @@ public:
 	bool getSpecialKey(int key) const;
 
 private:
-	bool bPlay;                       // Continue to play game?
-	Scene scene;                      // Scene to render
-	Scene gameScenes[2];
-	bool keys[256], specialKeys[256]; // Store key states so that 
-	                                  // we can have access at any time
+	bool bPlay;
+	Scene **gameScenes = new Scene *[2];
+	Level level;
+	bool keys[256], specialKeys[256];
+	int scene = LEVEL_1;
 
 };
 

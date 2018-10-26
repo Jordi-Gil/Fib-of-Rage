@@ -29,35 +29,29 @@ public:
 	Scene();
 	~Scene();
 
-	void init();
-	void update(int deltaTime);
-	void render();
-	void enableCollisionView(bool state);
-	bool getCollisionView();
-	void moveCamera(int left, int right, int bottom, int top);
+	virtual void update(int deltaTime);
+	virtual void render();
+	virtual void init();
 
-private:
+	virtual void enableCollisionView(bool state);
+	virtual bool getCollisionView();
+	virtual void moveCamera(int left, int right, int bottom, int top);
+
+protected:
 	void initShaders();
-	bool setBackground(const string &filename);
 
-private:
-
-	FullMap fullMap;
-	Player *player;
+protected:
 	ShaderProgram texProgram;
 	float currentTime;
 	glm::mat4 projection;
-	bool showCollisions = 0;
 
-
-	TexturedQuad *background[1];
-	Texture texs[1];
 
 public:
 	int cameraLeft;
 	int cameraRight;
 	int cameraBottom;
 	int cameraTop;
+
 };
 
 
