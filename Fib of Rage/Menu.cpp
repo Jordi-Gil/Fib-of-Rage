@@ -30,7 +30,7 @@ void Menu::render()
 void Menu::init() 
 {
 	initShaders();
-	setBackground("Resources/Menu/Background.png");
+	setBackground("Resources/Menu/backgroundMenu.png");
 	projection = glm::ortho(float(cameraLeft), float(cameraRight), float(cameraBottom), float(cameraTop));
 	currentTime = 0.0f;
 	binit = true;
@@ -39,11 +39,11 @@ void Menu::init()
 
 bool Menu::setBackground(const string &filename)
 {
-	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(1600.f, 1200.f) };
+	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(1280, 547.f) };
 	glm::vec2 texCoords[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
 
 	background = TexturedQuad::createTexturedQuad(geom, texCoords, texProgram);
-	tex.loadFromFile(filename, TEXTURE_PIXEL_FORMAT_RGBA);
+	tex.loadFromFile(filename, TEXTURE_PIXEL_FORMAT_RGB);
 
 	return true;
 }
