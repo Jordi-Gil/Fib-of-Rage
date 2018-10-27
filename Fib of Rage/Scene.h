@@ -28,7 +28,7 @@ public:
 	Scene(int left, int right, int bottom, int top);
 	Scene();
 	~Scene();
-	void setCamera(glm::fvec4 pos);
+	void setCamera(glm::ivec4 pos);
 
 	virtual bool getInit();
 

@@ -92,7 +92,7 @@ bool Scene::getCollisionView() { return true; }
 void Scene::moveCamera(int left, int right, int bottom, int top) {}
 void Scene::restartLevel() {}
 
-void Scene::setCamera(glm::fvec4 pos)
+void Scene::setCamera(glm::ivec4 pos)
 {
 	cameraLeft = pos.x;
 	cameraRight = pos.y;
