@@ -27,8 +27,10 @@ private:
 protected:
 	FullMap fullMap;
 	Player *mainPlayer;
+
 	TexturedQuad *background;
 	Texture tex;
+
 	bool showCollisions = false;
 
 };
