@@ -24,6 +24,7 @@ private:
 
 private:
 
+	int antDeltaTime = 0;
 	int numberAnims = 4;
 	Texture texture;
 	Sprite *background;

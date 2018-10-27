@@ -5,7 +5,7 @@
 
 
 #define WIDTH_IMAGE 1280
-#define HEIGHT_IMAGE 548
+#define HEIGHT_IMAGE 547
 
 #define SPEED 3
 
@@ -42,21 +42,37 @@ void Menu::render()
 void Menu::update(int deltaTime)
 {
 	background->update(deltaTime);
-	int currentAnimation;
-	if (Game::instance().getKey(KEY_W))
-	{
-		currentAnimation = background->animation();
-		if (currentAnimation == EXIT) { background->changeAnimation(CREDITS); }
-		else if (currentAnimation == CREDITS) { background->changeAnimation(INSTR); }
-		else if (currentAnimation == INSTR) { background->changeAnimation(PLAY); }
+	if (antDeltaTime+1 <= deltaTime) {
+		
+		int currentAnimation;
+		if (Game::instance().getKey(KEY_W))
+		{
+			currentAnimation = background->animation();
+			if (currentAnimation == EXIT) { 
+				background->changeAnimation(CREDITS); 
+			}
+			else if (currentAnimation == CREDITS) {
+				background->changeAnimation(INSTR); 
+			}
+			else if (currentAnimation == INSTR) { 
+				background->changeAnimation(PLAY); 
+			}
+		}
+		else if (Game::instance().getKey(KEY_S))
+		{
+			currentAnimation = background->animation();
+			if (currentAnimation == PLAY) { 
+				background->changeAnimation(INSTR); 
+			}
+			else if (currentAnimation == INSTR) { 
+				background->changeAnimation(CREDITS); 
+			}
+			else if (currentAnimation == CREDITS) { 
+				background->changeAnimation(EXIT); 
+			}
+		}
 	}
-	else if (Game::instance().getKey(KEY_S))
-	{
-		currentAnimation = background->animation();
-		if (currentAnimation == PLAY) { background->changeAnimation(INSTR); }
-		else if (currentAnimation == INSTR) { background->changeAnimation(CREDITS); }
-		else if (currentAnimation == CREDITS) { background->changeAnimation(EXIT); }
-	}
+	antDeltaTime = deltaTime;
 }
 
 void Menu::init() 
