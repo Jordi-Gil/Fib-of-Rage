@@ -12,13 +12,11 @@ public:
 	Menu(int left, int right, int bottom, int top);
 	Menu();
 	~Menu();
-	void render();
-	void init();
-	void update(int deltaTime);
+	void render() override;
+	void init() override;
 
 private:
 
-	void initShaders();
 	bool setBackground(const string &filename);
 
 private:
@@ -30,10 +28,5 @@ private:
 	TexturedQuad *background;
 	Texture tex;
 
-public:
-	int cameraLeft;
-	int cameraRight;
-	int cameraBottom;
-	int cameraTop;
 };
 

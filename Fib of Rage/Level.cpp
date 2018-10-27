@@ -1,4 +1,3 @@
-#include <iostream>
 #include <cmath>
 #include <glm/gtc/matrix_transform.hpp>
 #include "Level.h"
@@ -8,6 +7,9 @@
 
 #define INIT_PLAYER_X_TILES 4
 #define INIT_PLAYER_Y_TILES 250
+
+#define SCREEN_WIDTH 1280
+#define SCREEN_HEIGHT 547
 
 Level::Level(int left, int right, int bottom, int top) : Scene(left, right, bottom, top)
 {
@@ -48,6 +50,8 @@ void Level::init()
 	mainPlayer->setTileMap(fullMap.collision);//channge for scenario when collision load is diseabled
 	projection = glm::ortho(float(cameraLeft), float(cameraRight), float(cameraBottom), float(cameraTop));
 	currentTime = 0.0f;
+
+	binit = true;
 }
 
 void Level::render()
@@ -90,4 +94,16 @@ bool Level::setBackground(const string &filename)
 	tex.loadFromFile(filename, TEXTURE_PIXEL_FORMAT_RGBA);
 
 	return true;
+}
+
+bool Level::getInit()
+{
+	return binit;
+}
+
+void Level::restartLevel() 
+{ 
+	mainPlayer->setPosition(glm::vec2(INIT_PLAYER_X_TILES, INIT_PLAYER_Y_TILES)); 
+	setCamera(glm::ivec4(0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1, 0));
+	projection = glm::ortho(float(cameraLeft), float(cameraRight), float(cameraBottom), float(cameraTop));
 }

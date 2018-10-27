@@ -20,6 +20,7 @@ class Game
 public:
 	Game()
 	{
+		gameScenes[MENU] = new Menu(0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1, 0);
 		gameScenes[LEVEL_1] = new Level(0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1, 0);
 	}
 	
@@ -47,11 +48,14 @@ public:
 	bool getSpecialKey(int key) const;
 
 private:
+	void changeScene();
+
+private:
 	bool bPlay;
 	Scene **gameScenes = new Scene *[2];
 	Level level;
 	bool keys[256], specialKeys[256];
-	int scene = LEVEL_1;
+	int scene = MENU;
 
 };
 

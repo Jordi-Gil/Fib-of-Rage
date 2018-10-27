@@ -37,8 +37,10 @@ void Game::keyPressed(int key)
 		gameScenes[scene]->moveCamera(gameScenes[scene]->cameraLeft - 4, gameScenes[scene]->cameraRight - 4, gameScenes[scene]->cameraBottom, gameScenes[scene]->cameraTop);
 	else if (key == 'd')
 		gameScenes[scene]->moveCamera(gameScenes[scene]->cameraLeft + 4, gameScenes[scene]->cameraRight + 4, gameScenes[scene]->cameraBottom, gameScenes[scene]->cameraTop);
-	keys[key] = true;
+	if (key == 'm') { scene = MENU, changeScene(); };
+	if (key == 'n') { scene = LEVEL_1, changeScene(); };
 	
+	keys[key] = true;
 }
 
 void Game::keyReleased(int key)
@@ -76,4 +78,11 @@ bool Game::getKey(int key) const
 bool Game::getSpecialKey(int key) const
 {
 	return specialKeys[key];
+}
+
+void Game::changeScene() 
+{
+	if(!gameScenes[scene]->getInit())
+		gameScenes[scene]->init();
+	if (scene == LEVEL_1) gameScenes[scene]->restartLevel();
 }

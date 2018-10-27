@@ -82,6 +82,21 @@ void Scene::initShaders()
 	fShader.free();
 }
 
+bool Scene::getInit()
+{
+	return binit;
+}
+
 void Scene::enableCollisionView(bool state) {}
 bool Scene::getCollisionView() { return true; }
 void Scene::moveCamera(int left, int right, int bottom, int top) {}
+void Scene::restartLevel() {}
+
+void Scene::setCamera(glm::fvec4 pos)
+{
+	cameraLeft = pos.x;
+	cameraRight = pos.y;
+	cameraBottom = pos.z;
+	cameraTop = pos.w;
+
+}

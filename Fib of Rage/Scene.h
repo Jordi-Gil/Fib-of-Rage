@@ -28,6 +28,9 @@ public:
 	Scene(int left, int right, int bottom, int top);
 	Scene();
 	~Scene();
+	void setCamera(glm::fvec4 pos);
+
+	virtual bool getInit();
 
 	virtual void update(int deltaTime);
 	virtual void render();
@@ -37,6 +40,8 @@ public:
 	virtual bool getCollisionView();
 	virtual void moveCamera(int left, int right, int bottom, int top);
 
+	virtual void restartLevel();
+
 protected:
 	void initShaders();
 
@@ -44,7 +49,7 @@ protected:
 	ShaderProgram texProgram;
 	float currentTime;
 	glm::mat4 projection;
-
+	bool binit = false;
 
 public:
 	int cameraLeft;
