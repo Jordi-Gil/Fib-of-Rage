@@ -30,7 +30,7 @@ void Menu::render()
 void Menu::init() 
 {
 	initShaders();
-	setBackground("Resources/Menu/backgroundMenu.png");
+	setBackground("Resources/Menu/backgroundMenu.gif");
 	projection = glm::ortho(float(cameraLeft), float(cameraRight), float(cameraBottom), float(cameraTop));
 	currentTime = 0.0f;
 	binit = true;
