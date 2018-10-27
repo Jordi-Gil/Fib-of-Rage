@@ -28,5 +28,7 @@ private:
 	int numberAnims = 4;
 	Texture texture;
 	Sprite *background;
+
+	bool finishOneTime = false;
 };
 

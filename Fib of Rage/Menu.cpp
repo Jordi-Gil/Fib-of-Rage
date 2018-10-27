@@ -1,3 +1,5 @@
+#include <GL/glew.h>
+#include <GL/glut.h>
 #include <cmath>
 #include <glm/gtc/matrix_transform.hpp>
 #include "Menu.h"
@@ -42,11 +44,14 @@ void Menu::render()
 void Menu::update(int deltaTime)
 {
 	background->update(deltaTime);
-	if (antDeltaTime+1 <= deltaTime) {
-		
+	int currentTime = glutGet(GLUT_ELAPSED_TIME);
+	if (!finishOneTime) finishOneTime = background->getAnimationFinished();
+	if (antDeltaTime <= currentTime && finishOneTime) {
+		antDeltaTime = currentTime;
 		int currentAnimation;
 		if (Game::instance().getKey(KEY_W))
 		{
+			finishOneTime = false;
 			currentAnimation = background->animation();
 			if (currentAnimation == EXIT) { 
 				background->changeAnimation(CREDITS); 
@@ -60,6 +65,7 @@ void Menu::update(int deltaTime)
 		}
 		else if (Game::instance().getKey(KEY_S))
 		{
+			finishOneTime = false;
 			currentAnimation = background->animation();
 			if (currentAnimation == PLAY) { 
 				background->changeAnimation(INSTR); 
@@ -72,7 +78,6 @@ void Menu::update(int deltaTime)
 			}
 		}
 	}
-	antDeltaTime = deltaTime;
 }
 
 void Menu::init() 
