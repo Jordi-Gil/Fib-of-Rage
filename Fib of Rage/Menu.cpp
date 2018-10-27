@@ -1,9 +1,18 @@
 #include <cmath>
 #include <glm/gtc/matrix_transform.hpp>
 #include "Menu.h"
+#include "Game.h"
 
 
-enum  Animations { Play, Instructions, Credits, Exit };
+#define WIDTH_IMAGE 1280
+#define HEIGHT_IMAGE 548
+
+#define SPEED 3
+
+#define KEY_W 119
+#define KEY_S 115
+
+enum  Animations { PLAY, INSTR, CREDITS, EXIT };
 
 
 Menu::Menu(int left, int right, int bottom, int top)
@@ -26,58 +35,65 @@ Menu::~Menu()
 void Menu::render()
 {
 	Scene::render();
-	background->render(animations[currentAnim].first[texture]);
-	
+	background->render();
 }
 
 
 void Menu::update(int deltaTime)
 {
-	if (currentAnim >= 0) {
-		timeAnimation += deltaTime*100;
-		while (timeAnimation > animations[currentAnim].second) {
-			timeAnimation -= animations[currentAnim].second;
-		}
-		texture = !texture;
+	background->update(deltaTime);
+	int currentAnimation;
+	if (Game::instance().getKey(KEY_W))
+	{
+		currentAnimation = background->animation();
+		if (currentAnimation == EXIT) { background->changeAnimation(CREDITS); }
+		else if (currentAnimation == CREDITS) { background->changeAnimation(INSTR); }
+		else if (currentAnimation == INSTR) { background->changeAnimation(PLAY); }
+	}
+	else if (Game::instance().getKey(KEY_S))
+	{
+		currentAnimation = background->animation();
+		if (currentAnimation == PLAY) { background->changeAnimation(INSTR); }
+		else if (currentAnimation == INSTR) { background->changeAnimation(CREDITS); }
+		else if (currentAnimation == CREDITS) { background->changeAnimation(EXIT); }
 	}
 }
 
 void Menu::init() 
 {
-	currentAnim = Play;
 	initShaders();
-	animations.resize(numberAnims);
-	vector<string> files = { "Resources/Menu/backgroundMenuPlay.png", "Resources/Menu/backgroundMenuInstructions.png",
-									 "Resources/Menu/backgroundMenuCredits.png", "Resources/Menu/backgroundMenuExit.png" };
-	
-
-	setBackground(files,"Resources/Menu/backgroundMenuEmpty.png");
-
-
-
+	setBackground("Resources/Menu/backgroundMenu.png");
 	projection = glm::ortho(float(cameraLeft), float(cameraRight), float(cameraBottom), float(cameraTop));
 	currentTime = 0.0f;
 	binit = true;
 }
 
 
-bool Menu::setBackground(vector<string> filenames, const string &baseFile)
+bool Menu::setBackground(const string &filename)
 {
-	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(1280, 547.f) };
-	glm::vec2 texCoords[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
-
-	background = TexturedQuad::createTexturedQuad(geom, texCoords, texProgram);
-
-	Texture base; 
-	base.loadFromFile(baseFile, TEXTURE_PIXEL_FORMAT_RGBA);
-
-	for (int anim = Play; anim <= Exit; anim++)
-	{
-		Texture tex;
-		tex.loadFromFile(filenames[anim], TEXTURE_PIXEL_FORMAT_RGBA);
-		vector<Texture> vaux = { tex, base };
-		animations[anim] = make_pair(vaux, 1000000.f);
-	}
+	texture.loadFromFile(filename, TEXTURE_PIXEL_FORMAT_RGBA);
 	
+	background = Sprite::createSprite(glm::ivec2(WIDTH_IMAGE, HEIGHT_IMAGE), glm::vec2(0.2f, 1.f), &texture, &texProgram);
+	background->setNumberAnimations(4);
+
+	background->setAnimationSpeed(PLAY, SPEED);
+	background->addKeyframe(PLAY, glm::vec2(0.f, 1.f));
+	background->addKeyframe(PLAY, glm::vec2(0.2f, 1.0f));
+
+	background->setAnimationSpeed(INSTR, SPEED);
+	background->addKeyframe(INSTR, glm::vec2(0.f, 1.f));
+	background->addKeyframe(INSTR, glm::vec2(0.4f, 1.0f));
+
+	background->setAnimationSpeed(CREDITS, SPEED);
+	background->addKeyframe(CREDITS, glm::vec2(0.f, 1.f));
+	background->addKeyframe(CREDITS, glm::vec2(0.6f, 1.0f));
+
+	background->setAnimationSpeed(EXIT, SPEED);
+	background->addKeyframe(EXIT, glm::vec2(0.f, 1.f));
+	background->addKeyframe(EXIT, glm::vec2(0.8f, 1.0f));
+
+	background->changeAnimation(PLAY);
+
+	background->setPosition(glm::vec2(0, 0));
 	return true;
 }

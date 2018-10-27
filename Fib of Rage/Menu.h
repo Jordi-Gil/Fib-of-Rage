@@ -7,6 +7,7 @@
 #include "ShaderProgram.h"
 #include "Scene.h"
 
+
 class Menu : public Scene
 {
 public:
@@ -19,17 +20,12 @@ public:
 
 private:
 
-	bool setBackground(vector<string> filenames, const string &base);
+	bool setBackground(const string &filename);
 
 private:
 
-	TexturedQuad *background;
-
 	int numberAnims = 4;
-	int currentAnim;
-	int texture = 0;
-	float timeAnimation = 0.f;
-	vector<pair<vector<Texture>, float>> animations;
-
+	Texture texture;
+	Sprite *background;
 };
 

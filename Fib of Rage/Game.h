@@ -9,10 +9,7 @@
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 547
 
-enum GameScences
-{
-	MENU, LEVEL_1
-};
+enum Scenes { MENU, LEVEL_1 };
 
 class Game
 {
