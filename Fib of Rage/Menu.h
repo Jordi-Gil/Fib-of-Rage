@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <utility> 
 #include "TexturedQuad.h"
 #include "Texture.h"
 #include "ShaderProgram.h"
@@ -12,17 +13,23 @@ public:
 	Menu(int left, int right, int bottom, int top);
 	Menu();
 	~Menu();
+	void update(int deltaTime) override;
 	void render() override;
 	void init() override;
 
 private:
 
-	bool setBackground(const string &filename);
+	bool setBackground(vector<string> filenames, const string &base);
 
 private:
 
 	TexturedQuad *background;
-	Texture tex;
+
+	int numberAnims = 4;
+	int currentAnim;
+	int texture = 0;
+	float timeAnimation = 0.f;
+	vector<pair<vector<Texture>, float>> animations;
 
 };
 
