@@ -18,16 +18,23 @@ public:
 	void render() override;
 	void init() override;
 
+	void setrenderMenu();
+
 private:
 
-	bool setBackground(const string &filename);
+	void setMenu(const string &filename);
+	void setCtrl(const string &filename);
+	void setCred(const string &filename);
 
 private:
 
 	int antDeltaTime = 0;
 	int numberAnims = 4;
-	Texture texture;
-	Sprite *background;
+	Texture texture, contrTex, credTex;
+	TexturedQuad *credits, *controls;
+	Sprite *menu;
+
+	bool renderMenu = true, renderCont = false, renderCred = false;
 
 	bool finishOneTime = false;
 };

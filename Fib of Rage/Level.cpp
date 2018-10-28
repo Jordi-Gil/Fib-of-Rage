@@ -16,7 +16,6 @@ Level::Level(int left, int right, int bottom, int top) : Scene(left, right, bott
 	fullMap.scenario = NULL;
 	fullMap.collision = NULL;
 	mainPlayer = NULL;
-	
 }
 
 Level::Level()
@@ -107,3 +106,6 @@ void Level::restartLevel()
 	setCamera(glm::ivec4(0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1, 0));
 	projection = glm::ortho(float(cameraLeft), float(cameraRight), float(cameraBottom), float(cameraTop));
 }
+
+
+void setrenderMenu() {}

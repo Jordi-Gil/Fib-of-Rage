@@ -44,12 +44,14 @@ public:
 	bool getKey(int key) const;
 	bool getSpecialKey(int key) const;
 
-private:
-	void changeScene();
+	void changeScene(int value);
 
 private:
 	bool bPlay;
+	
 	Scene **gameScenes = new Scene *[2];
+
+
 	Level level;
 	bool keys[256], specialKeys[256];
 	int scene = MENU;

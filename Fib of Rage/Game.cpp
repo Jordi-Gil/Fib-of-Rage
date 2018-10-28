@@ -2,6 +2,8 @@
 #include <GL/glut.h>
 #include "Game.h"
 
+#define ESC 27
+
 void Game::init()
 {
 	bPlay = true;
@@ -24,20 +26,23 @@ void Game::render()
 
 void Game::keyPressed(int key)
 {
-	if(key == 27) 
+	if(key == GLUT_KEY_F10) 
 		bPlay = false;
-	if (key == 'c') {
-		if (gameScenes[scene]->getCollisionView() == true)
-			gameScenes[scene]->enableCollisionView(false);
+	if (key == 'c' && scene == LEVEL_1) {
+		if (dynamic_cast<Level*> (gameScenes[scene])->getCollisionView() == true)
+			dynamic_cast<Level*> (gameScenes[scene])->enableCollisionView(false);
 		else
-			gameScenes[scene]->enableCollisionView(true);
+			dynamic_cast<Level*> (gameScenes[scene])->enableCollisionView(true);
 	}
-	if (key == 'a')
-		gameScenes[scene]->moveCamera(gameScenes[scene]->cameraLeft - 4, gameScenes[scene]->cameraRight - 4, gameScenes[scene]->cameraBottom, gameScenes[scene]->cameraTop);
-	else if (key == 'd')
-		gameScenes[scene]->moveCamera(gameScenes[scene]->cameraLeft + 4, gameScenes[scene]->cameraRight + 4, gameScenes[scene]->cameraBottom, gameScenes[scene]->cameraTop);
-	if (key == 'm') { scene = MENU, changeScene(); };
-	if (key == 'n') { scene = LEVEL_1, changeScene(); };
+	if (key == 'a' && scene == LEVEL_1)
+		dynamic_cast<Level*> (gameScenes[scene])->moveCamera(gameScenes[scene]->cameraLeft - 4, gameScenes[scene]->cameraRight - 4, gameScenes[scene]->cameraBottom, gameScenes[scene]->cameraTop);
+	else if (key == 'd' && scene == LEVEL_1)
+		dynamic_cast<Level*> (gameScenes[scene])->moveCamera(gameScenes[scene]->cameraLeft + 4, gameScenes[scene]->cameraRight + 4, gameScenes[scene]->cameraBottom, gameScenes[scene]->cameraTop);
+	
+	if (key == ESC && scene == LEVEL_1) {
+		dynamic_cast<Menu*> (gameScenes[MENU])->setrenderMenu();
+		changeScene(MENU); 
+	};
 	
 	keys[key] = true;
 }
@@ -79,9 +84,10 @@ bool Game::getSpecialKey(int key) const
 	return specialKeys[key];
 }
 
-void Game::changeScene() 
+void Game::changeScene(int value) 
 {
+	scene = value;
 	if(!gameScenes[scene]->getInit())
 		gameScenes[scene]->init();
-	if (scene == LEVEL_1) gameScenes[scene]->restartLevel();
+	if (scene == LEVEL_1) dynamic_cast<Level*> (gameScenes[scene])->restartLevel();
 }

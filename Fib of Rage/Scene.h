@@ -36,12 +36,6 @@ public:
 	virtual void render();
 	virtual void init();
 
-	virtual void enableCollisionView(bool state);
-	virtual bool getCollisionView();
-	virtual void moveCamera(int left, int right, int bottom, int top);
-
-	virtual void restartLevel();
-
 protected:
 	void initShaders();
 

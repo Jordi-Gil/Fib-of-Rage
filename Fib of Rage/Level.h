@@ -16,10 +16,10 @@ public:
 	void update(int deltaTime) override;
 	void init() override;
 
-	void enableCollisionView(bool state) override;
-	bool getCollisionView() override;
-	void moveCamera(int left, int right, int bottom, int top) override;
-	void restartLevel() override;
+	void enableCollisionView(bool state);
+	bool getCollisionView();
+	void moveCamera(int left, int right, int bottom, int top);
+	void restartLevel();
 
 private:
 	bool setBackground(const string &filename);
