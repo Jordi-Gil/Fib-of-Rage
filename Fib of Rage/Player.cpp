@@ -198,6 +198,3 @@ glm::ivec2 Player::getPosition()
 {
 	return posPlayer;
 }
-
-
-
