@@ -46,6 +46,8 @@ public:
 
 	void changeScene(int value);
 
+	void exitGame();
+
 private:
 	bool bPlay;
 	

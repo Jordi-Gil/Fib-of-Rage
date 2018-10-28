@@ -99,6 +99,7 @@ void Menu::update(int deltaTime)
 				renderCont = false;
 				renderCred = true;
 			}
+			else Game::instance().exitGame();
 		}
 		else if (Game::instance().getKey(ESC)) {
 			currentAnimation = menu->animation();

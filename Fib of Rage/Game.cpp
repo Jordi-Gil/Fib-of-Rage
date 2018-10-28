@@ -91,3 +91,7 @@ void Game::changeScene(int value)
 		gameScenes[scene]->init();
 	if (scene == LEVEL_1) dynamic_cast<Level*> (gameScenes[scene])->restartLevel();
 }
+
+void Game::exitGame() {
+	bPlay = false;
+}

@@ -94,5 +94,4 @@ void Scene::setCamera(glm::ivec4 pos)
 	cameraRight = pos.y;
 	cameraBottom = pos.z;
 	cameraTop = pos.w;
-
 }

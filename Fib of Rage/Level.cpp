@@ -88,7 +88,7 @@ void Level::init()
 																	glm::vec2(0.10f, 0.5f), glm::vec2(0.05f, 0.5f),
 																	glm::vec2(0.00f, 0.5f)}); //HADOUKEN_RIGHT
 	
-	mainPlayer->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/ryu.png", animations);
+	mainPlayer->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Ryu/ryu.png", animations);
 	mainPlayer->setPosition(glm::vec2(INIT_PLAYER_X_TILES, INIT_PLAYER_Y_TILES));
 	mainPlayer->setTileMap(fullMap.collision);//channge for scenario when collision load is diseabled
 
@@ -151,6 +151,3 @@ void Level::restartLevel()
 	setCamera(glm::ivec4(0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1, 0));
 	projection = glm::ortho(float(cameraLeft), float(cameraRight), float(cameraBottom), float(cameraTop));
 }
-
-
-void setrenderMenu() {}
