@@ -23,11 +23,12 @@ public:
 
 private:
 	bool setBackground(const string &filename);
+	void setAnimations();
 
 protected:
 	FullMap fullMap;
 	Player *mainPlayer;
-	Player *enemy[1];
+	Player *enemies[5];
 
 	TexturedQuad *background;
 	Texture tex;

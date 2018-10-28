@@ -28,9 +28,29 @@ enum RyuAnims
 	RYU_SL, RYU_SR, RYU_ML, RYU_MR, RYU_KR, RYU_KL, RYU_PR, RYU_PL, RYU_HR, RYU_HL
 };
 
+enum BisonAnims
+{
+	BIS_SL, BIS_SR, BIS_ML, BIS_MR, BIS_KR, BIS_KL, BIS_PR, BIS_PL, BIS_SPR, BIS_SPL
+};
+
+enum HondaAnims
+{
+	HON_SL, HON_SR, HON_ML, HON_MR, HON_KR, HON_KL, HON_PR, HON_PL, HON_SPR, HON_SPL
+};
+
 enum AbadeleAnims
 {
 	ABA_SL, ABA_SR, ABA_ML, ABA_MR, ABA_PR, ABA_PL
+};
+
+enum JackAnims
+{
+	JAK_SL, JAK_SR, JAK_MR, JAK_ML, JAK_PR, JAK_PL
+};
+
+enum ZamzaAnims
+{
+	ZAM_SL, ZAM_SR, ZAM_MR, ZAM_ML, ZAM_PR, ZAM_PL
 };
 
 void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram, const string &filename, vector<pair<int, vector<glm::vec2>>> &animations, glm::ivec2 tam, glm::vec2 prop, int type)
@@ -189,8 +209,6 @@ glm::ivec2 Player::getPosition()
 {
 	return posPlayer;
 }
-
-
 
 
 /*if(bJumping)
