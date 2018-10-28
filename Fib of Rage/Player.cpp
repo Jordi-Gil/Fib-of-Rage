@@ -1,5 +1,6 @@
 #include <cmath>
 #include <iostream>
+#include <vector>
 #include <GL/glew.h>
 #include <GL/glut.h>
 #include "Player.h"
@@ -21,79 +22,30 @@
 #define KEY_S 115
 #define KEY_D 100
 
+#define SPEED 8
+
 enum PlayerAnims
 {
 	STAND_LEFT, STAND_RIGHT, MOVE_LEFT, MOVE_RIGHT, KICK_RIGHT, KICK_LEFT, PUNCH_RIGHT, PUNCH_LEFT, HADOUKEN_RIGHT, HADOUKEN_LEFT
 };
 
 
-void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
+void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram, const string &filename, vector<pair<int, vector<glm::vec2>>> &animations)
 {
 	bJumping = false;
-	spritesheet.loadFromFile("Resources/Sprites/ryu.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	spritesheet.loadFromFile(filename, TEXTURE_PIXEL_FORMAT_RGBA);
 	
 	sprite = Sprite::createSprite(glm::ivec2(WIDTH_PLAYER, HEIGHT_PLAYER), glm::vec2(0.05f, 0.5f), &spritesheet, &shaderProgram);
-	sprite->setNumberAnimations(10);
+	sprite->setNumberAnimations(animations.size());
 	
-	sprite->setAnimationSpeed(STAND_LEFT, 8);
-	sprite->addKeyframe(STAND_LEFT, glm::vec2(0.55f, 0.5f));
-	sprite->addKeyframe(STAND_LEFT, glm::vec2(0.50f, 0.5f));
-	sprite->addKeyframe(STAND_LEFT, glm::vec2(0.45f, 0.5f));
-	sprite->addKeyframe(STAND_LEFT, glm::vec2(0.40f, 0.5f));
-	
-	sprite->setAnimationSpeed(STAND_RIGHT, 8);
-	sprite->addKeyframe(STAND_RIGHT, glm::vec2(0.40f, 0.0f));
-	sprite->addKeyframe(STAND_RIGHT, glm::vec2(0.45f, 0.0f));
-	sprite->addKeyframe(STAND_RIGHT, glm::vec2(0.50f, 0.0f));
-	sprite->addKeyframe(STAND_RIGHT, glm::vec2(0.55f, 0.0f));
-	
-	sprite->setAnimationSpeed(MOVE_LEFT, 8);
-	sprite->addKeyframe(MOVE_LEFT, glm::vec2(0.95f, 0.5f));
-	sprite->addKeyframe(MOVE_LEFT, glm::vec2(0.90f, 0.5f));
-	sprite->addKeyframe(MOVE_LEFT, glm::vec2(0.85f, 0.5f));
-	sprite->addKeyframe(MOVE_LEFT, glm::vec2(0.80f, 0.5f));
-	sprite->addKeyframe(MOVE_LEFT, glm::vec2(0.75f, 0.5f));
-
-	sprite->setAnimationSpeed(MOVE_RIGHT, 8);
-	sprite->addKeyframe(MOVE_RIGHT, glm::vec2(0.f, 0.0f));
-	sprite->addKeyframe(MOVE_RIGHT, glm::vec2(0.05f, 0.0f));
-	sprite->addKeyframe(MOVE_RIGHT, glm::vec2(0.10f, 0.0f));
-	sprite->addKeyframe(MOVE_RIGHT, glm::vec2(0.15f, 0.0f));
-	sprite->addKeyframe(MOVE_RIGHT, glm::vec2(0.20f, 0.0f));
-
-	sprite->setAnimationSpeed(KICK_RIGHT, 8);
-	sprite->addKeyframe(KICK_RIGHT, glm::vec2(0.60f, 0.0f));
-	sprite->addKeyframe(KICK_RIGHT, glm::vec2(0.65f, 0.0f));
-	sprite->addKeyframe(KICK_RIGHT, glm::vec2(0.70f, 0.0f));
-
-	sprite->setAnimationSpeed(KICK_LEFT, 8);
-	sprite->addKeyframe(KICK_LEFT, glm::vec2(0.35f, 0.5f));
-	sprite->addKeyframe(KICK_LEFT, glm::vec2(0.30f, 0.5f));
-	sprite->addKeyframe(KICK_LEFT, glm::vec2(0.25f, 0.5f));
-
-	sprite->setAnimationSpeed(PUNCH_RIGHT, 8);
-	sprite->addKeyframe(PUNCH_RIGHT, glm::vec2(0.25f, 0.0f));
-	sprite->addKeyframe(PUNCH_RIGHT, glm::vec2(0.30f, 0.0f));
-	sprite->addKeyframe(PUNCH_RIGHT, glm::vec2(0.35f, 0.0f));
-
-	sprite->setAnimationSpeed(PUNCH_LEFT, 8);
-	sprite->addKeyframe(PUNCH_LEFT, glm::vec2(0.60f, 0.5f));
-	sprite->addKeyframe(PUNCH_LEFT, glm::vec2(0.65f, 0.5f));
-	sprite->addKeyframe(PUNCH_LEFT, glm::vec2(0.70f, 0.5f));
-
-	sprite->setAnimationSpeed(HADOUKEN_RIGHT, 8);
-	sprite->addKeyframe(HADOUKEN_RIGHT, glm::vec2(0.75f, 0.0f));
-	sprite->addKeyframe(HADOUKEN_RIGHT, glm::vec2(0.80f, 0.0f));
-	sprite->addKeyframe(HADOUKEN_RIGHT, glm::vec2(0.85f, 0.0f));
-	sprite->addKeyframe(HADOUKEN_RIGHT, glm::vec2(0.90f, 0.0f));
-	sprite->addKeyframe(HADOUKEN_RIGHT, glm::vec2(0.95f, 0.0f));
-
-	sprite->setAnimationSpeed(HADOUKEN_LEFT, 8);
-	sprite->addKeyframe(HADOUKEN_LEFT, glm::vec2(0.20f, 0.5f));
-	sprite->addKeyframe(HADOUKEN_LEFT, glm::vec2(0.15f, 0.5f));
-	sprite->addKeyframe(HADOUKEN_LEFT, glm::vec2(0.10f, 0.5f));
-	sprite->addKeyframe(HADOUKEN_LEFT, glm::vec2(0.05f, 0.5f));
-	sprite->addKeyframe(HADOUKEN_LEFT, glm::vec2(0.00f, 0.5f));
+	for (unsigned int i = 0; i < animations.size(); i++)
+	{
+		int anim = animations[i].first;
+		sprite->setAnimationSpeed(anim, SPEED);
+		for (unsigned int j = 0; j < animations[i].second.size(); j++) {
+			sprite->addKeyframe(anim, animations[i].second[j]);
+		}
+	}
 
 	sprite->changeAnimation(0);
 	tileMapDispl = tileMapPos;

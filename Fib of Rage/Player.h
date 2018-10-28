@@ -14,7 +14,7 @@ class Player
 {
 
 public:
-	void init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram);
+	void init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram, const string &filename, vector<pair<int, vector<glm::vec2>>> &animations);
 	void update(int deltaTime);
 	void render();
 	
@@ -29,7 +29,6 @@ private:
 	Texture spritesheet;
 	Sprite *sprite;
 	TileMap *map;
-
 };
 
 
