@@ -9,12 +9,25 @@
 #define INIT_PLAYER_X_TILES 4
 #define INIT_PLAYER_Y_TILES 250
 
+#define RYU_WIDTH 90*2
+#define RYU_HEIGHT 120*2
+#define ABA_WIDTH 120*2
+#define ABA_HEIGHT 120*2
+
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 547
 
-enum PlayerAnims
+#define USER_PLAYER 0
+#define IA_PLAYER 1
+
+enum RyuAnims
 {
-	STAND_LEFT, STAND_RIGHT, MOVE_LEFT, MOVE_RIGHT, KICK_RIGHT, KICK_LEFT, PUNCH_RIGHT, PUNCH_LEFT, HADOUKEN_RIGHT, HADOUKEN_LEFT
+	RYU_SL, RYU_SR, RYU_ML, RYU_MR, RYU_KR, RYU_KL, RYU_PR, RYU_PL, RYU_HR, RYU_HL
+};
+
+enum AbadeleAnims 
+{
+	ABA_SL, ABA_SR, ABA_ML, ABA_MR, ABA_PR, ABA_PL
 };
 
 Level::Level(int left, int right, int bottom, int top) : Scene(left, right, bottom, top)
@@ -30,7 +43,6 @@ Level::Level()
 	fullMap.collision = NULL;
 	mainPlayer = NULL;
 }
-
 
 Level::~Level()
 {
@@ -50,47 +62,74 @@ void Level::init()
 
 	setBackground("Resources/LevelBackground/Level_Bridge/bridge.png");
 	//Main player
-	mainPlayer = new Player();
-
 	vector<pair<int, vector<glm::vec2>>> animations;
 	animations.resize(10);
-	animations[0] = make_pair(STAND_LEFT,  vector < glm::vec2> {	glm::vec2(0.55f, 0.5f), glm::vec2(0.50f, 0.5f),
-																	glm::vec2(0.45f, 0.5f), glm::vec2(0.40f, 0.5f)}); //STAND_LEFT
+	animations[0] = make_pair(RYU_SL, vector < glm::vec2> {	glm::vec2(0.55f, 0.5f), glm::vec2(0.50f, 0.5f),
+															glm::vec2(0.45f, 0.5f), glm::vec2(0.40f, 0.5f)}); //STAND_LEFT
 
-	animations[1] = make_pair(STAND_RIGHT, vector < glm::vec2> {	glm::vec2(0.40f, 0.0f), glm::vec2(0.45f, 0.0f), 
-																	glm::vec2(0.50f, 0.0f), glm::vec2(0.55f, 0.0f)}); //STAND_RIGHT
+	animations[1] = make_pair(RYU_SR, vector < glm::vec2> {	glm::vec2(0.40f, 0.0f), glm::vec2(0.45f, 0.0f),
+															glm::vec2(0.50f, 0.0f), glm::vec2(0.55f, 0.0f)}); //STAND_RIGHT
 	
-	animations[2] = make_pair(MOVE_LEFT,   vector < glm::vec2> {	glm::vec2(0.95f, 0.5f), glm::vec2(0.90f, 0.5f), 
-																	glm::vec2(0.85f, 0.5f),  glm::vec2(0.80f, 0.5f), 
-																	glm::vec2(0.75f, 0.5f)}); //MOVE_LEFT
+	animations[2] = make_pair(RYU_ML, vector < glm::vec2> {	glm::vec2(0.95f, 0.5f), glm::vec2(0.90f, 0.5f),
+															glm::vec2(0.85f, 0.5f),  glm::vec2(0.80f, 0.5f), 
+															glm::vec2(0.75f, 0.5f)}); //MOVE_LEFT
 	
-	animations[3] = make_pair(MOVE_RIGHT,	vector < glm::vec2> {	glm::vec2(0.00f, 0.0f), glm::vec2(0.05f, 0.0f), 
-																	glm::vec2(0.10f, 0.0f), glm::vec2(0.15f, 0.0f),
-																	glm::vec2(0.20f, 0.0f)}); //MOVE_RIGHT
+	animations[3] = make_pair(RYU_MR, vector < glm::vec2> {	glm::vec2(0.00f, 0.0f), glm::vec2(0.05f, 0.0f),
+															glm::vec2(0.10f, 0.0f), glm::vec2(0.15f, 0.0f),
+															glm::vec2(0.20f, 0.0f)}); //MOVE_RIGHT
 	
-	animations[4] = make_pair(KICK_RIGHT,   vector < glm::vec2> {	glm::vec2(0.60f, 0.0f), glm::vec2(0.65f, 0.0f),
-																	glm::vec2(0.70f, 0.0f)}); //KICK_RIGHT
+	animations[4] = make_pair(RYU_KR, vector < glm::vec2> {	glm::vec2(0.60f, 0.0f), glm::vec2(0.65f, 0.0f),
+															glm::vec2(0.70f, 0.0f)}); //KICK_RIGHT
 	
-	animations[5] = make_pair(KICK_LEFT,	vector < glm::vec2> {	glm::vec2(0.35f, 0.5f), glm::vec2(0.30f, 0.5f), 
-																	glm::vec2(0.25f, 0.5f)}); //KICK_LEFT
+	animations[5] = make_pair(RYU_KL, vector < glm::vec2> {	glm::vec2(0.35f, 0.5f), glm::vec2(0.30f, 0.5f),
+															glm::vec2(0.25f, 0.5f)}); //KICK_LEFT
 	
-	animations[6] = make_pair(PUNCH_RIGHT,  vector < glm::vec2> {	glm::vec2(0.25f, 0.0f), glm::vec2(0.30f, 0.0f), 
-																	glm::vec2(0.35f, 0.0f)}); //PUNCH_RIGHT
+	animations[6] = make_pair(RYU_PR, vector < glm::vec2> {	glm::vec2(0.25f, 0.0f), glm::vec2(0.30f, 0.0f),
+															glm::vec2(0.35f, 0.0f)}); //PUNCH_RIGHT
 	
-	animations[7] = make_pair(PUNCH_LEFT,	vector < glm::vec2> {	glm::vec2(0.60f, 0.5f), glm::vec2(0.65f, 0.5f), 
-																	glm::vec2(0.70f, 0.5f)}); //PUNCH_LEFT
+	animations[7] = make_pair(RYU_PL, vector < glm::vec2> {	glm::vec2(0.60f, 0.5f), glm::vec2(0.65f, 0.5f),
+															glm::vec2(0.70f, 0.5f)}); //PUNCH_LEFT
 	
-	animations[8] = make_pair(HADOUKEN_RIGHT, vector < glm::vec2> {	glm::vec2(0.75f, 0.0f), glm::vec2(0.80f, 0.0f), 
-																	glm::vec2(0.85f, 0.0f), glm::vec2(0.90f, 0.0f), 
-																	glm::vec2(0.95f, 0.0f)}); //HADOUKEN_RIGHT
+	animations[8] = make_pair(RYU_HR, vector < glm::vec2> {	glm::vec2(0.75f, 0.0f), glm::vec2(0.80f, 0.0f),
+															glm::vec2(0.85f, 0.0f), glm::vec2(0.90f, 0.0f), 
+															glm::vec2(0.95f, 0.0f)}); //HADOUKEN_RIGHT
 
-	animations[9] = make_pair(HADOUKEN_LEFT, vector < glm::vec2> {	glm::vec2(0.20f, 0.5f), glm::vec2(0.15f, 0.5f),
-																	glm::vec2(0.10f, 0.5f), glm::vec2(0.05f, 0.5f),
-																	glm::vec2(0.00f, 0.5f)}); //HADOUKEN_RIGHT
+	animations[9] = make_pair(RYU_HL, vector < glm::vec2> {	glm::vec2(0.20f, 0.5f), glm::vec2(0.15f, 0.5f),
+															glm::vec2(0.10f, 0.5f), glm::vec2(0.05f, 0.5f),
+															glm::vec2(0.00f, 0.5f)}); //HADOUKEN_RIGHT
 	
-	mainPlayer->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Ryu/ryu.png", animations);
+	mainPlayer = new Player();
+	mainPlayer->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Ryu/ryu.png", animations, glm::ivec2(RYU_WIDTH, RYU_HEIGHT), glm::vec2(0.05f,0.5f), USER_PLAYER);
 	mainPlayer->setPosition(glm::vec2(INIT_PLAYER_X_TILES, INIT_PLAYER_Y_TILES));
 	mainPlayer->setTileMap(fullMap.collision);//channge for scenario when collision load is diseabled
+
+	animations.clear();
+	animations.resize(6);
+
+	animations[0] = make_pair(ABA_SL, vector < glm::vec2> {	glm::vec2(0.00f, 0.0f), glm::vec2(1/12.f, 0.0f),
+															glm::vec2(2/12.f, 0.0f)}); //STAND_LEFT
+
+	animations[1] = make_pair(ABA_SR, vector < glm::vec2> {	glm::vec2(11/12.f, 0.5f), glm::vec2(10/12.f, 0.5f),
+															glm::vec2(9/12.f, 0.5f)}); //STAND_RIGHT
+
+	animations[2] = make_pair(ABA_ML, vector < glm::vec2> {	glm::vec2(3/12.f, 0.0f), glm::vec2(4/12.f, 0.0f),
+															glm::vec2(5/12.f, 0.0f), glm::vec2(6/12.f, 0.0f),
+															glm::vec2(7/12.f, 0.0f)}); //MOVE_LEFT
+
+	animations[3] = make_pair(ABA_MR, vector < glm::vec2> {	glm::vec2(8/12.f, 0.5f), glm::vec2(7/12.f, 0.5f),
+															glm::vec2(6/12.f, 0.5f), glm::vec2(5/12.f, 0.5f),
+															glm::vec2(4/12.f, 0.5f)}); //MOVE_RIGHT
+
+	animations[4] = make_pair(ABA_PR, vector < glm::vec2> {	glm::vec2(3/12.f, 0.5f), glm::vec2(2/12.f, 0.5f),
+															glm::vec2(1/12.f, 0.5f), glm::vec2(0.000f, 0.5f)}); //PUNCH_RIGHT
+
+	animations[5] = make_pair(ABA_PL, vector < glm::vec2> {	glm::vec2(8/12.f, 0.0f), glm::vec2(9/12.f, 0.5f),
+															glm::vec2(10/12.f, 0.0f), glm::vec2(11/12.f, 0.0f)}); //PUNCH_LEFT
+
+	enemy[0] = new Player();
+	enemy[0]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Abadede/abadede_enemy_1.png", animations, glm::ivec2(ABA_WIDTH, ABA_HEIGHT), glm::vec2(1/12.f, 0.5f), IA_PLAYER);
+	enemy[0]->setPosition(glm::vec2(INIT_PLAYER_X_TILES+300, INIT_PLAYER_Y_TILES));
+	enemy[0]->setTileMap(fullMap.collision);//channge for scenario when collision load is diseabled
 
 	projection = glm::ortho(float(cameraLeft), float(cameraRight), float(cameraBottom), float(cameraTop));
 	currentTime = 0.0f;
@@ -104,7 +143,14 @@ void Level::render()
 	background->render(tex);
 	fullMap.scenario->render();
 	if (showCollisions) fullMap.collision->render();
-	mainPlayer->render();
+	if (mainPlayer->getPosition().y > enemy[0]->getPosition().y) {
+		enemy[0]->render();
+		mainPlayer->render();
+	}
+	else {
+		mainPlayer->render();
+		enemy[0]->render();
+	}
 }
 
 void Level::update(int deltaTime) {

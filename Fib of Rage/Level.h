@@ -27,7 +27,7 @@ private:
 protected:
 	FullMap fullMap;
 	Player *mainPlayer;
-	Player *enemy;
+	Player *enemy[1];
 
 	TexturedQuad *background;
 	Texture tex;

@@ -11,7 +11,6 @@ Sprite *Sprite::createSprite(const glm::vec2 &quadSize, const glm::vec2 &sizeInS
 	return quad;
 }
 
-
 Sprite::Sprite(const glm::vec2 &quadSize, const glm::vec2 &sizeInSpritesheet, Texture *spritesheet, ShaderProgram *program)
 {
 	float vertices[24] = {	0.f, 0.f, 0.f, 0.f, 
@@ -107,7 +106,6 @@ void Sprite::setPosition(const glm::vec2 &pos)
 {
 	position = pos;
 }
-
 
 bool Sprite::getAnimationFinished() {
 	return animationFinished;
