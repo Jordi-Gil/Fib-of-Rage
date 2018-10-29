@@ -38,20 +38,12 @@ enum HondaAnims
 	HON_SL, HON_SR, HON_ML, HON_MR, HON_KR, HON_KL, HON_PR, HON_PL, HON_SPR, HON_SPL
 };
 
-enum AbadeleAnims
+enum EnemyAnims
 {
-	ABA_SL, ABA_SR, ABA_ML, ABA_MR, ABA_PR, ABA_PL
+	ENE_SL, ENE_SR, ENE_ML, ENE_MR, ENE_PR, ENE_PL
 };
 
-enum JackAnims
-{
-	JAK_SL, JAK_SR, JAK_MR, JAK_ML, JAK_PR, JAK_PL
-};
 
-enum ZamzaAnims
-{
-	ZAM_SL, ZAM_SR, ZAM_MR, ZAM_ML, ZAM_PR, ZAM_PL
-};
 
 void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram, const string &filename, vector<pair<int, vector<glm::vec2>>> &animations, glm::ivec2 tam, glm::vec2 prop, int type, Player *player)
 {
@@ -171,19 +163,20 @@ void Player::update(int deltaTime)
 					sprite->changeAnimation(RYU_HR);
 			}
 		}
-	}/*
+	}
 	else if (type_player == IA_PLAYER) {
-		if (sprite->getAnimationFinished() || (sprite->animation() != ABA_PL && sprite->animation() != ABA_PR)) {
-			if (sprite->animation() != ABA_ML)
-				sprite->changeAnimation(ABA_ML);
+		if (sprite->getAnimationFinished() || (sprite->animation() != ENE_PL && sprite->animation() != ENE_PR)) {
+			if (sprite->animation() != ENE_ML && sprite->animation() != ENE_MR)
+				sprite->changeAnimation(ENE_ML);
 			posPlayer.x -= 2;
+
 			if (map->collisionMoveLeft(posPlayer, glm::ivec2(width_player, height_player)))
 			{
 				posPlayer.x += 2;
-				sprite->changeAnimation(ABA_SL);
+				sprite->changeAnimation(ENE_SL);
 			}
 		}
-	}*/
+	}
 
 
 	
