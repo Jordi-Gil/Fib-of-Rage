@@ -26,7 +26,7 @@ private:
 	void setAnimations();
 
 protected:
-	FullMap fullMap;
+	TileMap *collision;
 	Player *mainPlayer;
 	vector<Player *> characters;
 

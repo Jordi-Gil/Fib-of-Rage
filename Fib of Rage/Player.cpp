@@ -53,12 +53,13 @@ enum ZamzaAnims
 	ZAM_SL, ZAM_SR, ZAM_MR, ZAM_ML, ZAM_PR, ZAM_PL
 };
 
-void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram, const string &filename, vector<pair<int, vector<glm::vec2>>> &animations, glm::ivec2 tam, glm::vec2 prop, int type)
+void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram, const string &filename, vector<pair<int, vector<glm::vec2>>> &animations, glm::ivec2 tam, glm::vec2 prop, int type, Player *player)
 {
 	bJumping = false;
 	width_player = tam.x;
 	height_player = tam.y;
 	type_player = type;
+	mainPlayer = player;
 	spritesheet.loadFromFile(filename, TEXTURE_PIXEL_FORMAT_RGBA);
 	
 	sprite = Sprite::createSprite(tam, prop, &spritesheet, &shaderProgram);
