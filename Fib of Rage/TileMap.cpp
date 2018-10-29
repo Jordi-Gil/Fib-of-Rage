@@ -46,7 +46,7 @@ void TileMap::free()
 bool TileMap::loadLevel(const string &levelFile)
 {
 
-	ifstream fin;
+	ifstream fin,raw;
 	string line, tilesheetFile;
 	stringstream sstream;
 	string tile;
@@ -75,17 +75,20 @@ bool TileMap::loadLevel(const string &levelFile)
 	sstream.str(line);
 	sstream >> tilesheetSize.x >> tilesheetSize.y; // 2 2
 	tileTexSize = glm::vec2(1.f / tilesheetSize.x, 1.f / tilesheetSize.y);
-
+	raw.open(levelFile+".raw",ios::binary);
+	if (!raw.is_open())
+		return false;
 	map = new int[mapSize.x * mapSize.y];
+	char value;
 	for (int j = 0; j<mapSize.y; j++)
 	{
 		for (int i = 0; i<mapSize.x; i++)
 		{
-			getline(fin, tile, ',');
-			if (tile == "0")
+			raw.read((char *)&value, 1);
+			if (value == '\x0')
 				map[j*mapSize.x + i] = 0;
 			else
-				map[j*mapSize.x + i] = stoi(tile);
+				map[j*mapSize.x + i] = 1;
 		}
 		
 	}
