@@ -51,7 +51,7 @@ enum ZamzaAnims
 
 bool compare(Player *a, Player *b)
 {
-	return (a->getPosition().y > b->getPosition().y);
+	return (a->getPosition().y < b->getPosition().y);
 }
 
 Level::Level(int left, int right, int bottom, int top) : Scene(left, right, bottom, top)
@@ -103,7 +103,7 @@ void Level::render()
 	bool rendered = false;
 	for each (Player *player in characters)
 	{
-		if (mainPlayer->getPosition().y > player->getPosition().y) {
+		if (!rendered && (mainPlayer->getPosition().y + P_HEIGHT) < (player->getPosition().y + P_HEIGHT)) {
 			mainPlayer->render();
 			rendered = true;
 		}
@@ -159,7 +159,7 @@ void Level::restartLevel()
 	int offsetX = 100, offsetY = 10;
 	for each(Player *player in characters) {
 		player->setPosition(glm::vec2(INIT_PLAYER_X_TILES + offsetX, INIT_PLAYER_Y_TILES + offsetY));
-		offsetX += 100; offsetY += 10;
+		offsetX += 260; offsetY += 10;
 	}
 	
 	setCamera(glm::ivec4(0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1, 0));
