@@ -87,7 +87,6 @@ Level::~Level()
 void Level::init()
 {
 	initShaders();
-	fullMap.scenario = TileMap::createTileMap("levels/level01_object.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 	fullMap.collision = TileMap::createTileMap("levels/level01_collision.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 
 	setBackground("Resources/LevelBackground/Level_Bridge/bridge.png");
@@ -165,7 +164,7 @@ void Level::restartLevel()
 	int offsetX = 100, offsetY = 10;
 	for each(Player *player in characters) {
 		player->setPosition(glm::vec2(INIT_PLAYER_X_TILES + offsetX, INIT_PLAYER_Y_TILES + offsetY));
-		offsetX = 100; offsetY = 10;
+		offsetX += 100; offsetY += 10;
 	}
 	
 	setCamera(glm::ivec4(0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1, 0));
@@ -231,8 +230,8 @@ void Level::setAnimations()
 	animations[5] = make_pair(HON_KL, vector < glm::vec2> {	glm::vec2(9 / 21.f, 0.5f), glm::vec2(8 / 21.f, 0.5f), glm::vec2(7 / 21.f, 0.5f)}); //KICK_LEFT
 	animations[6] = make_pair(HON_PR, vector < glm::vec2> {	glm::vec2(8 / 21.f, 0.0f), glm::vec2(9 / 21.f, 0.0f), glm::vec2(10 / 21.f, 0.0f)}); //PUNCH_RIGHT
 	animations[7] = make_pair(HON_PL, vector < glm::vec2> {	glm::vec2(12 / 21.f, 0.5f), glm::vec2(11 / 21.f, 0.5f), glm::vec2(10 / 21.f, 0.5f)}); //PUNCH_LEFT
-	animations[8] = make_pair(HON_SR, vector < glm::vec2> {	glm::vec2(14 / 21.f, 0.5f), glm::vec2(15 / 21.f, 0.0f), glm::vec2(16 / 21.f, 0.0f), glm::vec2(17 / 21.f, 0.0f), glm::vec2(18 / 21.f, 0.0f), glm::vec2(19 / 21.f, 0.0f), glm::vec2(20 / 21.f, 0.0f)}); //SPECIAL_RIGHT
-	animations[9] = make_pair(HON_SL, vector < glm::vec2> {	glm::vec2(6 / 21.f, 0.5f), glm::vec2(5 / 21.f, 0.5f), glm::vec2(4 / 21.f, 0.5f), glm::vec2(3 / 21.f, 0.5f), glm::vec2(2 / 21.f, 0.0f), glm::vec2(1 / 21.f, 0.0f), glm::vec2(0.00f, 0.0f)}); //SPECIAL_RIGHT
+	animations[8] = make_pair(HON_SPR, vector < glm::vec2> { glm::vec2(14 / 21.f, 0.5f), glm::vec2(15 / 21.f, 0.0f), glm::vec2(16 / 21.f, 0.0f), glm::vec2(17 / 21.f, 0.0f), glm::vec2(18 / 21.f, 0.0f), glm::vec2(19 / 21.f, 0.0f), glm::vec2(20 / 21.f, 0.0f)}); //SPECIAL_RIGHT
+	animations[9] = make_pair(HON_SPL, vector < glm::vec2> { glm::vec2(6 / 21.f, 0.5f), glm::vec2(5 / 21.f, 0.5f), glm::vec2(4 / 21.f, 0.5f), glm::vec2(3 / 21.f, 0.5f), glm::vec2(2 / 21.f, 0.0f), glm::vec2(1 / 21.f, 0.0f), glm::vec2(0.00f, 0.0f)}); //SPECIAL_RIGHT
 
 	characters[1] = new Player();
 	characters[1]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Honda/honda.png", animations, glm::ivec2(P_WIDTH, P_HEIGHT), glm::vec2(1 / 21.f, 0.5f), IA_PLAYER);

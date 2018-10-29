@@ -17,11 +17,11 @@ public:
 	void init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram, const string &filename, vector<pair<int, vector<glm::vec2>>> &animations, glm::ivec2 tam, glm::vec2 prop, int type);
 	void update(int deltaTime);
 	void render();
-	
+
 	void setTileMap(TileMap *tileMap);
 	void setPosition(const glm::vec2 &pos);
 	glm::ivec2 getPosition();
-	
+
 private:
 	bool bJumping;
 	glm::ivec2 tileMapDispl, posPlayer;
@@ -29,6 +29,8 @@ private:
 	Texture spritesheet;
 	Sprite *sprite;
 	TileMap *map;
+	Player *mainPlayer;
+
 
 	int width_player, height_player;
 
