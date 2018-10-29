@@ -9,7 +9,7 @@
 #define WIDTH_IMAGE 1280
 #define HEIGHT_IMAGE 547
 
-#define SPEED 3
+#define SPEED 5
 
 #define KEY_W 119
 #define KEY_S 115
@@ -53,7 +53,7 @@ void Menu::update(int deltaTime)
 	if (antDeltaTime <= currentTime && finishOneTime) {
 		antDeltaTime = currentTime;
 		int currentAnimation;
-		if (Game::instance().getKey(KEY_W))
+		if (Game::instance().getKey(KEY_W) || Game::instance().getSpecialKey(GLUT_KEY_UP))
 		{
 			finishOneTime = false;
 			currentAnimation = menu->animation();
@@ -67,7 +67,7 @@ void Menu::update(int deltaTime)
 				menu->changeAnimation(PLAY);
 			}
 		}
-		else if (Game::instance().getKey(KEY_S))
+		else if (Game::instance().getKey(KEY_S) || Game::instance().getSpecialKey(GLUT_KEY_DOWN))
 		{
 			finishOneTime = false;
 			currentAnimation = menu->animation();

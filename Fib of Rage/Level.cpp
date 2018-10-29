@@ -1,6 +1,7 @@
 #include <cmath>
 #include <glm/gtc/matrix_transform.hpp>
 #include <vector>
+#include <algorithm>
 #include "Level.h"
 
 #define SCREEN_X 0
@@ -9,10 +10,8 @@
 #define INIT_PLAYER_X_TILES 4
 #define INIT_PLAYER_Y_TILES 250
 
-#define RYU_WIDTH 90*2
-#define RYU_HEIGHT 120*2
-#define ABA_WIDTH 120*2
-#define ABA_HEIGHT 120*2
+#define P_WIDTH 90*2
+#define P_HEIGHT 120*2
 
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 547
@@ -50,18 +49,26 @@ enum ZamzaAnims
 	ZAM_SL, ZAM_SR, ZAM_MR, ZAM_ML, ZAM_PR, ZAM_PL
 };
 
+bool compare(Player *a, Player *b)
+{
+	return (a->getPosition().y > b->getPosition().y);
+}
+
 Level::Level(int left, int right, int bottom, int top) : Scene(left, right, bottom, top)
 {
 	fullMap.scenario = NULL;
 	fullMap.collision = NULL;
 	mainPlayer = NULL;
+	characters.resize(5);
+	for each(Player *player in characters) player = NULL;
 }
 
 Level::Level()
 {
 	fullMap.scenario = NULL;
 	fullMap.collision = NULL;
-	mainPlayer = NULL;
+	characters.resize(6);
+	for each(Player *player in characters) player = NULL;
 }
 
 Level::~Level()
@@ -72,6 +79,9 @@ Level::~Level()
 		delete fullMap.collision;
 	if (mainPlayer != NULL)
 		delete mainPlayer;
+	for each(Player *player in characters)
+		if (player != NULL)
+			delete player;
 }
 
 void Level::init()
@@ -95,19 +105,24 @@ void Level::render()
 	background->render(tex);
 	fullMap.scenario->render();
 	if (showCollisions) fullMap.collision->render();
-	if (mainPlayer->getPosition().y > enemies[0]->getPosition().y) {
-		enemies[0]->render();
-		mainPlayer->render();
+	sort(characters.begin(), characters.end(), compare);
+	bool rendered = false;
+	for each (Player *player in characters)
+	{
+		if (mainPlayer->getPosition().y > player->getPosition().y) {
+			mainPlayer->render();
+			rendered = true;
+		}
+		player->render();
 	}
-	else {
-		mainPlayer->render();
-		enemies[0]->render();
-	}
+	
+	if (!rendered) mainPlayer->render();
 }
 
 void Level::update(int deltaTime) {
 	Scene::update(deltaTime);
 	mainPlayer->update(deltaTime);
+	for each(Player *player in characters) player->update(deltaTime);
 }
 
 void Level::enableCollisionView(bool state) {
@@ -147,6 +162,12 @@ bool Level::getInit()
 void Level::restartLevel() 
 { 
 	mainPlayer->setPosition(glm::vec2(INIT_PLAYER_X_TILES, INIT_PLAYER_Y_TILES)); 
+	int offsetX = 100, offsetY = 10;
+	for each(Player *player in characters) {
+		player->setPosition(glm::vec2(INIT_PLAYER_X_TILES + offsetX, INIT_PLAYER_Y_TILES + offsetY));
+		offsetX = 100; offsetY = 10;
+	}
+	
 	setCamera(glm::ivec4(0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1, 0));
 	projection = glm::ortho(float(cameraLeft), float(cameraRight), float(cameraBottom), float(cameraTop));
 }
@@ -169,10 +190,15 @@ void Level::setAnimations()
 	animations[9] = make_pair(RYU_HL, vector < glm::vec2> {	glm::vec2(0.20f, 0.5f), glm::vec2(0.15f, 0.5f), glm::vec2(0.10f, 0.5f), glm::vec2(0.05f, 0.5f), glm::vec2(0.00f, 0.5f)}); //HADOUKEN_RIGHT
 
 	mainPlayer = new Player();
-	mainPlayer->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Ryu/ryu.png", animations, glm::ivec2(RYU_WIDTH, RYU_HEIGHT), glm::vec2(0.05f, 0.5f), USER_PLAYER);
+	mainPlayer->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Ryu/ryu.png", animations, glm::ivec2(P_WIDTH, P_HEIGHT), glm::vec2(0.05f, 0.5f), USER_PLAYER);
 	mainPlayer->setPosition(glm::vec2(INIT_PLAYER_X_TILES, INIT_PLAYER_Y_TILES));
 	mainPlayer->setTileMap(fullMap.collision); //channge for scenario when collision load is diseabled
-    
+	/*
+	characters[0] = new Player();
+	characters[0]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Ryu/ryu.png", animations, glm::ivec2(P_WIDTH, P_HEIGHT), glm::vec2(0.05f, 0.5f), USER_PLAYER);
+	characters[0]->setPosition(glm::vec2(INIT_PLAYER_X_TILES, INIT_PLAYER_Y_TILES));
+	characters[0]->setTileMap(fullMap.collision); //channge for scenario when collision load is diseabled
+	*/
 	//Bison
 	animations.clear();
 	animations.resize(10);
@@ -180,23 +206,23 @@ void Level::setAnimations()
 	animations[0] = make_pair(BIS_SL, vector < glm::vec2> {	glm::vec2(22 / 23.f, 0.5f), glm::vec2(21 / 23.f, 0.5f), glm::vec2(21 / 23.f, 0.5f)}); //STAND_LEFT
 	animations[1] = make_pair(BIS_SR, vector < glm::vec2> {	glm::vec2(0.00f, 0.0f), glm::vec2(1 / 23.f, 0.0f), glm::vec2(2 / 23.f, 0.0f)}); //STAND_RIGHT
 	animations[2] = make_pair(BIS_ML, vector < glm::vec2> {	glm::vec2(19 / 23.f, 0.5f), glm::vec2(18 / 23.f, 0.5f), glm::vec2(17 / 23.f, 0.5f), glm::vec2(16 / 23.f, 0.5f)}); //MOVE_LEFT
-	animations[3] = make_pair(BIS_MR, vector < glm::vec2> {	glm::vec2(3 / 23.f, 0.0f), glm::vec2(4/ 23.f, 0.0f), glm::vec2(5 / 23.f, 0.0f), glm::vec2(6 / 23.f, 0.0f)}); //MOVE_RIGHT
+	animations[3] = make_pair(BIS_MR, vector < glm::vec2> {	glm::vec2(3 / 23.f, 0.0f), glm::vec2(4 / 23.f, 0.0f), glm::vec2(5 / 23.f, 0.0f), glm::vec2(6 / 23.f, 0.0f)}); //MOVE_RIGHT
 	animations[4] = make_pair(BIS_KR, vector < glm::vec2> {	glm::vec2(11 / 23.f, 0.0f), glm::vec2(12 / 23.f, 0.0f), glm::vec2(13 / 23.f, 0.0f), glm::vec2(14 / 23.f, 0.0f)}); //KICK_RIGHT
 	animations[5] = make_pair(BIS_KL, vector < glm::vec2> {	glm::vec2(11 / 23.f, 0.5f), glm::vec2(10 / 23.f, 0.5f), glm::vec2(9 / 23.f, 0.5f), glm::vec2(8 / 23.f, 0.5f)}); //KICK_LEFT
 	animations[6] = make_pair(BIS_PR, vector < glm::vec2> {	glm::vec2(7 / 23.f, 0.0f), glm::vec2(8 / 23.f, 0.0f), glm::vec2(9 / 23.f, 0.0f), glm::vec2(10 / 23.f, 0.0f)}); //PUNCH_RIGHT
 	animations[7] = make_pair(BIS_PL, vector < glm::vec2> {	glm::vec2(15 / 23.f, 0.5f), glm::vec2(14 / 23.f, 0.5f), glm::vec2(13 / 23.f, 0.5f), glm::vec2(12 / 23.f, 0.5f)}); //PUNCH_LEFT
 	animations[8] = make_pair(BIS_SPR, vector < glm::vec2> {	glm::vec2(15 / 23.f, 0.5f), glm::vec2(16 / 23.f, 0.0f), glm::vec2(17 / 23.f, 0.0f), glm::vec2(18 / 23.f, 0.0f), glm::vec2(19 / 23.f, 0.0f), glm::vec2(20 / 23.f, 0.0f), glm::vec2(21 / 23.f, 0.0f), glm::vec2(22 / 23.f, 0.0f)}); //SPECIAL_RIGHT
 	animations[9] = make_pair(BIS_SPL, vector < glm::vec2> {	glm::vec2(7 / 23.f, 0.5f), glm::vec2(6 / 23.f, 0.5f), glm::vec2(5 / 23.f, 0.5f), glm::vec2(4 / 23.f, 0.5f), glm::vec2(3 / 23.f, 0.5f), glm::vec2(2 / 23.f, 0.0f), glm::vec2(1 / 23.f, 0.0f), glm::vec2(0.00f, 0.0f)}); //SPECIAL_RIGHT
-	
-	enemies[0] = new Player();
-	enemies[0]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Bison/bison.png", animations, glm::ivec2(ABA_WIDTH, ABA_HEIGHT), glm::vec2(1 / 23.f, 0.5f), IA_PLAYER);
-	enemies[0]->setPosition(glm::vec2(INIT_PLAYER_X_TILES + 300, INIT_PLAYER_Y_TILES));
-	enemies[0]->setTileMap(fullMap.collision);//channge for scenario when collision load is diseabled
+
+	characters[0] = new Player();
+	characters[0]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Bison/bison.png", animations, glm::ivec2(P_WIDTH, P_HEIGHT), glm::vec2(1 / 23.f, 0.5f), IA_PLAYER);
+	characters[0]->setPosition(glm::vec2(INIT_PLAYER_X_TILES + 300, INIT_PLAYER_Y_TILES));
+	characters[0]->setTileMap(fullMap.collision);//channge for scenario when collision load is diseabled
 
 	//Honda
 	animations.clear();
 	animations.resize(10);
-	
+
 	animations[0] = make_pair(HON_SL, vector < glm::vec2> {	glm::vec2(20 / 21.f, 0.5f), glm::vec2(19 / 21.f, 0.5f), glm::vec2(18 / 21.f, 0.5f), glm::vec2(17 / 21.f, 0.5f)}); //STAND_LEFT
 	animations[1] = make_pair(HON_SR, vector < glm::vec2> {	glm::vec2(0.00f, 0.0f), glm::vec2(1 / 21.f, 0.0f), glm::vec2(2 / 21.f, 0.0f), glm::vec2(3 / 21.f, 0.0f)}); //STAND_RIGHT
 	animations[2] = make_pair(HON_ML, vector < glm::vec2> {	glm::vec2(16 / 21.f, 0.5f), glm::vec2(15 / 21.f, 0.5f), glm::vec2(14 / 21.f, 0.5f), glm::vec2(13 / 21.f, 0.5f)}); //MOVE_LEFT
@@ -208,11 +234,11 @@ void Level::setAnimations()
 	animations[8] = make_pair(HON_SR, vector < glm::vec2> {	glm::vec2(14 / 21.f, 0.5f), glm::vec2(15 / 21.f, 0.0f), glm::vec2(16 / 21.f, 0.0f), glm::vec2(17 / 21.f, 0.0f), glm::vec2(18 / 21.f, 0.0f), glm::vec2(19 / 21.f, 0.0f), glm::vec2(20 / 21.f, 0.0f)}); //SPECIAL_RIGHT
 	animations[9] = make_pair(HON_SL, vector < glm::vec2> {	glm::vec2(6 / 21.f, 0.5f), glm::vec2(5 / 21.f, 0.5f), glm::vec2(4 / 21.f, 0.5f), glm::vec2(3 / 21.f, 0.5f), glm::vec2(2 / 21.f, 0.0f), glm::vec2(1 / 21.f, 0.0f), glm::vec2(0.00f, 0.0f)}); //SPECIAL_RIGHT
 
-	enemies[1] = new Player();
-	enemies[1]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Honda/honda.png", animations, glm::ivec2(ABA_WIDTH, ABA_HEIGHT), glm::vec2(1 / 12.f, 0.5f), IA_PLAYER);
-	enemies[1]->setPosition(glm::vec2(INIT_PLAYER_X_TILES + 300, INIT_PLAYER_Y_TILES));
-	enemies[1]->setTileMap(fullMap.collision);//channge for scenario when collision load is diseabled
-	
+	characters[1] = new Player();
+	characters[1]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Honda/honda.png", animations, glm::ivec2(P_WIDTH, P_HEIGHT), glm::vec2(1 / 21.f, 0.5f), IA_PLAYER);
+	characters[1]->setPosition(glm::vec2(INIT_PLAYER_X_TILES + 400, INIT_PLAYER_Y_TILES + 10));
+	characters[1]->setTileMap(fullMap.collision);//channge for scenario when collision load is diseabled
+
 	//Abadede
 	animations.clear();
 	animations.resize(6);
@@ -224,10 +250,10 @@ void Level::setAnimations()
 	animations[4] = make_pair(ABA_PR, vector < glm::vec2> {	glm::vec2(3 / 12.f, 0.5f), glm::vec2(2 / 12.f, 0.5f), glm::vec2(1 / 12.f, 0.5f), glm::vec2(0.000f, 0.5f)}); //PUNCH_RIGHT
 	animations[5] = make_pair(ABA_PL, vector < glm::vec2> {	glm::vec2(8 / 12.f, 0.0f), glm::vec2(9 / 12.f, 0.0f), glm::vec2(10 / 12.f, 0.0f), glm::vec2(11 / 12.f, 0.0f)}); //PUNCH_LEFT
 
-	enemies[2] = new Player();
-	enemies[2]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Abadede/abadede_enemy_1.png", animations, glm::ivec2(ABA_WIDTH, ABA_HEIGHT), glm::vec2(1 / 12.f, 0.5f), IA_PLAYER);
-	enemies[2]->setPosition(glm::vec2(INIT_PLAYER_X_TILES + 300, INIT_PLAYER_Y_TILES));
-	enemies[2]->setTileMap(fullMap.collision);//channge for scenario when collision load is diseabled
+	characters[2] = new Player();
+	characters[2]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Abadede/abadede_enemy_1.png", animations, glm::ivec2(P_WIDTH, P_HEIGHT), glm::vec2(1 / 12.f, 0.5f), IA_PLAYER);
+	characters[2]->setPosition(glm::vec2(INIT_PLAYER_X_TILES + 500, INIT_PLAYER_Y_TILES + 20));
+	characters[2]->setTileMap(fullMap.collision);//channge for scenario when collision load is diseabled
 
 	//Jack
 	animations.clear();
@@ -240,10 +266,10 @@ void Level::setAnimations()
 	animations[4] = make_pair(JAK_PR, vector < glm::vec2> {	glm::vec2(5 / 13.f, 0.5f), glm::vec2(4 / 13.f, 0.5f), glm::vec2(3 / 13.f, 0.5f), glm::vec2(2 / 13.f, 0.5f), glm::vec2(1 / 13.f, 0.5f), glm::vec2(0.00f, 0.5f)}); //PUNCH_RIGHT
 	animations[5] = make_pair(JAK_PL, vector < glm::vec2> {	glm::vec2(7 / 13.f, 0.0f), glm::vec2(8 / 13.f, 0.0f), glm::vec2(9 / 13.f, 0.0f), glm::vec2(10 / 13.f, 0.0f), glm::vec2(11 / 13.f, 0.0f), glm::vec2(12 / 13.f, 0.0f)}); //PUNCH_LEFT
 
-	enemies[3] = new Player();
-	enemies[3]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Jack/jack_enemy_3.png", animations, glm::ivec2(ABA_WIDTH, ABA_HEIGHT), glm::vec2(1 / 13.f, 0.5f), IA_PLAYER);
-	enemies[3]->setPosition(glm::vec2(INIT_PLAYER_X_TILES + 350, INIT_PLAYER_Y_TILES));
-	enemies[3]->setTileMap(fullMap.collision);//channge for scenario when collision load is diseabled
+	characters[3] = new Player();
+	characters[3]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Jack/jack_enemy_3.png", animations, glm::ivec2(P_WIDTH, P_HEIGHT), glm::vec2(1 / 13.f, 0.5f), IA_PLAYER);
+	characters[3]->setPosition(glm::vec2(INIT_PLAYER_X_TILES + 600, INIT_PLAYER_Y_TILES + 30));
+	characters[3]->setTileMap(fullMap.collision);//channge for scenario when collision load is diseabled
 
 	//Zamza
 	animations.clear();
@@ -256,8 +282,9 @@ void Level::setAnimations()
 	animations[4] = make_pair(ZAM_PR, vector < glm::vec2> {	glm::vec2(2 / 12.f, 0.5f), glm::vec2(1 / 12.f, 0.5f), glm::vec2(0.000f, 0.5f)}); //PUNCH_RIGHT
 	animations[5] = make_pair(ZAM_PL, vector < glm::vec2> {	glm::vec2(9 / 12.f, 0.0f), glm::vec2(10 / 12.f, 0.0f), glm::vec2(11 / 12.f, 0.0f)}); //PUNCH_LEFT
 
-	enemies[4] = new Player();
-	enemies[4]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Zamza/zamza_enemy_2.png", animations, glm::ivec2(ABA_WIDTH, ABA_HEIGHT), glm::vec2(1 / 12.f, 0.5f), IA_PLAYER);
-	enemies[4]->setPosition(glm::vec2(INIT_PLAYER_X_TILES + 400, INIT_PLAYER_Y_TILES));
-	enemies[4]->setTileMap(fullMap.collision);//channge for scenario when collision load is diseabled
+	characters[4] = new Player();
+	characters[4]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Zamza/zamza_enemy_2.png", animations, glm::ivec2(P_WIDTH, P_HEIGHT), glm::vec2(1 / 12.f, 0.5f), IA_PLAYER);
+	characters[4]->setPosition(glm::vec2(INIT_PLAYER_X_TILES + 700, INIT_PLAYER_Y_TILES + 80));
+	characters[4]->setTileMap(fullMap.collision);//channge for scenario when collision load is diseabled
+
 }

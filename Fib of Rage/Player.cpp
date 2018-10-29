@@ -170,7 +170,7 @@ void Player::update(int deltaTime)
 					sprite->changeAnimation(RYU_HR);
 			}
 		}
-	}
+	}/*
 	else if (type_player == IA_PLAYER) {
 		if (sprite->getAnimationFinished() || (sprite->animation() != ABA_PL && sprite->animation() != ABA_PR)) {
 			if (sprite->animation() != ABA_ML)
@@ -182,7 +182,7 @@ void Player::update(int deltaTime)
 				sprite->changeAnimation(ABA_SL);
 			}
 		}
-	}
+	}*/
 
 
 	
