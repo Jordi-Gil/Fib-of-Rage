@@ -12,11 +12,15 @@
 #define SPEED 5
 
 #define KEY_W 119
+#define KEY_A 97
 #define KEY_S 115
+#define KEY_D 100
 #define KEY_ENTER 13
 #define ESC 27
 
 enum  Animations { PLAY, INSTR, CREDITS, EXIT };
+
+enum  PLAYERS { RYU, HONDA, BISON };
 
 
 Menu::Menu(int left, int right, int bottom, int top)
@@ -25,15 +29,33 @@ Menu::Menu(int left, int right, int bottom, int top)
 	cameraRight = right;
 	cameraBottom = bottom;
 	cameraTop = top;
+	index = RYU;
+	credits = NULL;
+	controls = NULL;
+	players = NULL;
+	menu = NULL;
 }
 
 Menu::Menu() 
 {
-
+	index = RYU;
+	credits = NULL;
+	controls = NULL;
+	players = NULL;
+	menu = NULL;
 }
 
 Menu::~Menu()
 {
+	if (credits != NULL)
+		delete credits;
+	if (controls != NULL)
+		delete controls;
+	if (players != NULL)
+		delete players;
+	if (menu != NULL)
+		delete menu;
+
 }
 
 void Menu::render()
@@ -42,6 +64,7 @@ void Menu::render()
 	if(renderMenu) menu->render();
 	else if (renderCont) controls->render(contrTex);
 	else if (renderCred) credits->render(credTex);
+	else if (renderPlayers) players->render(playerTex[index]);
 }
 
 
@@ -81,23 +104,43 @@ void Menu::update(int deltaTime)
 				menu->changeAnimation(EXIT);
 			}
 		}
+		else if (Game::instance().getKey(KEY_D) || Game::instance().getSpecialKey(GLUT_KEY_RIGHT)) {
+			if (renderPlayers) {
+				++index;
+				if (index > BISON) index = RYU;
+				for (int i = 0; i < 100000; ++i);
+			}
+		}
+		else if (Game::instance().getKey(KEY_A) || Game::instance().getSpecialKey(GLUT_KEY_LEFT)) {
+			if (renderPlayers) {
+				--index;
+				if (index < RYU) index = BISON;
+				for (int i = 0; i < 100000; ++i);
+			}
+		}
 		else if (Game::instance().getKey(KEY_ENTER)) {
 			currentAnimation = menu->animation();
 			if (currentAnimation == PLAY) {
 				renderMenu = false;
 				renderCont = false;
 				renderCred = false;
-				Game::instance().changeScene(LEVEL_1);
+				renderPlayers = true;
 			}
 			else if (currentAnimation == INSTR) {
 				renderMenu = false;
 				renderCont = true;
 				renderCred = false;
+				renderPlayers = false;
 			}
 			else if (currentAnimation == CREDITS) {
 				renderMenu = false;
 				renderCont = false;
 				renderCred = true;
+				renderPlayers = false;
+			}
+			if (currentAnimation == PLAY) 
+			{
+				index = 0;
 			}
 			else Game::instance().exitGame();
 		}
@@ -107,6 +150,7 @@ void Menu::update(int deltaTime)
 				renderMenu = true;
 				renderCont = false;
 				renderCred = false;
+				renderPlayers = false;
 			}
 		}
 	}
@@ -118,6 +162,7 @@ void Menu::init()
 	setMenu("Resources/Menu/backgroundMenu.png");
 	setCtrl("Resources/Menu/Instructions/keyboard.png");
 	setCred("Resources/Menu/Credits/credits.png");
+	setPlayers("Resources/Menu/SelectCharacter/ryu-selected.png","Resources/Menu/SelectCharacter/honda-selected.png","Resources/Menu/SelectCharacter/bison-selected.png");
 	projection = glm::ortho(float(cameraLeft), float(cameraRight), float(cameraBottom), float(cameraTop));
 	currentTime = 0.0f;
 	binit = true;
@@ -151,6 +196,17 @@ void Menu::setMenu(const string &filename)
 
 	menu->setPosition(glm::vec2(0, 0));
 	
+}
+
+void Menu::setPlayers(const string &filename1, const string &filename2, const string &filename3)
+{
+	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(1280.f, 547.f) };
+	glm::vec2 texCoords[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
+
+	players = TexturedQuad::createTexturedQuad(geom, texCoords, texProgram);
+	playerTex[0].loadFromFile(filename1, TEXTURE_PIXEL_FORMAT_RGBA);
+	playerTex[1].loadFromFile(filename2, TEXTURE_PIXEL_FORMAT_RGBA);
+	playerTex[2].loadFromFile(filename3, TEXTURE_PIXEL_FORMAT_RGBA);
 }
 
 void Menu::setCtrl(const string &filename)

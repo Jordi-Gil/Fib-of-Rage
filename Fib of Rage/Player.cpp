@@ -25,24 +25,14 @@
 
 #define OFFSET_X 90
 
-enum RyuAnims
+enum UserAnims
 {
-	RYU_SL, RYU_SR, RYU_ML, RYU_MR, RYU_KR, RYU_KL, RYU_PR, RYU_PL, RYU_HR, RYU_HL
-};
-
-enum BisonAnims
-{
-	BIS_SL, BIS_SR, BIS_ML, BIS_MR, BIS_KR, BIS_KL, BIS_PR, BIS_PL, BIS_SPR, BIS_SPL
-};
-
-enum HondaAnims
-{
-	HON_SL, HON_SR, HON_ML, HON_MR, HON_KR, HON_KL, HON_PR, HON_PL, HON_SPR, HON_SPL
+	MAIN_SR, MAIN_SL, MAIN_MR, MAIN_ML, MAIN_KR, MAIN_KL, MAIN_PR, MAIN_PL, MAIN_SPR, MAIN_SPL, MAIN_HR, MAIN_HL, MAIN_DR, MAIN_DL
 };
 
 enum EnemyAnims
 {
-	ENE_SL, ENE_SR, ENE_ML, ENE_MR, ENE_PR, ENE_PL
+	ENE_SR, ENE_SL, ENE_MR, ENE_ML, ENE_PR, ENE_PL, ENE_HR, ENE_HL, ENE_DR, ENE_DL
 };
 
 
@@ -78,91 +68,91 @@ void Player::update(int deltaTime)
 {
 	sprite->update(deltaTime);
 	if(type_player == USER_PLAYER){
-		if (sprite->getAnimationFinished() || (sprite->animation() != RYU_KL && sprite->animation() != RYU_KR && sprite->animation() != RYU_PR && sprite->animation() != RYU_PL && sprite->animation() != RYU_HL && sprite->animation() != RYU_HR)) {
+		if (sprite->getAnimationFinished() || (sprite->animation() != MAIN_KL && sprite->animation() != MAIN_KR && sprite->animation() != MAIN_PR && sprite->animation() != MAIN_PL && sprite->animation() != MAIN_HL && sprite->animation() != MAIN_HR)) {
 			if (!Game::instance().getKey(KEY_J) && !Game::instance().getKey(KEY_K) && !Game::instance().getKey(KEY_L)) {
 				if (Game::instance().getKey(KEY_A))
 				{
-					if (sprite->animation() != RYU_ML)
-						sprite->changeAnimation(RYU_ML);
+					if (sprite->animation() != MAIN_ML)
+						sprite->changeAnimation(MAIN_ML);
 					posPlayer.x -= 2;
 					if (map->collisionMoveLeft(posPlayer, glm::ivec2(width_player, height_player)))
 					{
 						posPlayer.x += 2;
-						sprite->changeAnimation(RYU_SL);
+						sprite->changeAnimation(MAIN_SL);
 					}
 				}
 				else if (Game::instance().getKey(KEY_D))
 				{
-					if (sprite->animation() != RYU_MR)
-						sprite->changeAnimation(RYU_MR);
+					if (sprite->animation() != MAIN_MR)
+						sprite->changeAnimation(MAIN_MR);
 					posPlayer.x += 2;
 					if (map->collisionMoveRight(posPlayer, glm::ivec2(width_player, height_player)))
 					{
 						posPlayer.x -= 2;
-						sprite->changeAnimation(RYU_SR);
+						sprite->changeAnimation(MAIN_SR);
 					}
 				}
 				else if (Game::instance().getKey(KEY_S))
 				{
-					if (sprite->animation() == RYU_SR || (sprite->getAnimationFinished() && sprite->animation() == RYU_MR) || sprite->animation() == RYU_KR || sprite->animation() == RYU_PR || sprite->animation() == RYU_HR) {
-						sprite->changeAnimation(RYU_MR);
+					if (sprite->animation() == MAIN_SR || (sprite->getAnimationFinished() && sprite->animation() == MAIN_MR) || sprite->animation() == MAIN_KR || sprite->animation() == MAIN_PR || sprite->animation() == MAIN_HR) {
+						sprite->changeAnimation(MAIN_MR);
 					}
-					else if (sprite->animation() == RYU_SL || (sprite->getAnimationFinished() && sprite->animation() == RYU_ML) || sprite->animation() == RYU_KL || sprite->animation() == RYU_PL || sprite->animation() == RYU_HL) {
-						sprite->changeAnimation(RYU_ML);
+					else if (sprite->animation() == MAIN_SL || (sprite->getAnimationFinished() && sprite->animation() == MAIN_ML) || sprite->animation() == MAIN_KL || sprite->animation() == MAIN_PL || sprite->animation() == MAIN_HL) {
+						sprite->changeAnimation(MAIN_ML);
 					}
 					posPlayer.y += 2;
 					if (map->collisionMoveDown(posPlayer, glm::ivec2(width_player, height_player)))
 					{
 						posPlayer.y -= 2;
-						if (sprite->animation() == RYU_MR)
-							sprite->changeAnimation(RYU_SR);
-						else if (sprite->animation() == RYU_ML)
-							sprite->changeAnimation(RYU_SL);
+						if (sprite->animation() == MAIN_MR)
+							sprite->changeAnimation(MAIN_SR);
+						else if (sprite->animation() == MAIN_ML)
+							sprite->changeAnimation(MAIN_SL);
 					}
 				}
 				else if (Game::instance().getKey(KEY_W))
 				{
-					if (sprite->animation() == RYU_SR || (sprite->getAnimationFinished() && sprite->animation() == RYU_MR) || sprite->animation() == RYU_KR || sprite->animation() == RYU_PR || sprite->animation() == RYU_HR) {
-						sprite->changeAnimation(RYU_MR);
+					if (sprite->animation() == MAIN_SR || (sprite->getAnimationFinished() && sprite->animation() == MAIN_MR) || sprite->animation() == MAIN_KR || sprite->animation() == MAIN_PR || sprite->animation() == MAIN_HR) {
+						sprite->changeAnimation(MAIN_MR);
 					}
-					else if (sprite->animation() == RYU_SL || (sprite->getAnimationFinished() && sprite->animation() == RYU_ML) || sprite->animation() == RYU_KL || sprite->animation() == RYU_PL || sprite->animation() == RYU_HL) {
-						sprite->changeAnimation(RYU_ML);
+					else if (sprite->animation() == MAIN_SL || (sprite->getAnimationFinished() && sprite->animation() == MAIN_ML) || sprite->animation() == MAIN_KL || sprite->animation() == MAIN_PL || sprite->animation() == MAIN_HL) {
+						sprite->changeAnimation(MAIN_ML);
 					}
 					posPlayer.y -= 2;
 					if (map->collisionMoveUp(posPlayer, glm::ivec2(width_player, height_player)))
 					{
 						posPlayer.y += 2;
-						if (sprite->animation() == RYU_MR)
-							sprite->changeAnimation(RYU_SR);
-						else if (sprite->animation() == RYU_ML)
-							sprite->changeAnimation(RYU_SL);
+						if (sprite->animation() == MAIN_MR)
+							sprite->changeAnimation(MAIN_SR);
+						else if (sprite->animation() == MAIN_ML)
+							sprite->changeAnimation(MAIN_SL);
 					}
 				}
 				else
 				{
-					if (sprite->animation() == RYU_ML || sprite->animation() == RYU_KL || sprite->animation() == RYU_PL || sprite->animation() == RYU_HL)
-						sprite->changeAnimation(RYU_SL);
-					else if (sprite->animation() == RYU_MR || sprite->animation() == RYU_KR || sprite->animation() == RYU_PR || sprite->animation() == RYU_HR)
-						sprite->changeAnimation(RYU_SR);
+					if (sprite->animation() == MAIN_ML || sprite->animation() == MAIN_KL || sprite->animation() == MAIN_PL || sprite->animation() == MAIN_HL)
+						sprite->changeAnimation(MAIN_SL);
+					else if (sprite->animation() == MAIN_MR || sprite->animation() == MAIN_KR || sprite->animation() == MAIN_PR || sprite->animation() == MAIN_HR)
+						sprite->changeAnimation(MAIN_SR);
 				}
 			}
 			if (Game::instance().getKey(KEY_K)) {
-				if (sprite->animation() == RYU_SL || sprite->animation() == RYU_ML)
-					sprite->changeAnimation(RYU_KL);
-				else if (sprite->animation() == RYU_SR || sprite->animation() == RYU_MR)
-					sprite->changeAnimation(RYU_KR);
+				if (sprite->animation() == MAIN_SL || sprite->animation() == MAIN_ML)
+					sprite->changeAnimation(MAIN_KL);
+				else if (sprite->animation() == MAIN_SR || sprite->animation() == MAIN_MR)
+					sprite->changeAnimation(MAIN_KR);
 			}
 			else if (Game::instance().getKey(KEY_J)) {
-				if (sprite->animation() == RYU_SL || sprite->animation() == RYU_ML)
-					sprite->changeAnimation(RYU_PL);
-				else if (sprite->animation() == RYU_SR || sprite->animation() == RYU_MR)
-					sprite->changeAnimation(RYU_PR);
+				if (sprite->animation() == MAIN_SL || sprite->animation() == MAIN_ML)
+					sprite->changeAnimation(MAIN_PL);
+				else if (sprite->animation() == MAIN_SR || sprite->animation() == MAIN_MR)
+					sprite->changeAnimation(MAIN_PR);
 			}
 			else if (Game::instance().getKey(KEY_L)) {
-				if (sprite->animation() == RYU_SL || sprite->animation() == RYU_ML)
-					sprite->changeAnimation(RYU_HL);
-				else if (sprite->animation() == RYU_SR || sprite->animation() == RYU_MR)
-					sprite->changeAnimation(RYU_HR);
+				if (sprite->animation() == MAIN_SL || sprite->animation() == MAIN_ML)
+					sprite->changeAnimation(MAIN_HL);
+				else if (sprite->animation() == MAIN_SR || sprite->animation() == MAIN_MR)
+					sprite->changeAnimation(MAIN_HR);
 			}
 		}
 	}

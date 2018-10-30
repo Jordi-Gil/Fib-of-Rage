@@ -19,36 +19,15 @@
 #define USER_PLAYER 0
 #define IA_PLAYER 1
 
-enum RyuAnims
+enum UserAnims
 {
-	RYU_SL, RYU_SR, RYU_ML, RYU_MR, RYU_KR, RYU_KL, RYU_PR, RYU_PL, RYU_HR, RYU_HL
-};
-
-enum BisonAnims
-{
-	BIS_SL, BIS_SR, BIS_ML, BIS_MR, BIS_KR, BIS_KL, BIS_PR, BIS_PL, BIS_SPR, BIS_SPL
-};
-
-enum HondaAnims
-{
-	HON_SL, HON_SR, HON_ML, HON_MR, HON_KR, HON_KL, HON_PR, HON_PL, HON_SPR, HON_SPL
-};
-
-enum AbadeleAnims 
-{
-	ABA_SL, ABA_SR, ABA_ML, ABA_MR, ABA_PR, ABA_PL
-};
-
-enum JackAnims
-{
-	JAK_SL, JAK_SR, JAK_MR, JAK_ML, JAK_PR, JAK_PL
+	MAIN_SR, MAIN_SL, MAIN_MR, MAIN_ML, MAIN_KR, MAIN_KL, MAIN_PR, MAIN_PL, MAIN_SPR, MAIN_SPL, MAIN_HR, MAIN_HL, MAIN_DR, MAIN_DL
 };
 
 enum EnemyAnims
 {
-	ENE_SL, ENE_SR, ENE_ML, ENE_MR, ENE_PR, ENE_PL
-};
-
+	ENE_SL, ENE_SR, ENE_ML, ENE_MR, ENE_PR, ENE_PL, ENE_HR, ENE_HL, ENE_DR, ENE_DL
+};													
 
 bool compare(Player *a, Player *b)
 {
@@ -171,116 +150,133 @@ void Level::setAnimations()
 {
 	vector<pair<int, vector<glm::vec2>>> animations;
 	//Ryu
-	animations.resize(10);
+	animations.resize(14);
 
-	animations[0] = make_pair(RYU_SL, vector < glm::vec2> {	glm::vec2(0.55f, 0.5f), glm::vec2(0.50f, 0.5f), glm::vec2(0.45f, 0.5f), glm::vec2(0.40f, 0.5f)}); //STAND_LEFT
-	animations[1] = make_pair(RYU_SR, vector < glm::vec2> {	glm::vec2(0.40f, 0.0f), glm::vec2(0.45f, 0.0f), glm::vec2(0.50f, 0.0f), glm::vec2(0.55f, 0.0f)}); //STAND_RIGHT
-	animations[2] = make_pair(RYU_ML, vector < glm::vec2> {	glm::vec2(0.95f, 0.5f), glm::vec2(0.90f, 0.5f), glm::vec2(0.85f, 0.5f), glm::vec2(0.80f, 0.5f), glm::vec2(0.75f, 0.5f)}); //MOVE_LEFT
-	animations[3] = make_pair(RYU_MR, vector < glm::vec2> {	glm::vec2(0.00f, 0.0f), glm::vec2(0.05f, 0.0f), glm::vec2(0.10f, 0.0f), glm::vec2(0.15f, 0.0f), glm::vec2(0.20f, 0.0f)}); //MOVE_RIGHT
-	animations[4] = make_pair(RYU_KR, vector < glm::vec2> {	glm::vec2(0.60f, 0.0f), glm::vec2(0.65f, 0.0f), glm::vec2(0.70f, 0.0f)}); //KICK_RIGHT
-	animations[5] = make_pair(RYU_KL, vector < glm::vec2> {	glm::vec2(0.35f, 0.5f), glm::vec2(0.30f, 0.5f), glm::vec2(0.25f, 0.5f)}); //KICK_LEFT
-	animations[6] = make_pair(RYU_PR, vector < glm::vec2> {	glm::vec2(0.25f, 0.0f), glm::vec2(0.30f, 0.0f), glm::vec2(0.35f, 0.0f)}); //PUNCH_RIGHT
-	animations[7] = make_pair(RYU_PL, vector < glm::vec2> {	glm::vec2(0.60f, 0.5f), glm::vec2(0.65f, 0.5f), glm::vec2(0.70f, 0.5f)}); //PUNCH_LEFT
-	animations[8] = make_pair(RYU_HR, vector < glm::vec2> {	glm::vec2(0.75f, 0.0f), glm::vec2(0.80f, 0.0f), glm::vec2(0.85f, 0.0f), glm::vec2(0.90f, 0.0f), glm::vec2(0.95f, 0.0f)}); //HADOUKEN_RIGHT
-	animations[9] = make_pair(RYU_HL, vector < glm::vec2> {	glm::vec2(0.20f, 0.5f), glm::vec2(0.15f, 0.5f), glm::vec2(0.10f, 0.5f), glm::vec2(0.05f, 0.5f), glm::vec2(0.00f, 0.5f)}); //HADOUKEN_RIGHT
+	animations[0] = make_pair(MAIN_SR, vector < glm::vec2 > {	glm::vec2(8 / 27.f, 0.0f), glm::vec2(9 / 27.f, 0.0f), glm::vec2(10 / 27.f, 0.0f), glm::vec2(11 / 27.f, 0.0f)}); //STAND_RIGHT
+	animations[1] = make_pair(MAIN_SL, vector < glm::vec2 > {	glm::vec2(18/27.f, 0.5f), glm::vec2(17/27.f, 0.5f), glm::vec2(16/27.f, 0.5f), glm::vec2(15/ 27.f, 0.5f)}); //STAND_LEFT
+	animations[2] = make_pair(MAIN_MR, vector < glm::vec2 > {	glm::vec2(0.0f, 0.0f), glm::vec2(2 / 27.f, 0.0f), glm::vec2(2 / 27.f, 0.0f), glm::vec2(3 / 27.f, 0.0f), glm::vec2(4 / 27.f, 0.0f)}); //MOVE_RIGHT
+	animations[3] = make_pair(MAIN_ML, vector < glm::vec2 > {	glm::vec2(26/27.f, 0.5f), glm::vec2(25/27.f, 0.5f), glm::vec2(24/27.f, 0.5f), glm::vec2(23/ 27.f, 0.5f), glm::vec2(22/27.f, 0.5f)}); //MOVE_LEFT
+	animations[4] = make_pair(MAIN_KR, vector < glm::vec2 > {	glm::vec2(12/27.f, 0.0f), glm::vec2(13/27.f, 0.0f), glm::vec2(14/27.f, 0.0f)}); //KICK_RIGHT
+	animations[5] = make_pair(MAIN_KL, vector < glm::vec2 > {	glm::vec2(14/27.f, 0.5f), glm::vec2(13/27.f, 0.5f), glm::vec2(12/27.f, 0.5f)}); //KICK_LEFT
+	animations[6] = make_pair(MAIN_PR, vector < glm::vec2 > {	glm::vec2(5/27.f, 0.0f), glm::vec2(6/27.f, 0.0f), glm::vec2(7/27.f, 0.0f)}); //PUNCH_RIGHT
+	animations[7] = make_pair(MAIN_PL, vector < glm::vec2 > {	glm::vec2(21/27.f, 0.5f), glm::vec2(20/27.f, 0.5f), glm::vec2(19/27.f, 0.5f)}); //PUNCH_LEFT
+	animations[8] = make_pair(MAIN_HR, vector < glm::vec2 > {	glm::vec2(15 / 27.f, 0.0f), glm::vec2(16 / 27.f, 0.0f), glm::vec2(17 / 27.f, 0.0f), glm::vec2(18 / 27.f, 0.0f), glm::vec2(19 / 27.f, 0.0f)}); //SPECIAL RIGHT
+	animations[9] = make_pair(MAIN_HL, vector < glm::vec2 > {	glm::vec2(11/27.f, 0.5f), glm::vec2(10/27.f, 0.5f), glm::vec2(9/27.f, 0.5f), glm::vec2(8/ 27.f, 0.5f), glm::vec2(7/27.f, 0.5f)}); //SPECIAL LEFT
+	animations[10] = make_pair(MAIN_HR, vector < glm::vec2> {	glm::vec2(20/27.f, 0.0f), glm::vec2(21/27.f, 0.0f), glm::vec2(22 / 27.f, 0.0f), glm::vec2(23 / 27.f, 0.0f)}); // Hit right
+	animations[11] = make_pair(MAIN_HL, vector < glm::vec2> {	glm::vec2(6 / 27.f, 0.5f), glm::vec2(5 / 27.f, 0.5f), glm::vec2(4 / 27.f, 0.5f), glm::vec2(3 / 27.f, 0.5f)}); //hit left
+	animations[12] = make_pair(MAIN_HR, vector < glm::vec2> {	glm::vec2(24 / 27.f, 0.0f), glm::vec2(25 / 27.f, 0.0f), glm::vec2(26 / 27.f, 0.0f)}); // Hit right
+	animations[13] = make_pair(MAIN_HL, vector < glm::vec2> {	glm::vec2(2 / 27.f, 0.5f), glm::vec2(1 / 27.f, 0.5f), glm::vec2(0.0f, 0.5f)}); //hit left
 
 	mainPlayer = new Player();
-	mainPlayer->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Ryu/ryu.png", animations, glm::ivec2(P_WIDTH, P_HEIGHT), glm::vec2(0.05f, 0.5f), USER_PLAYER, NULL);
+	mainPlayer->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Ryu/ryu.png", animations, glm::ivec2(P_WIDTH, P_HEIGHT), glm::vec2(1/27.f, 0.5f), USER_PLAYER, NULL);
 	mainPlayer->setPosition(glm::vec2(INIT_PLAYER_X_TILES, INIT_PLAYER_Y_TILES));
 	mainPlayer->setTileMap(collision); //channge for scenario when collision load is diseabled
-	/*
-	characters[0] = new Player();
-	characters[0]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Ryu/ryu.png", animations, glm::ivec2(P_WIDTH, P_HEIGHT), glm::vec2(0.05f, 0.5f), USER_PLAYER);
-	characters[0]->setPosition(glm::vec2(INIT_PLAYER_X_TILES, INIT_PLAYER_Y_TILES));
-	characters[0]->setTileMap(fullMap.collision); //channge for scenario when collision load is diseabled
-	*/
+
 	//Bison
 	animations.clear();
-	animations.resize(10);
+	animations.resize(14);
 
-	animations[0] = make_pair(BIS_SL, vector < glm::vec2> {	glm::vec2(22 / 23.f, 0.5f), glm::vec2(21 / 23.f, 0.5f), glm::vec2(21 / 23.f, 0.5f)}); //STAND_LEFT
-	animations[1] = make_pair(BIS_SR, vector < glm::vec2> {	glm::vec2(0.00f, 0.0f), glm::vec2(1 / 23.f, 0.0f), glm::vec2(2 / 23.f, 0.0f)}); //STAND_RIGHT
-	animations[2] = make_pair(BIS_ML, vector < glm::vec2> {	glm::vec2(19 / 23.f, 0.5f), glm::vec2(18 / 23.f, 0.5f), glm::vec2(17 / 23.f, 0.5f), glm::vec2(16 / 23.f, 0.5f)}); //MOVE_LEFT
-	animations[3] = make_pair(BIS_MR, vector < glm::vec2> {	glm::vec2(3 / 23.f, 0.0f), glm::vec2(4 / 23.f, 0.0f), glm::vec2(5 / 23.f, 0.0f), glm::vec2(6 / 23.f, 0.0f)}); //MOVE_RIGHT
-	animations[4] = make_pair(BIS_KR, vector < glm::vec2> {	glm::vec2(11 / 23.f, 0.0f), glm::vec2(12 / 23.f, 0.0f), glm::vec2(13 / 23.f, 0.0f), glm::vec2(14 / 23.f, 0.0f)}); //KICK_RIGHT
-	animations[5] = make_pair(BIS_KL, vector < glm::vec2> {	glm::vec2(11 / 23.f, 0.5f), glm::vec2(10 / 23.f, 0.5f), glm::vec2(9 / 23.f, 0.5f), glm::vec2(8 / 23.f, 0.5f)}); //KICK_LEFT
-	animations[6] = make_pair(BIS_PR, vector < glm::vec2> {	glm::vec2(7 / 23.f, 0.0f), glm::vec2(8 / 23.f, 0.0f), glm::vec2(9 / 23.f, 0.0f), glm::vec2(10 / 23.f, 0.0f)}); //PUNCH_RIGHT
-	animations[7] = make_pair(BIS_PL, vector < glm::vec2> {	glm::vec2(15 / 23.f, 0.5f), glm::vec2(14 / 23.f, 0.5f), glm::vec2(13 / 23.f, 0.5f), glm::vec2(12 / 23.f, 0.5f)}); //PUNCH_LEFT
-	animations[8] = make_pair(BIS_SPR, vector < glm::vec2> {	glm::vec2(15 / 23.f, 0.5f), glm::vec2(16 / 23.f, 0.0f), glm::vec2(17 / 23.f, 0.0f), glm::vec2(18 / 23.f, 0.0f), glm::vec2(19 / 23.f, 0.0f), glm::vec2(20 / 23.f, 0.0f), glm::vec2(21 / 23.f, 0.0f), glm::vec2(22 / 23.f, 0.0f)}); //SPECIAL_RIGHT
-	animations[9] = make_pair(BIS_SPL, vector < glm::vec2> {	glm::vec2(7 / 23.f, 0.5f), glm::vec2(6 / 23.f, 0.5f), glm::vec2(5 / 23.f, 0.5f), glm::vec2(4 / 23.f, 0.5f), glm::vec2(3 / 23.f, 0.5f), glm::vec2(2 / 23.f, 0.0f), glm::vec2(1 / 23.f, 0.0f), glm::vec2(0.00f, 0.0f)}); //SPECIAL_RIGHT
+	animations[0] = make_pair(MAIN_SR, vector < glm::vec2> { glm::vec2(0.0f, 0.0f), glm::vec2(1 / 29.f, 0.0f), glm::vec2(2 / 29.f, 0.0f)}); //STAND_RIGHT
+	animations[1] = make_pair(MAIN_SL, vector < glm::vec2> { glm::vec2(28 / 29.f, 0.5f), glm::vec2(27 / 29.f, 0.5f), glm::vec2(26 / 29.f, 0.5f)}); //STAND_LEFT
+	animations[4] = make_pair(MAIN_MR, vector < glm::vec2> { glm::vec2(3  / 29.f, 0.0f), glm::vec2(4  / 29.f, 0.0f), glm::vec2(5  / 29.f, 0.0f), glm::vec2(6  / 29.f, 0.0f)}); //MOVE_RIGHT
+	animations[3] = make_pair(MAIN_ML, vector < glm::vec2> { glm::vec2(25 / 29.f, 0.5f), glm::vec2(24 / 29.f, 0.5f), glm::vec2(23 / 29.f, 0.5f), glm::vec2(22 / 29.f, 0.5f)}); //MOVE_LEFT
+	animations[4] = make_pair(MAIN_KR, vector < glm::vec2> { glm::vec2(11 / 29.f, 0.0f), glm::vec2(12 / 29.f, 0.0f), glm::vec2(13 / 29.f, 0.0f), glm::vec2(14 / 29.f, 0.0f)}); //KICK_RIGHT
+	animations[5] = make_pair(MAIN_KL, vector < glm::vec2> { glm::vec2(17 / 29.f, 0.5f), glm::vec2(16 / 29.f, 0.5f), glm::vec2(15 / 29.f, 0.5f), glm::vec2(14 / 29.f, 0.5f)}); //KICK_LEFT
+	animations[6] = make_pair(MAIN_PR, vector < glm::vec2> { glm::vec2(7  / 29.f, 0.0f), glm::vec2(8  / 29.f, 0.0f), glm::vec2(9  / 29.f, 0.0f), glm::vec2(10 / 29.f, 0.0f)}); //PUNCH_RIGHT
+	animations[7] = make_pair(MAIN_PL, vector < glm::vec2> { glm::vec2(21 / 29.f, 0.5f), glm::vec2(20 / 29.f, 0.5f), glm::vec2(19 / 29.f, 0.5f), glm::vec2(18 / 29.f, 0.5f)}); //PUNCH_LEFT
+	animations[8] = make_pair(MAIN_SPR, vector < glm::vec2> {glm::vec2(15 / 29.f, 0.0f), glm::vec2(16 / 29.f, 0.0f), glm::vec2(17 / 29.f, 0.0f), glm::vec2(18 / 29.f, 0.0f), glm::vec2(19 / 29.f, 0.0f), glm::vec2(20 / 29.f, 0.0f), glm::vec2(21 / 29.f, 0.0f), glm::vec2(22 / 29.f, 0.0f)}); //SPECIAL_RIGHT
+	animations[9] = make_pair(MAIN_SPL, vector < glm::vec2> {glm::vec2(13 / 29.f, 0.5f), glm::vec2(12 / 29.f, 0.5f), glm::vec2(11 / 29.f, 0.5f), glm::vec2(10 / 29.f, 0.5f), glm::vec2(9  / 29.f, 0.5f), glm::vec2(8  / 29.f, 0.0f), glm::vec2(7  / 29.f, 0.0f), glm::vec2(6  /29.F, 0.0f)}); //SPECIAL_RIGHT
+	animations[10] = make_pair(MAIN_HR, vector < glm::vec2> {glm::vec2(23 / 29.f, 0.0f), glm::vec2(24 / 29.f, 0.0f), glm::vec2(25 / 29.f, 0.0f)}); // Hit right
+	animations[11] = make_pair(MAIN_HL, vector < glm::vec2> {glm::vec2(5  / 29.f, 0.5f), glm::vec2(4  / 29.f, 0.5f), glm::vec2(3  / 29.f, 0.5f)}); //hit left
+	animations[12] = make_pair(MAIN_DR, vector < glm::vec2> {glm::vec2(26 / 29.f, 0.0f), glm::vec2(27 / 29.f, 0.0f), glm::vec2(28 / 29.f, 0.0f)}); // Hit right
+	animations[13] = make_pair(MAIN_DL, vector < glm::vec2> {glm::vec2(2  / 29.f, 0.5f), glm::vec2(1  / 29.f, 0.5f), glm::vec2(0.0f, 0.5f)}); //hit left
 
 	characters[0] = new Player();
-	characters[0]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Bison/bison.png", animations, glm::ivec2(P_WIDTH, P_HEIGHT), glm::vec2(1 / 23.f, 0.5f), IA_PLAYER, mainPlayer);
+	characters[0]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Bison/bison.png", animations, glm::ivec2(P_WIDTH, P_HEIGHT), glm::vec2(1 / 29.f, 0.5f), IA_PLAYER, mainPlayer);
 	characters[0]->setPosition(glm::vec2(INIT_PLAYER_X_TILES + 300, INIT_PLAYER_Y_TILES));
 	characters[0]->setTileMap(collision);//channge for scenario when collision load is diseabled
 
 	//Honda
 	animations.clear();
-	animations.resize(10);
+	animations.resize(14);
 
-	animations[0] = make_pair(HON_SL, vector < glm::vec2> {	glm::vec2(20 / 21.f, 0.5f), glm::vec2(19 / 21.f, 0.5f), glm::vec2(18 / 21.f, 0.5f), glm::vec2(17 / 21.f, 0.5f)}); //STAND_LEFT
-	animations[1] = make_pair(HON_SR, vector < glm::vec2> {	glm::vec2(0.00f, 0.0f), glm::vec2(1 / 21.f, 0.0f), glm::vec2(2 / 21.f, 0.0f), glm::vec2(3 / 21.f, 0.0f)}); //STAND_RIGHT
-	animations[2] = make_pair(HON_ML, vector < glm::vec2> {	glm::vec2(16 / 21.f, 0.5f), glm::vec2(15 / 21.f, 0.5f), glm::vec2(14 / 21.f, 0.5f), glm::vec2(13 / 21.f, 0.5f)}); //MOVE_LEFT
-	animations[3] = make_pair(HON_MR, vector < glm::vec2> {	glm::vec2(4 / 21.f, 0.0f), glm::vec2(5 / 21.f, 0.0f), glm::vec2(6 / 21.f, 0.0f), glm::vec2(7 / 21.f, 0.0f)}); //MOVE_RIGHT
-	animations[4] = make_pair(HON_KR, vector < glm::vec2> {	glm::vec2(11 / 21.f, 0.0f), glm::vec2(12 / 21.f, 0.0f), glm::vec2(13 / 21.f, 0.0f)}); //KICK_RIGHT
-	animations[5] = make_pair(HON_KL, vector < glm::vec2> {	glm::vec2(9 / 21.f, 0.5f), glm::vec2(8 / 21.f, 0.5f), glm::vec2(7 / 21.f, 0.5f)}); //KICK_LEFT
-	animations[6] = make_pair(HON_PR, vector < glm::vec2> {	glm::vec2(8 / 21.f, 0.0f), glm::vec2(9 / 21.f, 0.0f), glm::vec2(10 / 21.f, 0.0f)}); //PUNCH_RIGHT
-	animations[7] = make_pair(HON_PL, vector < glm::vec2> {	glm::vec2(12 / 21.f, 0.5f), glm::vec2(11 / 21.f, 0.5f), glm::vec2(10 / 21.f, 0.5f)}); //PUNCH_LEFT
-	animations[8] = make_pair(HON_SPR, vector < glm::vec2> { glm::vec2(14 / 21.f, 0.5f), glm::vec2(15 / 21.f, 0.0f), glm::vec2(16 / 21.f, 0.0f), glm::vec2(17 / 21.f, 0.0f), glm::vec2(18 / 21.f, 0.0f), glm::vec2(19 / 21.f, 0.0f), glm::vec2(20 / 21.f, 0.0f)}); //SPECIAL_RIGHT
-	animations[9] = make_pair(HON_SPL, vector < glm::vec2> { glm::vec2(6 / 21.f, 0.5f), glm::vec2(5 / 21.f, 0.5f), glm::vec2(4 / 21.f, 0.5f), glm::vec2(3 / 21.f, 0.5f), glm::vec2(2 / 21.f, 0.0f), glm::vec2(1 / 21.f, 0.0f), glm::vec2(0.00f, 0.0f)}); //SPECIAL_RIGHT
+	animations[0] = make_pair(MAIN_SR, vector < glm::vec2> { glm::vec2(0.00f, 0.0f),	 glm::vec2(1  / 29.f, 0.0f), glm::vec2(2  / 29.f, 0.0f), glm::vec2(3  / 29.f, 0.0f)}); //STAND_RIGHT
+	animations[1] = make_pair(MAIN_SL, vector < glm::vec2> { glm::vec2(28 / 21.f, 0.5f), glm::vec2(27 / 29.f, 0.5f), glm::vec2(26 / 29.f, 0.5f), glm::vec2(25 / 29.f, 0.5f)}); //STAND_LEFT
+	animations[2] = make_pair(MAIN_MR, vector < glm::vec2> { glm::vec2(4  / 21.f, 0.0f), glm::vec2(5  / 29.f, 0.0f), glm::vec2(6  / 29.f, 0.0f), glm::vec2(7  / 29.f, 0.0f)}); //MOVE_RIGHT
+	animations[3] = make_pair(MAIN_ML, vector < glm::vec2> { glm::vec2(24 / 21.f, 0.5f), glm::vec2(23 / 29.f, 0.5f), glm::vec2(22 / 29.f, 0.5f), glm::vec2(21 / 29.f, 0.5f)}); //MOVE_LEFT
+	animations[4] = make_pair(MAIN_KR, vector < glm::vec2> { glm::vec2(11 / 21.f, 0.0f), glm::vec2(12 / 29.f, 0.0f), glm::vec2(13 / 29.f, 0.0f)}); //KICK_RIGHT
+	animations[5] = make_pair(MAIN_KL, vector < glm::vec2> { glm::vec2(17 / 21.f, 0.5f), glm::vec2(16 / 29.f, 0.5f), glm::vec2(15 / 29.f, 0.5f)}); //KICK_LEFT
+	animations[6] = make_pair(MAIN_PR, vector < glm::vec2> { glm::vec2(8  / 21.f, 0.0f), glm::vec2(9  / 29.f, 0.0f), glm::vec2(10 / 29.f, 0.0f)}); //PUNCH_RIGHT
+	animations[7] = make_pair(MAIN_PL, vector < glm::vec2> { glm::vec2(20 / 21.f, 0.5f), glm::vec2(19 / 29.f, 0.5f), glm::vec2(18 / 29.f, 0.5f)}); //PUNCH_LEFT
+	animations[8] = make_pair(MAIN_SPR, vector < glm::vec2> {glm::vec2(14 / 21.f, 0.0f), glm::vec2(15 / 29.f, 0.0f), glm::vec2(16 / 29.f, 0.0f), glm::vec2(17 / 29.f, 0.0f), glm::vec2(18 / 29.f, 0.0f), glm::vec2(19 / 29.f, 0.0f), glm::vec2(20 / 29.f, 0.0f)}); //SPECIAL_RIGHT
+	animations[9] = make_pair(MAIN_SPL, vector < glm::vec2> {glm::vec2(14 / 21.f, 0.5f), glm::vec2(13 / 29.f, 0.5f), glm::vec2(12 / 29.f, 0.5f), glm::vec2(11 / 29.f, 0.5f), glm::vec2(10 / 29.f, 0.0f), glm::vec2(9  / 29.f, 0.0f), glm::vec2(8  / 29.F, 0.0f)}); //SPECIAL_RIGHT
+	animations[10] = make_pair(MAIN_HR, vector < glm::vec2> {glm::vec2(21 / 29.f, 0.0f), glm::vec2(22 / 29.f, 0.0f), glm::vec2(23 / 29.f, 0.0f)}); // Hit right
+	animations[11] = make_pair(MAIN_HL, vector < glm::vec2> {glm::vec2(7  / 29.f, 0.5f), glm::vec2(6  / 29.f, 0.5f), glm::vec2(5  / 29.f, 0.5f)}); //hit left
+	animations[12] = make_pair(MAIN_DR, vector < glm::vec2> {glm::vec2(24 / 29.f, 0.0f), glm::vec2(25 / 29.f, 0.0f), glm::vec2(26 / 29.f, 0.0f), glm::vec2(27 / 29.f, 0.0f), glm::vec2(28 / 29.f, 0.0f)}); // Hit right
+	animations[13] = make_pair(MAIN_DL, vector < glm::vec2> {glm::vec2(4  / 29.f, 0.5f), glm::vec2(3  / 29.f, 0.5f), glm::vec2(2  / 29.F, 0.5f), glm::vec2(1  / 29.F, 0.5f), glm::vec2(0.0f, 0.5f)}); //hit left
 
 	characters[1] = new Player();
-	characters[1]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Honda/honda.png", animations, glm::ivec2(P_WIDTH, P_HEIGHT), glm::vec2(1 / 21.f, 0.5f), IA_PLAYER, mainPlayer);
+	characters[1]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Honda/honda.png", animations, glm::ivec2(P_WIDTH, P_HEIGHT), glm::vec2(1 / 29.f, 0.5f), IA_PLAYER, mainPlayer);
 	characters[1]->setPosition(glm::vec2(INIT_PLAYER_X_TILES + 400, INIT_PLAYER_Y_TILES + 10));
 	characters[1]->setTileMap(collision);//channge for scenario when collision load is diseabled
 
 	//Abadede
 	animations.clear();
-	animations.resize(6);
+	animations.resize(10);
 
-	animations[0] = make_pair(ENE_SL, vector < glm::vec2> {	glm::vec2(0.00f, 0.0f), glm::vec2(1 / 12.f, 0.0f), glm::vec2(2 / 12.f, 0.0f)}); //STAND_LEFT
-	animations[1] = make_pair(ENE_SR, vector < glm::vec2> {	glm::vec2(11 / 12.f, 0.5f), glm::vec2(10 / 12.f, 0.5f), glm::vec2(9 / 12.f, 0.5f)}); //STAND_RIGHT
-	animations[2] = make_pair(ENE_ML, vector < glm::vec2> {	glm::vec2(3 / 12.f, 0.0f), glm::vec2(4 / 12.f, 0.0f), glm::vec2(5 / 12.f, 0.0f), glm::vec2(6 / 12.f, 0.0f), glm::vec2(7 / 12.f, 0.0f)}); //MOVE_LEFT
-	animations[3] = make_pair(ENE_MR, vector < glm::vec2> {	glm::vec2(8 / 12.f, 0.5f), glm::vec2(7 / 12.f, 0.5f), glm::vec2(6 / 12.f, 0.5f), glm::vec2(5 / 12.f, 0.5f), glm::vec2(4 / 12.f, 0.5f)}); //MOVE_RIGHT
-	animations[4] = make_pair(ENE_PR, vector < glm::vec2> {	glm::vec2(3 / 12.f, 0.5f), glm::vec2(2 / 12.f, 0.5f), glm::vec2(1 / 12.f, 0.5f), glm::vec2(0.000f, 0.5f)}); //PUNCH_RIGHT
-	animations[5] = make_pair(ENE_PL, vector < glm::vec2> {	glm::vec2(8 / 12.f, 0.0f), glm::vec2(9 / 12.f, 0.0f), glm::vec2(10 / 12.f, 0.0f), glm::vec2(11 / 12.f, 0.0f)}); //PUNCH_LEFT
+	animations[0] = make_pair(ENE_SR, vector < glm::vec2> {	glm::vec2(0.0f, 0.0f), glm::vec2(1 / 16.f, 0.0f), glm::vec2(2 / 16.f, 0.0f)}); //STAND RIGHT
+	animations[1] = make_pair(ENE_SL, vector < glm::vec2> {	glm::vec2(15 / 16.f, 0.5f), glm::vec2(14 / 16.f, 0.5f), glm::vec2(13 / 16.f, 0.5f)}); //STAND LEFT
+	animations[2] = make_pair(ENE_MR, vector < glm::vec2> {	glm::vec2(3  / 16.f, 0.0f), glm::vec2(4  / 16.f, 0.0f), glm::vec2(5  / 16.f, 0.0f), glm::vec2(6  / 16.f, 0.0f), glm::vec2(7  / 16.f, 0.0f)}); //MOVE RIGHT
+	animations[3] = make_pair(ENE_ML, vector < glm::vec2> {	glm::vec2(12 / 16.f, 0.5f), glm::vec2(11 / 16.f, 0.5f), glm::vec2(10 / 16.f, 0.5f), glm::vec2(9  / 16.f, 0.5f), glm::vec2(8  / 16.f, 0.5f)}); //MOVE LEFT
+	animations[4] = make_pair(ENE_PR, vector < glm::vec2> {	glm::vec2(8  / 16.f, 0.0f), glm::vec2(9  / 16.f, 0.0f), glm::vec2(10 / 16.f, 0.0f), glm::vec2(11 / 16.f, 0.0f)}); //PUNCH RIGHT
+	animations[5] = make_pair(ENE_PL, vector < glm::vec2> {	glm::vec2(7  / 16.f, 0.5f), glm::vec2(6  / 16.f, 0.5f), glm::vec2(5  / 16.f, 0.5f), glm::vec2(4  / 16.f, 0.5f)}); //PUNCH LEFT
+	animations[6] = make_pair(ENE_HR, vector < glm::vec2> { glm::vec2(13 / 16.f, 0.0f)}); //HIT RIGHT
+	animations[7] = make_pair(ENE_HL, vector < glm::vec2> {	glm::vec2(2  / 16.f, 0.5f)}); //HIT LEFT
+	animations[8] = make_pair(ENE_DR, vector < glm::vec2> {	glm::vec2(14 / 16.f, 0.0f), glm::vec2(15 / 16.f, 0.0f)}); //DEAD RIGHT
+	animations[9] = make_pair(ENE_DL, vector < glm::vec2> {	glm::vec2(1  / 16.f, 0.5f), glm::vec2(0.0f, 0.5f)}); //DEAD LEFT
 
 	characters[2] = new Player();
-	characters[2]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Abadede/abadede_enemy_1.png", animations, glm::ivec2(P_WIDTH, P_HEIGHT), glm::vec2(1 / 12.f, 0.5f), IA_PLAYER, mainPlayer);
+	characters[2]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Abadede/abadede_enemy_1.png", animations, glm::ivec2(P_WIDTH, P_HEIGHT), glm::vec2(1 / 16.f, 0.5f), IA_PLAYER, mainPlayer);
 	characters[2]->setPosition(glm::vec2(INIT_PLAYER_X_TILES + 500, INIT_PLAYER_Y_TILES + 20));
 	characters[2]->setTileMap(collision);//channge for scenario when collision load is diseabled
 
 	//Jack
 	animations.clear();
-	animations.resize(6);
+	animations.resize(10);
 
-	animations[0] = make_pair(ENE_SL, vector < glm::vec2> {	glm::vec2(0.00f, 0.0f), glm::vec2(1 / 13.f, 0.0f), glm::vec2(2 / 13.f, 0.0f)}); //STAND_LEFT
-	animations[1] = make_pair(ENE_SR, vector < glm::vec2> {	glm::vec2(12 / 13.f, 0.5f), glm::vec2(11 / 13.f, 0.5f), glm::vec2(10 / 13.f, 0.5f)}); //STAND_RIGHT
-	animations[2] = make_pair(ENE_MR, vector < glm::vec2> {	glm::vec2(9 / 13.f, 0.5f), glm::vec2(8 / 13.f, 0.5f), glm::vec2(7 / 13.f, 0.5f), glm::vec2(6 / 13.f, 0.5f)}); //MOVE_LEFT
-	animations[3] = make_pair(ENE_ML, vector < glm::vec2> {	glm::vec2(3 / 13.f, 0.0f), glm::vec2(4 / 13.f, 0.0f), glm::vec2(5 / 13.f, 0.0f), glm::vec2(6 / 13.f, 0.0f)}); //MOVE_RIGHT
-	animations[4] = make_pair(ENE_PR, vector < glm::vec2> {	glm::vec2(5 / 13.f, 0.5f), glm::vec2(4 / 13.f, 0.5f), glm::vec2(3 / 13.f, 0.5f), glm::vec2(2 / 13.f, 0.5f), glm::vec2(1 / 13.f, 0.5f), glm::vec2(0.00f, 0.5f)}); //PUNCH_RIGHT
-	animations[5] = make_pair(ENE_PL, vector < glm::vec2> {	glm::vec2(7 / 13.f, 0.0f), glm::vec2(8 / 13.f, 0.0f), glm::vec2(9 / 13.f, 0.0f), glm::vec2(10 / 13.f, 0.0f), glm::vec2(11 / 13.f, 0.0f), glm::vec2(12 / 13.f, 0.0f)}); //PUNCH_LEFT
+	animations[0] = make_pair(ENE_SR, vector < glm::vec2> {	glm::vec2(0.0f, 0.0f), glm::vec2(1 / 17.f, 0.0f), glm::vec2(2 / 17.f, 0.0f)}); //STAND RIGHT
+	animations[1] = make_pair(ENE_SL, vector < glm::vec2> {	glm::vec2(16 / 17.f, 0.5f), glm::vec2(15 / 17.f, 0.5f), glm::vec2(14 / 17.f, 0.5f)}); //STAND LEFT
+	animations[2] = make_pair(ENE_MR, vector < glm::vec2> {	glm::vec2(3  / 17.f, 0.0f), glm::vec2(4  / 17.f, 0.0f), glm::vec2(5  / 17.f, 0.0f), glm::vec2(6  / 17.f, 0.0f)}); //MOVE RIGHT
+	animations[3] = make_pair(ENE_ML, vector < glm::vec2> {	glm::vec2(13 / 17.f, 0.5f), glm::vec2(12 / 17.f, 0.5f), glm::vec2(11 / 17.f, 0.5f), glm::vec2(10 / 17.f, 0.5f)}); //MOVE LEFT
+	animations[4] = make_pair(ENE_PR, vector < glm::vec2> {	glm::vec2(7  / 17.f, 0.0f), glm::vec2(8  / 17.f, 0.0f), glm::vec2(9  / 17.f, 0.0f), glm::vec2(10 / 17.f, 0.0f), glm::vec2(11 / 17.f, 0.0f), glm::vec2(12 / 17.f, 0.0f)}); //PUNCH RIGHT
+	animations[5] = make_pair(ENE_PL, vector < glm::vec2> {	glm::vec2(9  / 17.f, 0.5f), glm::vec2(8  / 17.f, 0.5f), glm::vec2(7  / 17.f, 0.5f), glm::vec2(6  / 17.f, 0.5f), glm::vec2(5  / 17.f, 0.5f), glm::vec2(4 / 17.f, 0.5f)}); //PUNCH LEFT
+	animations[6] = make_pair(ENE_HR, vector < glm::vec2> {	glm::vec2(14 / 17.f, 0.0f)}); //HIT RIGHT								
+	animations[7] = make_pair(ENE_HL, vector < glm::vec2> {	glm::vec2(2  / 17.f, 0.5f)}); //HIT LEFT
+	animations[8] = make_pair(ENE_DR, vector < glm::vec2> {	glm::vec2(15 / 17.f, 0.5f), glm::vec2(16 / 17.f, 0.5f)}); //DEAD RIGHT
+	animations[9] = make_pair(ENE_DL, vector < glm::vec2> {	glm::vec2(1  / 17.f, 0.0f), glm::vec2(0.0f, 0.0f)}); //DEAD LEFT
 
 	characters[3] = new Player();
-	characters[3]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Jack/jack_enemy_3.png", animations, glm::ivec2(P_WIDTH, P_HEIGHT), glm::vec2(1 / 13.f, 0.5f), IA_PLAYER, mainPlayer);
+	characters[3]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Jack/jack_enemy_3.png", animations, glm::ivec2(P_WIDTH, P_HEIGHT), glm::vec2(1 / 17.f, 0.5f), IA_PLAYER, mainPlayer);
 	characters[3]->setPosition(glm::vec2(INIT_PLAYER_X_TILES + 600, INIT_PLAYER_Y_TILES + 30));
 	characters[3]->setTileMap(collision);//channge for scenario when collision load is diseabled
 
 	//Zamza
 	animations.clear();
-	animations.resize(6);
+	animations.resize(10);
 
-
-
-	animations[0] = make_pair(ENE_SL, vector < glm::vec2> {	glm::vec2(0.00f, 0.0f), glm::vec2(1 / 12.f, 0.0f), glm::vec2(2 / 12.f, 0.0f)}); //STAND_LEFT
-	animations[1] = make_pair(ENE_SR, vector < glm::vec2> {	glm::vec2(11 / 12.f, 0.5f), glm::vec2(10 / 12.f, 0.5f), glm::vec2(9 / 12.f, 0.5f)}); //STAND_RIGHT
-	animations[2] = make_pair(ENE_ML, vector < glm::vec2> {	glm::vec2(3 / 12.f, 0.0f), glm::vec2(4 / 12.f, 0.0f), glm::vec2(5 / 12.f, 0.0f), glm::vec2(6 / 12.f, 0.0f), glm::vec2(7 / 12.f, 0.0f), glm::vec2(8 / 12.f, 0.0f)}); //MOVE_LEFT
-	animations[3] = make_pair(ENE_MR, vector < glm::vec2> {	glm::vec2(8 / 12.f, 0.5f), glm::vec2(7 / 12.f, 0.5f), glm::vec2(6 / 12.f, 0.5f), glm::vec2(5 / 12.f, 0.5f), glm::vec2(4 / 12.f, 0.5f), glm::vec2(3 / 12.f, 0.5f)}); //MOVE_RIGHT
-	animations[4] = make_pair(ENE_PR, vector < glm::vec2> {	glm::vec2(2 / 12.f, 0.5f), glm::vec2(1 / 12.f, 0.5f), glm::vec2(0.000f, 0.5f)}); //PUNCH_RIGHT
-	animations[5] = make_pair(ENE_PL, vector < glm::vec2> {	glm::vec2(9 / 12.f, 0.0f), glm::vec2(10 / 12.f, 0.0f), glm::vec2(11 / 12.f, 0.0f)}); //PUNCH_LEFT
+	animations[0] = make_pair(ENE_SR, vector < glm::vec2> {	glm::vec2(0.0f, 0.0f), glm::vec2(1 / 16.f, 0.0f), glm::vec2(2 / 16.f, 0.0f)}); //STAND RIGHT
+	animations[1] = make_pair(ENE_SL, vector < glm::vec2> {	glm::vec2(15 / 16.f, 0.5f), glm::vec2(14 / 16.f, 0.5f), glm::vec2(13 / 16.f, 0.5f)}); //STAND LEFT
+	animations[2] = make_pair(ENE_MR, vector < glm::vec2> {	glm::vec2(3  / 16.f, 0.0f), glm::vec2(4  / 16.f, 0.0f), glm::vec2(5  / 16.f, 0.0f), glm::vec2(6  / 16.f, 0.0f), glm::vec2(7 / 16.f, 0.0f), glm::vec2(8 / 16.f, 0.0f)}); //MOVE RIGHT
+	animations[3] = make_pair(ENE_ML, vector < glm::vec2> {	glm::vec2(12 / 16.f, 0.5f), glm::vec2(11 / 16.f, 0.5f), glm::vec2(10 / 16.f, 0.5f), glm::vec2(9  / 16.f, 0.5f), glm::vec2(8 / 16.f, 0.5f), glm::vec2(7 / 16.f, 0.5f)}); //MOVE LEFT
+	animations[4] = make_pair(ENE_PR, vector < glm::vec2> {	glm::vec2(9  / 16.f, 0.0f), glm::vec2(10 / 16.f, 0.0f), glm::vec2(11 / 16.f, 0.0f)}); //PUNCH RIGHT
+	animations[5] = make_pair(ENE_PL, vector < glm::vec2> {	glm::vec2(6  / 16.f, 0.5f), glm::vec2(5  / 16.f, 0.5f), glm::vec2(4  / 16.f, 0.5f)}); //PUNCH LEFT
+	animations[6] = make_pair(ENE_HR, vector < glm::vec2> {	glm::vec2(13 / 16.f, 0.0f)}); //HIT RIGHT								
+	animations[7] = make_pair(ENE_HL, vector < glm::vec2> {	glm::vec2(2  / 16.f, 0.5f)}); //HIT LEFT
+	animations[8] = make_pair(ENE_DR, vector < glm::vec2> {	glm::vec2(14 / 16.f, 0.0f), glm::vec2(15 / 16.f, 0.0f)}); //DEAD RIGHT
+	animations[9] = make_pair(ENE_DL, vector < glm::vec2> {	glm::vec2(1  / 16.f, 0.5f), glm::vec2(0.0f, 0.5f)}); //DEAD LEFT
 
 	characters[4] = new Player();
-	characters[4]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Zamza/zamza_enemy_2.png", animations, glm::ivec2(P_WIDTH, P_HEIGHT), glm::vec2(1 / 12.f, 0.5f), IA_PLAYER, mainPlayer);
+	characters[4]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Zamza/zamza_enemy_2.png", animations, glm::ivec2(P_WIDTH, P_HEIGHT), glm::vec2(1 / 16.f, 0.5f), IA_PLAYER, mainPlayer);
 	characters[4]->setPosition(glm::vec2(INIT_PLAYER_X_TILES + 700, INIT_PLAYER_Y_TILES + 80));
 	characters[4]->setTileMap(collision);//channge for scenario when collision load is diseabled
 

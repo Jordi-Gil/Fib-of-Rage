@@ -25,16 +25,19 @@ private:
 	void setMenu(const string &filename);
 	void setCtrl(const string &filename);
 	void setCred(const string &filename);
+	void setPlayers(const string &filename1, const string &filename2, const string &filename3);
 
 private:
 
 	int antDeltaTime = 0;
 	int numberAnims = 4;
-	Texture texture, contrTex, credTex;
-	TexturedQuad *credits, *controls;
+	Texture texture, contrTex, credTex, playerTex[3];
+	TexturedQuad *credits, *controls, *players;
 	Sprite *menu;
 
-	bool renderMenu = true, renderCont = false, renderCred = false;
+	int index;
+
+	bool renderMenu = true, renderCont = false, renderCred = false, renderPlayers = false;
 
 	bool finishOneTime = false;
 };
