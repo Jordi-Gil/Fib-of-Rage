@@ -23,6 +23,8 @@
 
 #define SPEED 8
 
+#define OFFSET_X 90
+
 enum RyuAnims
 {
 	RYU_SL, RYU_SR, RYU_ML, RYU_MR, RYU_KR, RYU_KL, RYU_PR, RYU_PL, RYU_HR, RYU_HL
@@ -166,9 +168,24 @@ void Player::update(int deltaTime)
 	}
 	else if (type_player == IA_PLAYER) {
 		if (sprite->getAnimationFinished() || (sprite->animation() != ENE_PL && sprite->animation() != ENE_PR)) {
-			if (sprite->animation() != ENE_ML && sprite->animation() != ENE_MR)
-				sprite->changeAnimation(ENE_ML);
-			posPlayer.x -= 2;
+			int multiplicador = 0;
+			if (mainPlayer->getPosition().x + OFFSET_X < posPlayer.x) {
+				if(sprite->getAnimationFinished())
+					sprite->changeAnimation(ENE_ML);
+				multiplicador = -1;
+			}
+			else if(mainPlayer->getPosition().x + OFFSET_X > posPlayer.x) {
+				if (sprite->getAnimationFinished())
+					sprite->changeAnimation(ENE_MR);
+				multiplicador = 1;
+			}
+			else
+			{
+				sprite->changeAnimation(ENE_SR);
+			}
+
+			posPlayer.x += 2 * multiplicador;
+
 
 			if (map->collisionMoveLeft(posPlayer, glm::ivec2(width_player, height_player)))
 			{
@@ -177,8 +194,6 @@ void Player::update(int deltaTime)
 			}
 		}
 	}
-
-
 	
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
 }

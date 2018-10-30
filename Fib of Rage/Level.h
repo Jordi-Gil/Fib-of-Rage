@@ -21,6 +21,7 @@ public:
 	void moveCamera(int left, int right, int bottom, int top);
 	void restartLevel();
 
+
 private:
 	bool setBackground(const string &filename);
 	void setAnimations();

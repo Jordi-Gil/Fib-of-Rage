@@ -44,10 +44,11 @@ enum JackAnims
 	JAK_SL, JAK_SR, JAK_MR, JAK_ML, JAK_PR, JAK_PL
 };
 
-enum ZamzaAnims
+enum EnemyAnims
 {
-	ZAM_SL, ZAM_SR, ZAM_MR, ZAM_ML, ZAM_PR, ZAM_PL
+	ENE_SL, ENE_SR, ENE_ML, ENE_MR, ENE_PR, ENE_PL
 };
+
 
 bool compare(Player *a, Player *b)
 {
@@ -237,12 +238,12 @@ void Level::setAnimations()
 	animations.clear();
 	animations.resize(6);
 
-	animations[0] = make_pair(ABA_SL, vector < glm::vec2> {	glm::vec2(0.00f, 0.0f), glm::vec2(1 / 12.f, 0.0f), glm::vec2(2 / 12.f, 0.0f)}); //STAND_LEFT
-	animations[1] = make_pair(ABA_SR, vector < glm::vec2> {	glm::vec2(11 / 12.f, 0.5f), glm::vec2(10 / 12.f, 0.5f), glm::vec2(9 / 12.f, 0.5f)}); //STAND_RIGHT
-	animations[2] = make_pair(ABA_ML, vector < glm::vec2> {	glm::vec2(3 / 12.f, 0.0f), glm::vec2(4 / 12.f, 0.0f), glm::vec2(5 / 12.f, 0.0f), glm::vec2(6 / 12.f, 0.0f), glm::vec2(7 / 12.f, 0.0f)}); //MOVE_LEFT
-	animations[3] = make_pair(ABA_MR, vector < glm::vec2> {	glm::vec2(8 / 12.f, 0.5f), glm::vec2(7 / 12.f, 0.5f), glm::vec2(6 / 12.f, 0.5f), glm::vec2(5 / 12.f, 0.5f), glm::vec2(4 / 12.f, 0.5f)}); //MOVE_RIGHT
-	animations[4] = make_pair(ABA_PR, vector < glm::vec2> {	glm::vec2(3 / 12.f, 0.5f), glm::vec2(2 / 12.f, 0.5f), glm::vec2(1 / 12.f, 0.5f), glm::vec2(0.000f, 0.5f)}); //PUNCH_RIGHT
-	animations[5] = make_pair(ABA_PL, vector < glm::vec2> {	glm::vec2(8 / 12.f, 0.0f), glm::vec2(9 / 12.f, 0.0f), glm::vec2(10 / 12.f, 0.0f), glm::vec2(11 / 12.f, 0.0f)}); //PUNCH_LEFT
+	animations[0] = make_pair(ENE_SL, vector < glm::vec2> {	glm::vec2(0.00f, 0.0f), glm::vec2(1 / 12.f, 0.0f), glm::vec2(2 / 12.f, 0.0f)}); //STAND_LEFT
+	animations[1] = make_pair(ENE_SR, vector < glm::vec2> {	glm::vec2(11 / 12.f, 0.5f), glm::vec2(10 / 12.f, 0.5f), glm::vec2(9 / 12.f, 0.5f)}); //STAND_RIGHT
+	animations[2] = make_pair(ENE_ML, vector < glm::vec2> {	glm::vec2(3 / 12.f, 0.0f), glm::vec2(4 / 12.f, 0.0f), glm::vec2(5 / 12.f, 0.0f), glm::vec2(6 / 12.f, 0.0f), glm::vec2(7 / 12.f, 0.0f)}); //MOVE_LEFT
+	animations[3] = make_pair(ENE_MR, vector < glm::vec2> {	glm::vec2(8 / 12.f, 0.5f), glm::vec2(7 / 12.f, 0.5f), glm::vec2(6 / 12.f, 0.5f), glm::vec2(5 / 12.f, 0.5f), glm::vec2(4 / 12.f, 0.5f)}); //MOVE_RIGHT
+	animations[4] = make_pair(ENE_PR, vector < glm::vec2> {	glm::vec2(3 / 12.f, 0.5f), glm::vec2(2 / 12.f, 0.5f), glm::vec2(1 / 12.f, 0.5f), glm::vec2(0.000f, 0.5f)}); //PUNCH_RIGHT
+	animations[5] = make_pair(ENE_PL, vector < glm::vec2> {	glm::vec2(8 / 12.f, 0.0f), glm::vec2(9 / 12.f, 0.0f), glm::vec2(10 / 12.f, 0.0f), glm::vec2(11 / 12.f, 0.0f)}); //PUNCH_LEFT
 
 	characters[2] = new Player();
 	characters[2]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Abadede/abadede_enemy_1.png", animations, glm::ivec2(P_WIDTH, P_HEIGHT), glm::vec2(1 / 12.f, 0.5f), IA_PLAYER, mainPlayer);
@@ -253,12 +254,12 @@ void Level::setAnimations()
 	animations.clear();
 	animations.resize(6);
 
-	animations[0] = make_pair(JAK_SL, vector < glm::vec2> {	glm::vec2(0.00f, 0.0f), glm::vec2(1 / 13.f, 0.0f), glm::vec2(2 / 13.f, 0.0f)}); //STAND_LEFT
-	animations[1] = make_pair(JAK_SR, vector < glm::vec2> {	glm::vec2(12 / 13.f, 0.5f), glm::vec2(11 / 13.f, 0.5f), glm::vec2(10 / 13.f, 0.5f)}); //STAND_RIGHT
-	animations[2] = make_pair(JAK_MR, vector < glm::vec2> {	glm::vec2(9 / 13.f, 0.5f), glm::vec2(8 / 13.f, 0.5f), glm::vec2(7 / 13.f, 0.5f), glm::vec2(6 / 13.f, 0.5f)}); //MOVE_LEFT
-	animations[3] = make_pair(JAK_ML, vector < glm::vec2> {	glm::vec2(3 / 13.f, 0.0f), glm::vec2(4 / 13.f, 0.0f), glm::vec2(5 / 13.f, 0.0f), glm::vec2(6 / 13.f, 0.0f)}); //MOVE_RIGHT
-	animations[4] = make_pair(JAK_PR, vector < glm::vec2> {	glm::vec2(5 / 13.f, 0.5f), glm::vec2(4 / 13.f, 0.5f), glm::vec2(3 / 13.f, 0.5f), glm::vec2(2 / 13.f, 0.5f), glm::vec2(1 / 13.f, 0.5f), glm::vec2(0.00f, 0.5f)}); //PUNCH_RIGHT
-	animations[5] = make_pair(JAK_PL, vector < glm::vec2> {	glm::vec2(7 / 13.f, 0.0f), glm::vec2(8 / 13.f, 0.0f), glm::vec2(9 / 13.f, 0.0f), glm::vec2(10 / 13.f, 0.0f), glm::vec2(11 / 13.f, 0.0f), glm::vec2(12 / 13.f, 0.0f)}); //PUNCH_LEFT
+	animations[0] = make_pair(ENE_SL, vector < glm::vec2> {	glm::vec2(0.00f, 0.0f), glm::vec2(1 / 13.f, 0.0f), glm::vec2(2 / 13.f, 0.0f)}); //STAND_LEFT
+	animations[1] = make_pair(ENE_SR, vector < glm::vec2> {	glm::vec2(12 / 13.f, 0.5f), glm::vec2(11 / 13.f, 0.5f), glm::vec2(10 / 13.f, 0.5f)}); //STAND_RIGHT
+	animations[2] = make_pair(ENE_MR, vector < glm::vec2> {	glm::vec2(9 / 13.f, 0.5f), glm::vec2(8 / 13.f, 0.5f), glm::vec2(7 / 13.f, 0.5f), glm::vec2(6 / 13.f, 0.5f)}); //MOVE_LEFT
+	animations[3] = make_pair(ENE_ML, vector < glm::vec2> {	glm::vec2(3 / 13.f, 0.0f), glm::vec2(4 / 13.f, 0.0f), glm::vec2(5 / 13.f, 0.0f), glm::vec2(6 / 13.f, 0.0f)}); //MOVE_RIGHT
+	animations[4] = make_pair(ENE_PR, vector < glm::vec2> {	glm::vec2(5 / 13.f, 0.5f), glm::vec2(4 / 13.f, 0.5f), glm::vec2(3 / 13.f, 0.5f), glm::vec2(2 / 13.f, 0.5f), glm::vec2(1 / 13.f, 0.5f), glm::vec2(0.00f, 0.5f)}); //PUNCH_RIGHT
+	animations[5] = make_pair(ENE_PL, vector < glm::vec2> {	glm::vec2(7 / 13.f, 0.0f), glm::vec2(8 / 13.f, 0.0f), glm::vec2(9 / 13.f, 0.0f), glm::vec2(10 / 13.f, 0.0f), glm::vec2(11 / 13.f, 0.0f), glm::vec2(12 / 13.f, 0.0f)}); //PUNCH_LEFT
 
 	characters[3] = new Player();
 	characters[3]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Jack/jack_enemy_3.png", animations, glm::ivec2(P_WIDTH, P_HEIGHT), glm::vec2(1 / 13.f, 0.5f), IA_PLAYER, mainPlayer);
@@ -269,12 +270,14 @@ void Level::setAnimations()
 	animations.clear();
 	animations.resize(6);
 
-	animations[0] = make_pair(ZAM_SL, vector < glm::vec2> {	glm::vec2(0.00f, 0.0f), glm::vec2(1 / 12.f, 0.0f), glm::vec2(2 / 12.f, 0.0f)}); //STAND_LEFT
-	animations[1] = make_pair(ZAM_SR, vector < glm::vec2> {	glm::vec2(11 / 12.f, 0.5f), glm::vec2(10 / 12.f, 0.5f), glm::vec2(9 / 12.f, 0.5f)}); //STAND_RIGHT
-	animations[2] = make_pair(ZAM_MR, vector < glm::vec2> {	glm::vec2(3 / 12.f, 0.0f), glm::vec2(4 / 12.f, 0.0f), glm::vec2(5 / 12.f, 0.0f), glm::vec2(6 / 12.f, 0.0f), glm::vec2(7 / 12.f, 0.0f), glm::vec2(8 / 12.f, 0.0f)}); //MOVE_LEFT
-	animations[3] = make_pair(ZAM_ML, vector < glm::vec2> {	glm::vec2(8 / 12.f, 0.5f), glm::vec2(7 / 12.f, 0.5f), glm::vec2(6 / 12.f, 0.5f), glm::vec2(5 / 12.f, 0.5f), glm::vec2(4 / 12.f, 0.5f), glm::vec2(3 / 12.f, 0.5f)}); //MOVE_RIGHT
-	animations[4] = make_pair(ZAM_PR, vector < glm::vec2> {	glm::vec2(2 / 12.f, 0.5f), glm::vec2(1 / 12.f, 0.5f), glm::vec2(0.000f, 0.5f)}); //PUNCH_RIGHT
-	animations[5] = make_pair(ZAM_PL, vector < glm::vec2> {	glm::vec2(9 / 12.f, 0.0f), glm::vec2(10 / 12.f, 0.0f), glm::vec2(11 / 12.f, 0.0f)}); //PUNCH_LEFT
+
+
+	animations[0] = make_pair(ENE_SL, vector < glm::vec2> {	glm::vec2(0.00f, 0.0f), glm::vec2(1 / 12.f, 0.0f), glm::vec2(2 / 12.f, 0.0f)}); //STAND_LEFT
+	animations[1] = make_pair(ENE_SR, vector < glm::vec2> {	glm::vec2(11 / 12.f, 0.5f), glm::vec2(10 / 12.f, 0.5f), glm::vec2(9 / 12.f, 0.5f)}); //STAND_RIGHT
+	animations[2] = make_pair(ENE_ML, vector < glm::vec2> {	glm::vec2(3 / 12.f, 0.0f), glm::vec2(4 / 12.f, 0.0f), glm::vec2(5 / 12.f, 0.0f), glm::vec2(6 / 12.f, 0.0f), glm::vec2(7 / 12.f, 0.0f), glm::vec2(8 / 12.f, 0.0f)}); //MOVE_LEFT
+	animations[3] = make_pair(ENE_MR, vector < glm::vec2> {	glm::vec2(8 / 12.f, 0.5f), glm::vec2(7 / 12.f, 0.5f), glm::vec2(6 / 12.f, 0.5f), glm::vec2(5 / 12.f, 0.5f), glm::vec2(4 / 12.f, 0.5f), glm::vec2(3 / 12.f, 0.5f)}); //MOVE_RIGHT
+	animations[4] = make_pair(ENE_PR, vector < glm::vec2> {	glm::vec2(2 / 12.f, 0.5f), glm::vec2(1 / 12.f, 0.5f), glm::vec2(0.000f, 0.5f)}); //PUNCH_RIGHT
+	animations[5] = make_pair(ENE_PL, vector < glm::vec2> {	glm::vec2(9 / 12.f, 0.0f), glm::vec2(10 / 12.f, 0.0f), glm::vec2(11 / 12.f, 0.0f)}); //PUNCH_LEFT
 
 	characters[4] = new Player();
 	characters[4]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Zamza/zamza_enemy_2.png", animations, glm::ivec2(P_WIDTH, P_HEIGHT), glm::vec2(1 / 12.f, 0.5f), IA_PLAYER, mainPlayer);
@@ -282,3 +285,4 @@ void Level::setAnimations()
 	characters[4]->setTileMap(collision);//channge for scenario when collision load is diseabled
 
 }
+
