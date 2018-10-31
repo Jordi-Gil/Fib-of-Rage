@@ -21,8 +21,15 @@ public:
 	void setTileMap(TileMap *tileMap);
 	void setPosition(const glm::vec2 &pos);
 	glm::ivec2 getPosition();
+	void gotoDestination();
+
 
 private:
+	void move_player_to_fight();
+	void setFighting();
+
+private:
+
 	bool bJumping;
 	glm::ivec2 tileMapDispl, posPlayer;
 	int jumpAngle, startY;
@@ -33,8 +40,11 @@ private:
 
 
 	int width_player, height_player;
+	int stateEnemy;
 
 	int type_player; // 0 - User 1 - "IA"
+
+	glm::vec2 positionToMove;
 };
 
 

@@ -27,7 +27,6 @@ public:
 
 	virtual void update(int deltaTime);
 	virtual void render();
-	virtual void init();
 
 protected:
 	void initShaders();

@@ -44,9 +44,11 @@ public:
 	bool getKey(int key) const;
 	bool getSpecialKey(int key) const;
 
-	void changeScene(int value);
+	void changeScene(int value, int player);
 
 	void exitGame();
+	int getAttackers();
+	void setAttackers(int value);
 
 private:
 	bool bPlay;

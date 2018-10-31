@@ -16,7 +16,7 @@ public:
 	~Menu();
 	void update(int deltaTime) override;
 	void render() override;
-	void init() override;
+	void init();
 
 	void setrenderMenu();
 
@@ -25,17 +25,18 @@ private:
 	void setMenu(const string &filename);
 	void setCtrl(const string &filename);
 	void setCred(const string &filename);
-	void setPlayers(const string &filename1, const string &filename2, const string &filename3);
+	void setPlayers(const string &filename);
 
 private:
 
 	int antDeltaTime = 0;
 	int numberAnims = 4;
-	Texture texture, contrTex, credTex, playerTex[3];
-	TexturedQuad *credits, *controls, *players;
-	Sprite *menu;
+	Texture menuTex, contrTex, credTex, playersTex;
+	TexturedQuad *credits, *controls;
+	Sprite *menu, *playersView;
 
 	int index;
+	bool selected_player = false;
 
 	bool renderMenu = true, renderCont = false, renderCred = false, renderPlayers = false;
 

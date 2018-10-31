@@ -1,3 +1,4 @@
+#include <random>
 #include <cmath>
 #include <iostream>
 #include <vector>
@@ -25,6 +26,11 @@
 
 #define OFFSET_X 90
 
+#define MAX_ATTACKERS 2
+
+
+enum  PLAYERS { RYU, HONDA, BISON };
+
 enum UserAnims
 {
 	MAIN_SR, MAIN_SL, MAIN_MR, MAIN_ML, MAIN_KR, MAIN_KL, MAIN_PR, MAIN_PL, MAIN_SPR, MAIN_SPL, MAIN_HR, MAIN_HL, MAIN_DR, MAIN_DL
@@ -35,7 +41,10 @@ enum EnemyAnims
 	ENE_SR, ENE_SL, ENE_MR, ENE_ML, ENE_PR, ENE_PL, ENE_HR, ENE_HL, ENE_DR, ENE_DL
 };
 
-
+enum StateEnemy 
+{
+	WAITING, MOVING, FIGHTING
+};
 
 void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram, const string &filename, vector<pair<int, vector<glm::vec2>>> &animations, glm::ivec2 tam, glm::vec2 prop, int type, Player *player)
 {
@@ -68,7 +77,7 @@ void Player::update(int deltaTime)
 {
 	sprite->update(deltaTime);
 	if(type_player == USER_PLAYER){
-		if (sprite->getAnimationFinished() || (sprite->animation() != MAIN_KL && sprite->animation() != MAIN_KR && sprite->animation() != MAIN_PR && sprite->animation() != MAIN_PL && sprite->animation() != MAIN_HL && sprite->animation() != MAIN_HR)) {
+		if (sprite->getAnimationFinished() || (sprite->animation() != MAIN_KL && sprite->animation() != MAIN_KR && sprite->animation() != MAIN_PR && sprite->animation() != MAIN_PL && sprite->animation() != MAIN_SPL && sprite->animation() != MAIN_SPR)) {
 			if (!Game::instance().getKey(KEY_J) && !Game::instance().getKey(KEY_K) && !Game::instance().getKey(KEY_L)) {
 				if (Game::instance().getKey(KEY_A))
 				{
@@ -94,10 +103,10 @@ void Player::update(int deltaTime)
 				}
 				else if (Game::instance().getKey(KEY_S))
 				{
-					if (sprite->animation() == MAIN_SR || (sprite->getAnimationFinished() && sprite->animation() == MAIN_MR) || sprite->animation() == MAIN_KR || sprite->animation() == MAIN_PR || sprite->animation() == MAIN_HR) {
+					if (sprite->animation() == MAIN_SR || (sprite->getAnimationFinished() && sprite->animation() == MAIN_MR) || sprite->animation() == MAIN_KR || sprite->animation() == MAIN_PR || sprite->animation() == MAIN_SPR) {
 						sprite->changeAnimation(MAIN_MR);
 					}
-					else if (sprite->animation() == MAIN_SL || (sprite->getAnimationFinished() && sprite->animation() == MAIN_ML) || sprite->animation() == MAIN_KL || sprite->animation() == MAIN_PL || sprite->animation() == MAIN_HL) {
+					else if (sprite->animation() == MAIN_SL || (sprite->getAnimationFinished() && sprite->animation() == MAIN_ML) || sprite->animation() == MAIN_KL || sprite->animation() == MAIN_PL || sprite->animation() == MAIN_SPL) {
 						sprite->changeAnimation(MAIN_ML);
 					}
 					posPlayer.y += 2;
@@ -112,10 +121,10 @@ void Player::update(int deltaTime)
 				}
 				else if (Game::instance().getKey(KEY_W))
 				{
-					if (sprite->animation() == MAIN_SR || (sprite->getAnimationFinished() && sprite->animation() == MAIN_MR) || sprite->animation() == MAIN_KR || sprite->animation() == MAIN_PR || sprite->animation() == MAIN_HR) {
+					if (sprite->animation() == MAIN_SR || (sprite->getAnimationFinished() && sprite->animation() == MAIN_MR) || sprite->animation() == MAIN_KR || sprite->animation() == MAIN_PR || sprite->animation() == MAIN_SPR) {
 						sprite->changeAnimation(MAIN_MR);
 					}
-					else if (sprite->animation() == MAIN_SL || (sprite->getAnimationFinished() && sprite->animation() == MAIN_ML) || sprite->animation() == MAIN_KL || sprite->animation() == MAIN_PL || sprite->animation() == MAIN_HL) {
+					else if (sprite->animation() == MAIN_SL || (sprite->getAnimationFinished() && sprite->animation() == MAIN_ML) || sprite->animation() == MAIN_KL || sprite->animation() == MAIN_PL || sprite->animation() == MAIN_SPL) {
 						sprite->changeAnimation(MAIN_ML);
 					}
 					posPlayer.y -= 2;
@@ -130,9 +139,9 @@ void Player::update(int deltaTime)
 				}
 				else
 				{
-					if (sprite->animation() == MAIN_ML || sprite->animation() == MAIN_KL || sprite->animation() == MAIN_PL || sprite->animation() == MAIN_HL)
+					if (sprite->animation() == MAIN_ML || sprite->animation() == MAIN_KL || sprite->animation() == MAIN_PL || sprite->animation() == MAIN_SPL)
 						sprite->changeAnimation(MAIN_SL);
-					else if (sprite->animation() == MAIN_MR || sprite->animation() == MAIN_KR || sprite->animation() == MAIN_PR || sprite->animation() == MAIN_HR)
+					else if (sprite->animation() == MAIN_MR || sprite->animation() == MAIN_KR || sprite->animation() == MAIN_PR || sprite->animation() == MAIN_SPR)
 						sprite->changeAnimation(MAIN_SR);
 				}
 			}
@@ -150,39 +159,30 @@ void Player::update(int deltaTime)
 			}
 			else if (Game::instance().getKey(KEY_L)) {
 				if (sprite->animation() == MAIN_SL || sprite->animation() == MAIN_ML)
-					sprite->changeAnimation(MAIN_HL);
+					sprite->changeAnimation(MAIN_SPL);
 				else if (sprite->animation() == MAIN_SR || sprite->animation() == MAIN_MR)
-					sprite->changeAnimation(MAIN_HR);
+					sprite->changeAnimation(MAIN_SPR);
 			}
 		}
 	}
 	else if (type_player == IA_PLAYER) {
-		if (sprite->getAnimationFinished() || (sprite->animation() != ENE_PL && sprite->animation() != ENE_PR)) {
-			int multiplicador = 0;
-			if (mainPlayer->getPosition().x + OFFSET_X < posPlayer.x) {
-				if(sprite->getAnimationFinished())
-					sprite->changeAnimation(ENE_ML);
-				multiplicador = -1;
-			}
-			else if(mainPlayer->getPosition().x + OFFSET_X > posPlayer.x) {
-				if (sprite->getAnimationFinished())
-					sprite->changeAnimation(ENE_MR);
-				multiplicador = 1;
-			}
-			else
-			{
-				sprite->changeAnimation(ENE_SR);
-			}
-
-			posPlayer.x += 2 * multiplicador;
-
-
-			if (map->collisionMoveLeft(posPlayer, glm::ivec2(width_player, height_player)))
-			{
-				posPlayer.x += 2;
-				sprite->changeAnimation(ENE_SL);
+		
+		if (sprite->getAnimationFinished()) 
+		{
+			std::random_device rd;
+			std::mt19937 gen(rd());
+			//This function creates a random number between 0-2 and is stored in dis(gen).
+			// You can change the name of dis if you like. 
+			std::uniform_int_distribution<> dis(0, 2);
+			//gen(dis) -> This will generate 1 random numbers between 0-2
+			int value = dis(gen);
+			if (value == FIGHTING) {
+				if (Game::instance().getAttackers() < MAX_ATTACKERS) {
+					move_player_to_fight();
+				}
 			}
 		}
+		
 	}
 	
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
@@ -209,32 +209,15 @@ glm::ivec2 Player::getPosition()
 	return posPlayer;
 }
 
+void Player::setFighting()
+{
 
-/*if(bJumping)
-{
-jumpAngle += JUMP_ANGLE_STEP;
-if(jumpAngle == 180)
-{
-bJumping = false;
-posPlayer.y = startY;
+	stateEnemy = FIGHTING;
 }
-else
+
+void Player::move_player_to_fight()
 {
-posPlayer.y = int(startY - 96 * sin(3.14159f * jumpAngle / 180.f));
-if(jumpAngle > 90)
-bJumping = !map->collisionMoveDown(posPlayer, glm::ivec2(32, 32), &posPlayer.y);
+	int x = mainPlayer->getPosition().x;
+	if(posPlayer.x < x) positionToMove = glm::vec2(x - OFFSET_X, posPlayer.y);
+	else positionToMove = glm::vec2(x + OFFSET_X, posPlayer.y);
 }
-}
-else
-{
-posPlayer.y += FALL_STEP;
-if(map->collisionMoveDown(posPlayer, glm::ivec2(32, 32), &posPlayer.y))
-{
-if(Game::instance().getSpecialKey(GLUT_KEY_UP))
-{
-bJumping = true;
-jumpAngle = 0;
-startY = posPlayer.y;
-}
-}
-}*/

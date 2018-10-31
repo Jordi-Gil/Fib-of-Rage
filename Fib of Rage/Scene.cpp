@@ -32,7 +32,6 @@ Scene::~Scene()
 	
 }
 
-void Scene::init() { }
 
 void Scene::update(int deltaTime)
 {

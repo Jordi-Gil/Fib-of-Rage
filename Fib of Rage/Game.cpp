@@ -8,7 +8,8 @@ void Game::init()
 {
 	bPlay = true;
 	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
-	gameScenes[scene]->init();
+	if(scene == LEVEL_1) dynamic_cast<Level*> (gameScenes[scene])->init(0);
+	else if (scene == MENU) dynamic_cast<Menu*> (gameScenes[scene])->init();
 	
 }
 
@@ -41,7 +42,7 @@ void Game::keyPressed(int key)
 	
 	if (key == ESC && scene == LEVEL_1) {
 		dynamic_cast<Menu*> (gameScenes[MENU])->setrenderMenu();
-		changeScene(MENU); 
+		changeScene(MENU,-1); 
 	};
 	
 	keys[key] = true;
@@ -84,14 +85,26 @@ bool Game::getSpecialKey(int key) const
 	return specialKeys[key];
 }
 
-void Game::changeScene(int value) 
+void Game::changeScene(int value, int player) 
 {
 	scene = value;
-	if(!gameScenes[scene]->getInit())
-		gameScenes[scene]->init();
-	if (scene == LEVEL_1) dynamic_cast<Level*> (gameScenes[scene])->restartLevel();
+	if (!gameScenes[scene]->getInit()) {
+		if (scene == LEVEL_1)dynamic_cast<Level*> (gameScenes[scene])->init(player);
+		else dynamic_cast<Menu*> (gameScenes[scene])->init();
+	}
+	if (scene == LEVEL_1) dynamic_cast<Level*> (gameScenes[scene])->restartLevel(player);
 }
 
 void Game::exitGame() {
 	bPlay = false;
+}
+
+int Game::getAttackers()
+{
+	return dynamic_cast<Level *> (gameScenes[LEVEL_1])->getAttackers();
+}
+
+void Game::setAttackers(int value)
+{
+	dynamic_cast<Level *> (gameScenes[LEVEL_1])->setAttackers(value);
 }
