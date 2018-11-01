@@ -28,6 +28,7 @@ private:
 	void setAnimations();
 	void setMainPlayer();
 
+
 protected:
 	TileMap *collision;
 	Player *mainPlayer;
@@ -40,6 +41,9 @@ protected:
 	int numAttackers;
 
 	bool showCollisions = false;
+
+	int max_x;
+	int min_x;
 
 };
 

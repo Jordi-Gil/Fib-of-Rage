@@ -23,13 +23,20 @@
 #define KEY_D 100
 
 #define SPEED 8
+#define MOVE_SPEED 2;
 
 #define OFFSET_X 90
 
 #define MAX_ATTACKERS 2
+#define GAP_UNTIL_MOVE 25
 
+#define P_WIDTH 90*2
+#define P_HEIGHT 120*2
 
-enum  PLAYERS { RYU, HONDA, BISON };
+enum  Players
+{ 
+	RYU, HONDA, BISON 
+};
 
 enum UserAnims
 {
@@ -43,7 +50,7 @@ enum EnemyAnims
 
 enum StateEnemy 
 {
-	WAITING, MOVING, FIGHTING
+	WAITING, MOVING, FIGHTING, HITTED
 };
 
 void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram, const string &filename, vector<pair<int, vector<glm::vec2>>> &animations, glm::ivec2 tam, glm::vec2 prop, int type, Player *player)
@@ -84,7 +91,7 @@ void Player::update(int deltaTime)
 					if (sprite->animation() != MAIN_ML)
 						sprite->changeAnimation(MAIN_ML);
 					posPlayer.x -= 2;
-					if (map->collisionMoveLeft(posPlayer, glm::ivec2(width_player, height_player)))
+					if (map->collisionMoveLeft(posPlayer, glm::ivec2(width_player, height_player)) || posPlayer.x <= min_x)
 					{
 						posPlayer.x += 2;
 						sprite->changeAnimation(MAIN_SL);
@@ -95,7 +102,7 @@ void Player::update(int deltaTime)
 					if (sprite->animation() != MAIN_MR)
 						sprite->changeAnimation(MAIN_MR);
 					posPlayer.x += 2;
-					if (map->collisionMoveRight(posPlayer, glm::ivec2(width_player, height_player)))
+					if (map->collisionMoveRight(posPlayer, glm::ivec2(width_player, height_player)) || posPlayer.x > max_x)
 					{
 						posPlayer.x -= 2;
 						sprite->changeAnimation(MAIN_SR);
@@ -160,6 +167,7 @@ void Player::update(int deltaTime)
 			else if (Game::instance().getKey(KEY_L)) {
 				if (sprite->animation() == MAIN_SL || sprite->animation() == MAIN_ML)
 					sprite->changeAnimation(MAIN_SPL);
+				
 				else if (sprite->animation() == MAIN_SR || sprite->animation() == MAIN_MR)
 					sprite->changeAnimation(MAIN_SPR);
 			}
@@ -167,18 +175,32 @@ void Player::update(int deltaTime)
 	}
 	else if (type_player == IA_PLAYER) {
 		
-		if (sprite->getAnimationFinished()) 
+		if (sprite->getAnimationFinished())
 		{
-			std::random_device rd;
-			std::mt19937 gen(rd());
-			//This function creates a random number between 0-2 and is stored in dis(gen).
-			// You can change the name of dis if you like. 
-			std::uniform_int_distribution<> dis(0, 2);
-			//gen(dis) -> This will generate 1 random numbers between 0-2
-			int value = dis(gen);
-			if (value == FIGHTING) {
-				if (Game::instance().getAttackers() < MAX_ATTACKERS) {
-					move_player_to_fight();
+			if (stateEnemy != HITTED) {
+				if (!freeChooseDest) {
+					gotoDestination();
+					if (map->collisionMoveUp(posPlayer, glm::ivec2(width_player, height_player))) 
+						posPlayer.y += 2;
+					else if (map->collisionMoveDown(posPlayer, glm::ivec2(width_player, height_player))) 
+						posPlayer -= 2;
+					if (map->collisionMoveLeft(posPlayer, glm::ivec2(width_player, height_player)) || posPlayer.x <= min_x) 
+						posPlayer.x += 2;
+					else if (map->collisionMoveRight(posPlayer, glm::ivec2(width_player, height_player)) || posPlayer.x >= max_x) 
+						posPlayer.x -= 2;
+					
+					if (direction && stateEnemy != WAITING) 
+						sprite->changeAnimation(ENE_ML);
+					else if(!direction && stateEnemy != WAITING) 
+						sprite->changeAnimation(ENE_ML);
+					else if (direction && stateEnemy == WAITING) 
+						sprite->changeAnimation(ENE_SL);
+					else
+						sprite->changeAnimation(ENE_SR);
+				}
+				else if (stateEnemy == WAITING) {
+					if (direction) sprite->changeAnimation(ENE_SL);
+					else sprite->changeAnimation(ENE_SR);
 				}
 			}
 		}
@@ -209,15 +231,142 @@ glm::ivec2 Player::getPosition()
 	return posPlayer;
 }
 
-void Player::setFighting()
-{
-
-	stateEnemy = FIGHTING;
-}
-
 void Player::move_player_to_fight()
 {
-	int x = mainPlayer->getPosition().x;
-	if(posPlayer.x < x) positionToMove = glm::vec2(x - OFFSET_X, posPlayer.y);
-	else positionToMove = glm::vec2(x + OFFSET_X, posPlayer.y);
+	if (freeChooseDest) {
+		int x = mainPlayer->getPosition().x;
+		int y = mainPlayer->getPosition().y;
+		if (posPlayer.x < x) {
+			positionToMove = glm::vec2(x - OFFSET_X, y - P_HEIGHT);
+			direction = false;
+		}
+		else {
+			positionToMove = glm::vec2(x + OFFSET_X, y - P_HEIGHT);
+			direction = true;
+		}
+		freeChooseDest = false;
+	}
+}
+
+void Player::move_around_player()
+{
+	if (freeChooseDest) {
+		std::random_device rd;
+		std::mt19937 gen(rd());
+		//This function creates a random number between 0-n and is stored in dis(gen).
+		// You can change the name of dis if you like. 
+		int n1 = max_x - min_x;
+		std::uniform_int_distribution<> disX(0, n1);
+		int n2 = max_y - min_y;
+		std::uniform_int_distribution<> disY(0, n2);
+		//gen(dis) -> This will generate 1 random numbers between 0-1
+		int valueX = disX(gen);
+		int valueY = disY(gen);
+		positionToMove.x = valueX + min_x;
+		positionToMove.y = valueY + min_y;
+
+		freeChooseDest = false;
+	}
+}
+
+void Player::gotoDestination()
+{
+
+	int temp_x = posPlayer.x;
+	int temp_y = posPlayer.y;
+
+	if (stateEnemy == HITTED || stateEnemy == FIGHTING) {
+		return;
+	}
+
+	if (temp_x == positionToMove.x && temp_x == positionToMove.y) {
+		positionToMove.x = 0;
+		positionToMove.y = 0;
+	}
+
+	if (positionToMove.x == 0 && positionToMove.y == 0)
+	{
+		if (timeHitted == GAP_UNTIL_MOVE) {
+			stateEnemy = WAITING;
+			freeChooseDest = true;
+		}
+		else {
+			timeHitted++;
+		}
+		return;
+	}
+
+	stateEnemy = MOVING;
+
+	if (direction) {
+
+		if (temp_x - 2 > positionToMove.x) {
+			temp_x -= 2;
+		}
+		else if (temp_x - 2 <= positionToMove.x) {
+			temp_x -= temp_x - positionToMove.x;
+			stateEnemy = WAITING;
+		}
+	}
+	else {
+		if (temp_x + 2 < positionToMove.x) {
+			temp_x += 2;
+		}
+		else if (temp_x + 2 >= positionToMove.x) {
+			temp_x += positionToMove.x - posPlayer.x;
+			stateEnemy = WAITING;
+		}
+	}
+
+
+	if (positionToMove.y > temp_y) {
+		freeChooseDest = false;
+		if (temp_y + 2 < positionToMove.y) {
+			temp_y += 2;
+		}
+		else {
+			temp_y += positionToMove.y - posPlayer.y;
+			stateEnemy = WAITING;
+		}
+
+		if (positionToMove.y < temp_y) {
+			freeChooseDest = false;
+			if (posPlayer.y - 2 > positionToMove.y) {
+				posPlayer.y -= 2;
+			}
+			else {
+				posPlayer -= positionToMove.y - posPlayer.y;
+				stateEnemy = WAITING;
+			}
+		}
+	}
+
+	posPlayer.x = temp_x;
+	posPlayer.y = temp_y;
+}
+
+void Player::changeState()
+{
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	//This function creates a random number between 0-2 and is stored in dis(gen).
+	// You can change the name of dis if you like. 
+	std::uniform_int_distribution<> dis(0, 2);
+	//gen(dis) -> This will generate 1 random numbers between 0-1
+	int value = dis(gen);
+	if (value == MOVING) {
+		stateEnemy = MOVING;
+		move_around_player();
+	}
+	else if (value == FIGHTING) {
+		stateEnemy = FIGHTING;
+		move_player_to_fight();
+	}
+	else stateEnemy = WAITING;
+}
+
+void Player::set_X_max_min(int x_max, int x_min)
+{
+	max_x = x_max;
+	min_x = x_min;
 }

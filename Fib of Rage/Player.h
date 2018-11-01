@@ -21,13 +21,14 @@ public:
 	void setTileMap(TileMap *tileMap);
 	void setPosition(const glm::vec2 &pos);
 	glm::ivec2 getPosition();
-	void gotoDestination();
+	void changeState();
 
+	void set_X_max_min(int x_max, int x_min);
 
 private:
 	void move_player_to_fight();
-	void setFighting();
-
+	void move_around_player();
+	void gotoDestination();
 private:
 
 	bool bJumping;
@@ -41,10 +42,20 @@ private:
 
 	int width_player, height_player;
 	int stateEnemy;
+	int timeHitted;
+	bool direction; // 0 left 1 right
 
 	int type_player; // 0 - User 1 - "IA"
 
-	glm::vec2 positionToMove;
+	glm::ivec2 positionToMove;
+
+	int max_x;
+	int min_x;
+	int max_y = 318;
+	int min_y = 206;
+
+	bool freeChooseDest = true;
+
 };
 
 
