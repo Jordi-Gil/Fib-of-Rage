@@ -108,6 +108,7 @@ void Level::update(int deltaTime) {
 	for each(Player *player in characters) {
 		player->update(deltaTime);
 		player->changeState();
+
 	}
 }
 
