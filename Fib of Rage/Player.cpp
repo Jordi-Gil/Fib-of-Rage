@@ -24,7 +24,7 @@
 
 #define SPEED 8
 
-#define OFFSET_X 90
+#define OFFSET_X 50
 
 #define MAX_ATTACKERS 2
 #define GAP_UNTIL_MOVE 25
@@ -49,7 +49,7 @@ enum EnemyAnims
 
 enum StateEnemy 
 {
-	WAITING, MOVING, FIGHTING, HITTED
+	WAITING, MOVING, MOVING_TO_FIGHT, FIGHTING, HITTED
 };
 
 enum Orientation
@@ -181,20 +181,24 @@ void Player::update(int deltaTime)
 		
 		gotoDestination();
 
-		if (map->collisionMoveUp(posPlayer, glm::ivec2(width_player, height_player))) {
-			posPlayer.y += 2;
-		}
-		else if (map->collisionMoveDown(posPlayer, glm::ivec2(width_player, height_player))) {
-			posPlayer -= 2;
-		}
+		if (map->collisionMoveUp(posPlayer, glm::ivec2(width_player, height_player)))
+			posPlayer.y += speed_player;
+		else if (map->collisionMoveDown(posPlayer, glm::ivec2(width_player, height_player)))
+			posPlayer.y -= speed_player;
+		if (map->collisionMoveLeft(posPlayer, glm::ivec2(width_player, height_player)))
+			posPlayer.x += speed_player;
+		else if (map->collisionMoveRight(posPlayer, glm::ivec2(width_player, height_player)))
+			posPlayer.x -= speed_player;
 
-		if (map->collisionMoveLeft(posPlayer, glm::ivec2(width_player, height_player))) {
-			posPlayer.x += 2;
+		if (posPlayer.x < mainPlayer->getPosition().x) orientation = RIGHT;
+		else orientation = LEFT;
+
+		if (sprite->getAnimationFinished()) {
+			if (orientation == RIGHT)
+				sprite->changeAnimation(ENE_MR);
+			else if (orientation == LEFT)
+				sprite->changeAnimation(ENE_ML);
 		}
-		else if (map->collisionMoveRight(posPlayer, glm::ivec2(width_player, height_player))) {
-			posPlayer.x -= 2;
-		}
-		
 	}
 	
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
@@ -228,13 +232,12 @@ void Player::move_player_to_fight()
 		int y = mainPlayer->getPosition().y;
 		if (posPlayer.x < x) {
 			positionToMove = glm::vec2(x - OFFSET_X, y - P_HEIGHT);
-			orientation = LEFT; // Izquierda
+			orientation = RIGHT; // DERECHA
 		}
 		else {
 			positionToMove = glm::vec2(x + OFFSET_X, y - P_HEIGHT);
-			orientation = RIGHT; // Derecha
+			orientation = LEFT; // IZQUIERDA
 		}
-		
 		freeChooseDest = false;
 	}
 }
@@ -254,8 +257,6 @@ void Player::move_around_player()
 		positionToMove.x = valueX;
 		positionToMove.y = valueY;
 
-		
-
 		freeChooseDest = false;
 	}
 }
@@ -264,7 +265,7 @@ void Player::gotoDestination()
 {
 	glm::ivec2 temp;
 	temp.x = posPlayer.x;
-	temp.y = posPlayer.y - P_HEIGHT;
+	temp.y = posPlayer.y;
 
 	if (temp.x == positionToMove.x && temp.y == positionToMove.y) {
 		positionToMove.x = 0;
@@ -274,61 +275,52 @@ void Player::gotoDestination()
 		return;
 	}
 
-
-	stateEnemy = MOVING;
+	// puedo pegar //
 
 	if (temp.x < positionToMove.x) 
 	{
-		// Sumaremos a la X la velocidad
-		orientation = RIGHT;
 		if (temp.x + speed_player < positionToMove.x)
 		{
 			temp.x += speed_player;
 		}
-		else if (temp.x + speed_player >= positionToMove.x) 
+		else
 		{
-			temp.x += positionToMove.x - posPlayer.x;
-			//Canviar estado a quieto
+			temp.x = positionToMove.x;
 		}
 	}
 	else if (temp.x > positionToMove.x) 
 	{
-		orientation = LEFT;
 		if (temp.x - speed_player > positionToMove.x) 
 		{
 			temp.x -= speed_player;
 		}
 		else if (temp.x - speed_player <= positionToMove.x)
 		{
-			temp.x = temp.x - positionToMove.x;
-			//Canviar estado a quieto
+			temp.x = positionToMove.x;
 		}
 	}
 
 	if (temp.y < positionToMove.y)
 	{
-		freeChooseDest = false;
 		if (temp.y + speed_player < positionToMove.y)
 		{
 			temp.y += speed_player;
 		}
 		else if (temp.y + speed_player >= positionToMove.y)
 		{
-			temp.y += temp.y - posPlayer.y;
+			temp.y = positionToMove.y;
 		}
 	}
 	
 	if (temp.y > positionToMove.y)
 	{
-		freeChooseDest = false;
 		if (temp.y - speed_player > positionToMove.y)
 		{
 			temp.y -= speed_player;
 		}
 		else
 		{
-			temp.y -= temp.y - posPlayer.y;
-			//Cambiar estado a quieto
+			temp.y = positionToMove.y;
 		}
 	}
 
@@ -337,7 +329,7 @@ void Player::gotoDestination()
 }
 
 void Player::changeState()
-{/*
+{
 	std::random_device rd;
 	std::mt19937 gen(rd());
 	//This function creates a random number between 0-2 and is stored in dis(gen).
@@ -354,8 +346,7 @@ void Player::changeState()
 		move_player_to_fight();
 	}
 	else stateEnemy = WAITING;
-	*/
-	move_around_player();
+	
 }
 
 void Player::set_X_max_min(int x_max, int x_min)
@@ -363,36 +354,3 @@ void Player::set_X_max_min(int x_max, int x_min)
 	max_x = x_max;
 	min_x = x_min;
 }
-
-
-/*
-if (sprite->getAnimationFinished())
-{
-if (stateEnemy != HITTED) {
-if (!freeChooseDest) {
-gotoDestination();
-if (map->collisionMoveUp(posPlayer, glm::ivec2(width_player, height_player)))
-posPlayer.y += 2;
-else if (map->collisionMoveDown(posPlayer, glm::ivec2(width_player, height_player)))
-posPlayer -= 2;
-if (map->collisionMoveLeft(posPlayer, glm::ivec2(width_player, height_player)) )
-posPlayer.x += 2;
-else if (map->collisionMoveRight(posPlayer, glm::ivec2(width_player, height_player)) )
-posPlayer.x -= 2;
-
-if (direction && stateEnemy != WAITING)
-sprite->changeAnimation(ENE_MR);
-else if(!direction && stateEnemy != WAITING)
-sprite->changeAnimation(ENE_ML);
-else if (direction && stateEnemy == WAITING)
-sprite->changeAnimation(ENE_SR);
-else
-sprite->changeAnimation(ENE_SL);
-}
-else if (stateEnemy == WAITING) {
-if (direction) sprite->changeAnimation(ENE_SL);
-else sprite->changeAnimation(ENE_SR);
-}
-}
-}
-*/

@@ -201,7 +201,7 @@ void Level::setAnimations()
 	characters[0]->setPosition(glm::vec2(1200, INIT_PLAYER_Y_TILES + 20));
 	characters[0]->setTileMap(collision);//channge for scenario when collision load is diseabled
 	characters[0]->set_X_max_min(max_x, min_x);
-
+	
 	//Jack
 	animations.clear();
 	animations.resize(10);
@@ -243,7 +243,7 @@ void Level::setAnimations()
 	characters[2]->setPosition(glm::vec2(1200, INIT_PLAYER_Y_TILES + 80));
 	characters[2]->setTileMap(collision);//channge for scenario when collision load is diseabled
 	characters[2]->set_X_max_min(max_x, min_x);
-
+	
 }
 
 void Level::setMainPlayer() {
