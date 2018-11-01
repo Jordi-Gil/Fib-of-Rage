@@ -35,8 +35,8 @@ protected:
 	int userPlayer;
 	vector<Player *> characters;
 
-	TexturedQuad *background;
-	Texture tex;
+	TexturedQuad *background, *life_bar, *yellow_bar;
+	Texture tex, tex_life, tex_yellow;
 
 	int numAttackers;
 

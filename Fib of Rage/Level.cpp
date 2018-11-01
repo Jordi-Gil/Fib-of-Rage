@@ -77,6 +77,18 @@ void Level::init(int player)
 	userPlayer = player;
 	setAnimations();
 
+	glm::vec2 geom[2] = { glm::vec2(10.f, 10.f), glm::vec2(200, 30.f) };
+	glm::vec2 texCoords[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
+
+	life_bar = TexturedQuad::createTexturedQuad(geom, texCoords, texProgram);
+	tex_life.loadFromFile("Resources/LevelBackground/Level_Bridge/red_bar.png", TEXTURE_PIXEL_FORMAT_RGBA);
+
+	glm::vec2 geom2[2] = { glm::vec2(10.f, 10.f), glm::vec2(200, 30.f) };
+	glm::vec2 texCoords2[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
+
+	yellow_bar = TexturedQuad::createTexturedQuad(geom2, texCoords2, texProgram);
+	tex_yellow.loadFromFile("Resources/LevelBackground/Level_Bridge/yellow_bar.png", TEXTURE_PIXEL_FORMAT_RGBA);
+
 	projection = glm::ortho(float(cameraLeft), float(cameraRight), float(cameraBottom), float(cameraTop));
 	currentTime = 0.0f;
 
@@ -87,6 +99,8 @@ void Level::render()
 {
 	Scene::render();
 	background->render(tex);
+	life_bar->render(tex_life);
+	yellow_bar->render(tex_yellow);
 	if (showCollisions) collision->render();
 	sort(characters.begin(), characters.end(), compare);
 	bool rendered = false;
@@ -108,7 +122,6 @@ void Level::update(int deltaTime) {
 	for each(Player *player in characters) {
 		player->update(deltaTime);
 		player->changeState();
-
 	}
 }
 
