@@ -33,7 +33,7 @@
 #define P_WIDTH 90*2
 #define P_HEIGHT 120*2
 
-enum  Players
+enum Players
 { 
 	RYU, HONDA, BISON 
 };
@@ -184,19 +184,19 @@ void Player::update(int deltaTime)
 						posPlayer.y += 2;
 					else if (map->collisionMoveDown(posPlayer, glm::ivec2(width_player, height_player))) 
 						posPlayer -= 2;
-					if (map->collisionMoveLeft(posPlayer, glm::ivec2(width_player, height_player)) || posPlayer.x <= min_x) 
+					if (map->collisionMoveLeft(posPlayer, glm::ivec2(width_player, height_player)) ) 
 						posPlayer.x += 2;
-					else if (map->collisionMoveRight(posPlayer, glm::ivec2(width_player, height_player)) || posPlayer.x >= max_x) 
+					else if (map->collisionMoveRight(posPlayer, glm::ivec2(width_player, height_player)) ) 
 						posPlayer.x -= 2;
 					
 					if (direction && stateEnemy != WAITING) 
-						sprite->changeAnimation(ENE_ML);
+						sprite->changeAnimation(ENE_MR);
 					else if(!direction && stateEnemy != WAITING) 
 						sprite->changeAnimation(ENE_ML);
 					else if (direction && stateEnemy == WAITING) 
-						sprite->changeAnimation(ENE_SL);
-					else
 						sprite->changeAnimation(ENE_SR);
+					else
+						sprite->changeAnimation(ENE_SL);
 				}
 				else if (stateEnemy == WAITING) {
 					if (direction) sprite->changeAnimation(ENE_SL);
@@ -238,11 +238,11 @@ void Player::move_player_to_fight()
 		int y = mainPlayer->getPosition().y;
 		if (posPlayer.x < x) {
 			positionToMove = glm::vec2(x - OFFSET_X, y - P_HEIGHT);
-			direction = false;
+			direction = false; // Izquierda
 		}
 		else {
 			positionToMove = glm::vec2(x + OFFSET_X, y - P_HEIGHT);
-			direction = true;
+			direction = true; // Derecha
 		}
 		
 		freeChooseDest = false;
@@ -278,11 +278,7 @@ void Player::gotoDestination()
 	int temp_x = posPlayer.x;
 	int temp_y = posPlayer.y;
 
-	if (stateEnemy == HITTED || stateEnemy == FIGHTING) {
-		return;
-	}
-
-	if (temp_x == positionToMove.x && temp_x == positionToMove.y) {
+	if (temp_x == positionToMove.x && temp_y == positionToMove.y) {
 		positionToMove.x = 0;
 		positionToMove.y = 0;
 	}
