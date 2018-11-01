@@ -244,6 +244,7 @@ void Player::move_player_to_fight()
 			positionToMove = glm::vec2(x + OFFSET_X, y - P_HEIGHT);
 			direction = true;
 		}
+		
 		freeChooseDest = false;
 	}
 }
@@ -264,6 +265,8 @@ void Player::move_around_player()
 		int valueY = disY(gen);
 		positionToMove.x = valueX + min_x;
 		positionToMove.y = valueY + min_y;
+
+		positionToMove.y -= P_HEIGHT;
 
 		freeChooseDest = false;
 	}
