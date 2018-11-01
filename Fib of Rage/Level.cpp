@@ -120,8 +120,8 @@ void Level::update(int deltaTime) {
 	Scene::update(deltaTime);
 	mainPlayer->update(deltaTime);
 	for each(Player *player in characters) {
-		player->update(deltaTime);
 		player->changeState();
+		player->update(deltaTime);
 	}
 }
 

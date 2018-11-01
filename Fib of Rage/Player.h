@@ -43,7 +43,7 @@ private:
 	int width_player, height_player;
 	int stateEnemy;
 	int timeHitted;
-	bool direction; // 0 left 1 right
+	int orientation; // 0 left 1 right
 
 	int type_player; // 0 - User 1 - "IA"
 
@@ -51,8 +51,10 @@ private:
 
 	int max_x;
 	int min_x;
-	int max_y = 318;
-	int min_y = 206;
+	const int max_y = 318;
+	const int min_y = 206;
+
+	const int speed_player = 2;
 
 	bool freeChooseDest = true;
 
