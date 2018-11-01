@@ -57,6 +57,7 @@ enum Orientation
 	LEFT, RIGHT
 };
 
+
 void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram, const string &filename, vector<pair<int, vector<glm::vec2>>> &animations, glm::ivec2 tam, glm::vec2 prop, int type, Player *player)
 {
 	bJumping = false;
@@ -194,10 +195,14 @@ void Player::update(int deltaTime)
 		else orientation = LEFT;
 
 		if (sprite->getAnimationFinished()) {
-			if (orientation == RIGHT)
+			if (orientation == RIGHT && stateEnemy != WAITING)
 				sprite->changeAnimation(ENE_MR);
-			else if (orientation == LEFT)
+			else if (orientation == LEFT && stateEnemy != WAITING)
 				sprite->changeAnimation(ENE_ML);
+			else if (orientation == RIGHT && stateEnemy == WAITING)
+				sprite->changeAnimation(ENE_SR);
+			else if (orientation == LEFT && stateEnemy == WAITING)
+				sprite->changeAnimation(ENE_SL);
 		}
 	}
 	
@@ -228,6 +233,7 @@ glm::ivec2 Player::getPosition()
 void Player::move_player_to_fight()
 {
 	if (freeChooseDest) {
+		stateEnemy = MOVING_TO_FIGHT;
 		int x = mainPlayer->getPosition().x;
 		int y = mainPlayer->getPosition().y;
 		if (posPlayer.x < x) {
@@ -245,15 +251,14 @@ void Player::move_player_to_fight()
 void Player::move_around_player()
 {
 	if (freeChooseDest) {
+		stateEnemy = MOVING;
+
 		std::random_device rd;
-		std::mt19937 gen(rd());
-		//This function creates a random number between 0-n and is stored in dis(gen).
-		// You can change the name of dis if you like. 
 		std::uniform_int_distribution<> disX(min_x, max_x);
 		std::uniform_int_distribution<> disY(min_y, max_y);
 		//gen(dis) -> This will generate 1 random numbers between 0-1
-		int valueX = disX(gen);
-		int valueY = disY(gen);
+		int valueX = disX(rd);
+		int valueY = disY(rd);
 		positionToMove.x = valueX;
 		positionToMove.y = valueY;
 
@@ -270,8 +275,10 @@ void Player::gotoDestination()
 	if (temp.x == positionToMove.x && temp.y == positionToMove.y) {
 		positionToMove.x = 0;
 		positionToMove.y = 0;
-
-		freeChooseDest = true;
+		std::random_device rd;
+		std::uniform_int_distribution<int> dis(0, 500);
+		if(dis(rd) < 50)
+			freeChooseDest = true;
 		return;
 	}
 
@@ -331,21 +338,20 @@ void Player::gotoDestination()
 void Player::changeState()
 {
 	std::random_device rd;
-	std::mt19937 gen(rd());
-	//This function creates a random number between 0-2 and is stored in dis(gen).
-	// You can change the name of dis if you like. 
-	std::uniform_int_distribution<> dis(0, 2);
-	//gen(dis) -> This will generate 1 random numbers between 0-1
-	int value = dis(gen);
+	std::uniform_int_distribution<int> dis(0,2);
+	int value = dis(rd);
 	if (value == MOVING) {
-		stateEnemy = MOVING;
 		move_around_player();
 	}
-	else if (value == FIGHTING) {
-		stateEnemy = FIGHTING;
+	else if (value == MOVING_TO_FIGHT) {
 		move_player_to_fight();
 	}
-	else stateEnemy = WAITING;
+	else {
+		stateEnemy = WAITING;
+		std::uniform_int_distribution<int> dis2(0, 500);
+		if (dis2(rd) < 50)
+			freeChooseDest = true;
+	}
 	
 }
 
