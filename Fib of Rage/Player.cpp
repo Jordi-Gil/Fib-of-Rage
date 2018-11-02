@@ -58,13 +58,14 @@ enum Orientation
 };
 
 
-void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram, const string &filename, vector<pair<int, vector<glm::vec2>>> &animations, glm::ivec2 tam, glm::vec2 prop, int type, Player *player)
+void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram, const string &filename, vector<pair<int, vector<glm::vec2>>> &animations, glm::ivec2 tam, glm::vec2 prop, int type, Player *player, CharType charType)
 {
 	bJumping = false;
 	width_player = tam.x;
 	height_player = tam.y;
 	type_player = type;
 	mainPlayer = player;
+	this->charType = charType;
 	spritesheet.loadFromFile(filename, TEXTURE_PIXEL_FORMAT_RGBA);
 	
 	sprite = Sprite::createSprite(tam, prop, &spritesheet, &shaderProgram);
@@ -172,12 +173,12 @@ void Player::update(int deltaTime)
 				if (sprite->animation() == MAIN_SL || sprite->animation() == MAIN_ML)
 				{
 					sprite->changeAnimation(MAIN_PL);
-					checkCollisions();
+					checkCollisions('j');
 				}
 				else if (sprite->animation() == MAIN_SR || sprite->animation() == MAIN_MR)
 				{
 					sprite->changeAnimation(MAIN_PR);
-					checkCollisions();
+					checkCollisions('j');
 				}
 			}
 			else if (Game::instance().getKey(KEY_L)) {
@@ -403,19 +404,31 @@ void Player::setHitted()
 	positionToMove = glm::ivec2(0,0);
 }
 
-void Player::checkCollisions()
+void Player::checkCollisions(char c)
 {
+	int minx1, miny1, maxx1, maxy1, minx2, miny2, maxx2, maxy2;
+	if (c == 'j' && this->charType==RYUT) {
+		minx1 = posPlayer.x + 70; miny1 = posPlayer.y + 47;
+		maxx1 = posPlayer.x + 95; maxy1 = posPlayer.y + 53;
+	}
 	for each(Player *p in enemies)
 	{
 		//Abadede 35 a 110 colision ; 50 a 75
 		//puño (70 , 47) ; (95 , 53) 
 		// (minx1 < maxx2) && (minx2 < maxx1)
 		// (miny1 < maxy2) && (miny2 < maxy1)
-		int minx1, miny1, maxx1, maxy1, minx2, miny2, maxx2, maxy2;
-		minx1 = posPlayer.x + 70; miny1 = posPlayer.y + 47;
-		maxx1 = posPlayer.x + 95; maxy1 = posPlayer.y + 53;
-		minx2 = p->getPosition().x + 40; miny2 = p->getPosition().y + 40;
-		maxx2 = p->getPosition().x + 70; maxy2 = p->getPosition().y + 65;
+		if (p->charType == A) {
+			minx2 = p->getPosition().x + 40; miny2 = p->getPosition().y + 40;
+			maxx2 = p->getPosition().x + 70; maxy2 = p->getPosition().y + 65;
+		}
+		else if (p->charType == J) {
+			minx2 = p->getPosition().x + 50; miny2 = p->getPosition().y + 55;
+			maxx2 = p->getPosition().x + 75; maxy2 = p->getPosition().y + 80;
+		}
+		else if (p->charType == Z) {
+			minx2 = p->getPosition().x + 50; miny2 = p->getPosition().y + 60;
+			maxx2 = p->getPosition().x + 75; maxy2 = p->getPosition().y + 90;
+		}
 		if ((minx1 < maxx2) && (minx2<maxx1) && ((miny1 < maxy2 )&&(miny2<maxy1)))
 		{
 			p->setHitted();

@@ -9,13 +9,14 @@
 // Player is basically a Sprite that represents the player. As such it has
 // all properties it needs to track its movement, jumping, and collisions.
 
+enum CharType { A, J, Z, B1, B2, RYUT, HONDAT,BISONT};
 
 class Player
 {
 
 public:
 	void init(	const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram, const string &filename, vector<pair<int, vector<glm::vec2>>> &animations, 
-				glm::ivec2 tam, glm::vec2 prop, int type, Player *player);
+				glm::ivec2 tam, glm::vec2 prop, int type, Player *player,CharType enemyType);
 	void update(int deltaTime);
 	void render();
 
@@ -27,12 +28,13 @@ public:
 	void set_X_max_min(int x_max, int x_min);
 	void setHitted();
 	void setEnemies(const vector<Player *> &enemies);
+	CharType charType;
 
 private:
 	void move_player_to_fight();
 	void move_around_player();
 	void gotoDestination();
-	void checkCollisions();
+	void checkCollisions(char c);
 
 private:
 

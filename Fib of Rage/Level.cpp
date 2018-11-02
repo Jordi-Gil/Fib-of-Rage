@@ -200,7 +200,7 @@ void Level::setAnimations()
 	animations[9] = make_pair(ENE_DL, vector < glm::vec2> {	glm::vec2(1  / 16.f, 0.5f), glm::vec2(0.0f, 0.5f)}); //DEAD LEFT
 
 	characters[0] = new Player();
-	characters[0]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Abadede/abadede_enemy_1.png", animations, glm::ivec2(P_WIDTH, P_HEIGHT), glm::vec2(1 / 16.f, 0.5f), IA_PLAYER, mainPlayer);
+	characters[0]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Abadede/abadede_enemy_1.png", animations, glm::ivec2(P_WIDTH, P_HEIGHT), glm::vec2(1 / 16.f, 0.5f), IA_PLAYER, mainPlayer,A);
 	characters[0]->setPosition(glm::vec2(1200, INIT_PLAYER_Y_TILES + 20));
 	characters[0]->setTileMap(collision);//channge for scenario when collision load is diseabled
 	characters[0]->set_X_max_min(max_x, min_x);
@@ -221,7 +221,7 @@ void Level::setAnimations()
 	animations[9] = make_pair(ENE_DL, vector < glm::vec2> {	glm::vec2(1  / 17.f, 0.0f), glm::vec2(0.0f, 0.0f)}); //DEAD LEFT
 
 	characters[1] = new Player();
-	characters[1]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Jack/jack_enemy_3.png", animations, glm::ivec2(P_WIDTH, P_HEIGHT), glm::vec2(1 / 17.f, 0.5f), IA_PLAYER, mainPlayer);
+	characters[1]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Jack/jack_enemy_3.png", animations, glm::ivec2(P_WIDTH, P_HEIGHT), glm::vec2(1 / 17.f, 0.5f), IA_PLAYER, mainPlayer,J);
 	characters[1]->setPosition(glm::vec2(1200, INIT_PLAYER_Y_TILES + 30));
 	characters[1]->setTileMap(collision);//channge for scenario when collision load is diseabled
 	characters[1]->set_X_max_min(max_x, min_x);
@@ -242,7 +242,7 @@ void Level::setAnimations()
 	animations[9] = make_pair(ENE_DL, vector < glm::vec2> {	glm::vec2(1  / 16.f, 0.5f), glm::vec2(0.0f, 0.5f)}); //DEAD LEFT
 
 	characters[2] = new Player();
-	characters[2]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Zamza/zamza_enemy_2.png", animations, glm::ivec2(P_WIDTH, P_HEIGHT), glm::vec2(1 / 16.f, 0.5f), IA_PLAYER, mainPlayer);
+	characters[2]->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Zamza/zamza_enemy_2.png", animations, glm::ivec2(P_WIDTH, P_HEIGHT), glm::vec2(1 / 16.f, 0.5f), IA_PLAYER, mainPlayer,Z);
 	characters[2]->setPosition(glm::vec2(1200, INIT_PLAYER_Y_TILES + 80));
 	characters[2]->setTileMap(collision);//channge for scenario when collision load is diseabled
 	characters[2]->set_X_max_min(max_x, min_x);
@@ -278,7 +278,7 @@ void Level::setMainPlayer() {
 		animations[12] = make_pair(MAIN_HR, vector < glm::vec2> {	glm::vec2(24 / 27.f, 0.0f), glm::vec2(25 / 27.f, 0.0f), glm::vec2(26 / 27.f, 0.0f)}); // Hit right
 		animations[13] = make_pair(MAIN_HL, vector < glm::vec2> {	glm::vec2(2 / 27.f, 0.5f), glm::vec2(1 / 27.f, 0.5f), glm::vec2(0.0f, 0.5f)}); //hit left
 
-		mainPlayer->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Ryu/ryu.png", animations, glm::ivec2(P_WIDTH, P_HEIGHT), glm::vec2(1 / 27.f, 0.5f), USER_PLAYER, NULL);
+		mainPlayer->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Ryu/ryu.png", animations, glm::ivec2(P_WIDTH, P_HEIGHT), glm::vec2(1 / 27.f, 0.5f), USER_PLAYER, NULL,RYUT);
 		mainPlayer->setPosition(glm::vec2(INIT_PLAYER_X_TILES, INIT_PLAYER_Y_TILES));
 		mainPlayer->setTileMap(collision); //channge for scenario when collision load is diseabled
 		mainPlayer->set_X_max_min(max_x, min_x);
@@ -304,7 +304,7 @@ void Level::setMainPlayer() {
 		animations[13] = make_pair(MAIN_DL, vector < glm::vec2> {glm::vec2(2 / 29.f, 0.5f), glm::vec2(1 / 29.f, 0.5f), glm::vec2(0.0f, 0.5f)}); //hit left
 
 
-		mainPlayer->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Bison/bison.png", animations, glm::ivec2(P_WIDTH, P_HEIGHT), glm::vec2(1 / 29.f, 0.5f), USER_PLAYER, NULL);
+		mainPlayer->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Bison/bison.png", animations, glm::ivec2(P_WIDTH, P_HEIGHT), glm::vec2(1 / 29.f, 0.5f), USER_PLAYER, NULL,BISONT);
 		mainPlayer->setPosition(glm::vec2(INIT_PLAYER_X_TILES, INIT_PLAYER_Y_TILES));
 		mainPlayer->setTileMap(collision);//channge for scenario when collision load is diseabled
 		mainPlayer->set_X_max_min(max_x, min_x);
@@ -330,7 +330,7 @@ void Level::setMainPlayer() {
 		animations[12] = make_pair(MAIN_DR, vector < glm::vec2> {glm::vec2(24 / 29.f, 0.0f), glm::vec2(25 / 29.f, 0.0f), glm::vec2(26 / 29.f, 0.0f), glm::vec2(27 / 29.f, 0.0f), glm::vec2(28 / 29.f, 0.0f)}); // Hit right
 		animations[13] = make_pair(MAIN_DL, vector < glm::vec2> {glm::vec2(4  / 29.f, 0.5f), glm::vec2(3  / 29.f, 0.5f), glm::vec2(2  / 29.F, 0.5f), glm::vec2(1 / 29.F, 0.5f), glm::vec2(0.0f, 0.5f)}); //hit left
 
-		mainPlayer->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Honda/honda.png", animations, glm::ivec2(P_WIDTH, P_HEIGHT), glm::vec2(1 / 29.f, 0.5f), USER_PLAYER, NULL);
+		mainPlayer->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Honda/honda.png", animations, glm::ivec2(P_WIDTH, P_HEIGHT), glm::vec2(1 / 29.f, 0.5f), USER_PLAYER, NULL,HONDAT);
 		mainPlayer->setPosition(glm::vec2(INIT_PLAYER_X_TILES, INIT_PLAYER_Y_TILES));
 		mainPlayer->setTileMap(collision);//channge for scenario when collision load is diseabled
 		mainPlayer->set_X_max_min(max_x, min_x);
