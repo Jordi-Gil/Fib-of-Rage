@@ -76,6 +76,7 @@ void Level::init(int player)
 	setBackground("Resources/LevelBackground/Level_Bridge/bridge.png");
 	userPlayer = player;
 	setAnimations();
+	mainPlayer->setEnemies(characters);
 
 	glm::vec2 geom[2] = { glm::vec2(10.f, 10.f), glm::vec2(200, 30.f) };
 	glm::vec2 texCoords[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
@@ -167,9 +168,11 @@ void Level::restartLevel(int player)
 	}
 	mainPlayer->setPosition(glm::vec2(INIT_PLAYER_X_TILES, INIT_PLAYER_Y_TILES)); 
 	int offsetY = 10;
+	int offsetX = 200;
 	for each(Player *player in characters) {
-		player->setPosition(glm::vec2(1150, INIT_PLAYER_Y_TILES + offsetY));
+		player->setPosition(glm::vec2(600 + offsetX, INIT_PLAYER_Y_TILES + offsetY));
 		offsetY += 10;
+		offsetX += 200;
 	}
 	
 	setCamera(glm::ivec4(0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1, 0));

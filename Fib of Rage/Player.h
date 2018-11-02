@@ -1,7 +1,7 @@
 #ifndef _PLAYER_INCLUDE
 #define _PLAYER_INCLUDE
 
-
+#include<vector>
 #include "Sprite.h"
 #include "TileMap.h"
 
@@ -14,7 +14,8 @@ class Player
 {
 
 public:
-	void init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram, const string &filename, vector<pair<int, vector<glm::vec2>>> &animations, glm::ivec2 tam, glm::vec2 prop, int type, Player *player);
+	void init(	const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram, const string &filename, vector<pair<int, vector<glm::vec2>>> &animations, 
+				glm::ivec2 tam, glm::vec2 prop, int type, Player *player);
 	void update(int deltaTime);
 	void render();
 
@@ -24,11 +25,15 @@ public:
 	void changeState();
 
 	void set_X_max_min(int x_max, int x_min);
+	void setHitted();
+	void setEnemies(const vector<Player *> &enemies);
 
 private:
 	void move_player_to_fight();
 	void move_around_player();
 	void gotoDestination();
+	void checkCollisions();
+
 private:
 
 	bool bJumping;
@@ -38,11 +43,11 @@ private:
 	Sprite *sprite;
 	TileMap *map;
 	Player *mainPlayer;
-
+	vector<Player*> enemies;
 
 	int width_player, height_player;
 	int stateEnemy;
-	int timeHitted;
+	int timeHitted = 25;
 	int orientation; // 0 left 1 right
 
 	int type_player; // 0 - User 1 - "IA"
@@ -53,7 +58,7 @@ private:
 	int min_x;
 	const int max_y = 318;
 	const int min_y = 206;
-
+	bool is_moving = false;
 	const int speed_player = 2;
 
 	bool freeChooseDest = true;

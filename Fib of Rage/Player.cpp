@@ -158,55 +158,84 @@ void Player::update(int deltaTime)
 				}
 			}
 			if (Game::instance().getKey(KEY_K)) {
-				if (sprite->animation() == MAIN_SL || sprite->animation() == MAIN_ML)
+				if (sprite->animation() == MAIN_SL || sprite->animation() == MAIN_ML)//Abadede 35 a 110 colision ; 50 a 75
+				{
 					sprite->changeAnimation(MAIN_KL);
+				}
 				else if (sprite->animation() == MAIN_SR || sprite->animation() == MAIN_MR)
+				{
 					sprite->changeAnimation(MAIN_KR);
+				}
 			}
 			else if (Game::instance().getKey(KEY_J)) {
+				Game::instance().keyReleased(KEY_J);
 				if (sprite->animation() == MAIN_SL || sprite->animation() == MAIN_ML)
+				{
 					sprite->changeAnimation(MAIN_PL);
+					checkCollisions();
+				}
 				else if (sprite->animation() == MAIN_SR || sprite->animation() == MAIN_MR)
+				{
 					sprite->changeAnimation(MAIN_PR);
+					checkCollisions();
+				}
 			}
 			else if (Game::instance().getKey(KEY_L)) {
 				if (sprite->animation() == MAIN_SL || sprite->animation() == MAIN_ML)
+				{
 					sprite->changeAnimation(MAIN_SPL);
-				
+				}
 				else if (sprite->animation() == MAIN_SR || sprite->animation() == MAIN_MR)
+				{
 					sprite->changeAnimation(MAIN_SPR);
+				}
 			}
 		}
 	}
 	else if (type_player == IA_PLAYER) {
 		
-		gotoDestination();
+		if (stateEnemy == MOVING || stateEnemy == MOVING_TO_FIGHT) {
+			gotoDestination();
 
-		if (map->collisionMoveUp(posPlayer, glm::ivec2(width_player, height_player)))
-			posPlayer.y += speed_player;
-		else if (map->collisionMoveDown(posPlayer, glm::ivec2(width_player, height_player)))
-			posPlayer.y -= speed_player;
-		if (map->collisionMoveLeft(posPlayer, glm::ivec2(width_player, height_player)))
-			posPlayer.x += speed_player;
-		else if (map->collisionMoveRight(posPlayer, glm::ivec2(width_player, height_player)))
-			posPlayer.x -= speed_player;
+			if (map->collisionMoveUp(posPlayer, glm::ivec2(width_player, height_player)))
+				posPlayer.y += speed_player;
+			else if (map->collisionMoveDown(posPlayer, glm::ivec2(width_player, height_player)))
+				posPlayer.y -= speed_player;
+			if (map->collisionMoveLeft(posPlayer, glm::ivec2(width_player, height_player)))
+				posPlayer.x += speed_player;
+			else if (map->collisionMoveRight(posPlayer, glm::ivec2(width_player, height_player)))
+				posPlayer.x -= speed_player;
+
+		}
 
 		if (posPlayer.x < mainPlayer->getPosition().x) orientation = RIGHT;
 		else orientation = LEFT;
 
 		if (sprite->getAnimationFinished()) {
-			if (orientation == RIGHT && stateEnemy != WAITING)
+			if (orientation == RIGHT && (stateEnemy == MOVING || stateEnemy == MOVING_TO_FIGHT))
 				sprite->changeAnimation(ENE_MR);
-			else if (orientation == LEFT && stateEnemy != WAITING)
+			else if (orientation == LEFT && (stateEnemy == MOVING || stateEnemy == MOVING_TO_FIGHT))
 				sprite->changeAnimation(ENE_ML);
 			else if (orientation == RIGHT && stateEnemy == WAITING)
 				sprite->changeAnimation(ENE_SR);
 			else if (orientation == LEFT && stateEnemy == WAITING)
 				sprite->changeAnimation(ENE_SL);
 		}
+
+		if (orientation == RIGHT && stateEnemy == HITTED)
+		{
+			sprite->changeAnimation(ENE_HR);
+			stateEnemy = WAITING;
+		}
+		else if (orientation == LEFT && stateEnemy == HITTED)
+		{
+			sprite->changeAnimation(ENE_HL);
+			stateEnemy = WAITING;
+		}
 	}
 	
-	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
+	// Quitar IF
+	if(type_player == USER_PLAYER) sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
 }
 
 void Player::render()
@@ -232,38 +261,43 @@ glm::ivec2 Player::getPosition()
 
 void Player::move_player_to_fight()
 {
-	if (freeChooseDest) {
+	if (freeChooseDest && timeHitted == GAP_UNTIL_MOVE) {
 		stateEnemy = MOVING_TO_FIGHT;
+		is_moving = true;
 		int x = mainPlayer->getPosition().x;
 		int y = mainPlayer->getPosition().y;
 		if (posPlayer.x < x) {
-			positionToMove = glm::vec2(x - OFFSET_X, y - P_HEIGHT);
+			positionToMove = glm::vec2(x - OFFSET_X, y);
 			orientation = RIGHT; // DERECHA
 		}
 		else {
-			positionToMove = glm::vec2(x + OFFSET_X, y - P_HEIGHT);
+			positionToMove = glm::vec2(x + OFFSET_X, y);
 			orientation = LEFT; // IZQUIERDA
 		}
 		freeChooseDest = false;
 	}
+	else if (timeHitted < GAP_UNTIL_MOVE) 
+		timeHitted++;
 }
 
 void Player::move_around_player()
 {
-	if (freeChooseDest) {
+	if (freeChooseDest && timeHitted == GAP_UNTIL_MOVE) {
 		stateEnemy = MOVING;
+		is_moving = true;
 
 		std::random_device rd;
 		std::uniform_int_distribution<> disX(min_x, max_x);
 		std::uniform_int_distribution<> disY(min_y, max_y);
-		//gen(dis) -> This will generate 1 random numbers between 0-1
-		int valueX = disX(rd);
-		int valueY = disY(rd);
-		positionToMove.x = valueX;
-		positionToMove.y = valueY;
+		
+		
+		positionToMove.x = disX(rd);
+		positionToMove.y = disY(rd);
 
 		freeChooseDest = false;
 	}
+	else if (timeHitted < GAP_UNTIL_MOVE) 
+		timeHitted++;
 }
 
 void Player::gotoDestination()
@@ -272,18 +306,17 @@ void Player::gotoDestination()
 	temp.x = posPlayer.x;
 	temp.y = posPlayer.y;
 
+	if (stateEnemy == HITTED) return;
+
 	if (temp.x == positionToMove.x && temp.y == positionToMove.y) {
 		positionToMove.x = 0;
 		positionToMove.y = 0;
-		std::random_device rd;
-		std::uniform_int_distribution<int> dis(0, 500);
-		if(dis(rd) < 50)
-			freeChooseDest = true;
+		is_moving = false;
+		
 		return;
 	}
 
-	// puedo pegar //
-
+	
 	if (temp.x < positionToMove.x) 
 	{
 		if (temp.x + speed_player < positionToMove.x)
@@ -347,10 +380,12 @@ void Player::changeState()
 		move_player_to_fight();
 	}
 	else {
-		stateEnemy = WAITING;
-		std::uniform_int_distribution<int> dis2(0, 500);
-		if (dis2(rd) < 50)
-			freeChooseDest = true;
+		if (!is_moving) {
+			stateEnemy = WAITING;
+			std::uniform_int_distribution<int> dis2(0, 1500);
+			if (dis2(rd) < 50)
+				freeChooseDest = true;
+		}
 	}
 	
 }
@@ -359,4 +394,39 @@ void Player::set_X_max_min(int x_max, int x_min)
 {
 	max_x = x_max;
 	min_x = x_min;
+}
+
+void Player::setHitted()
+{
+	stateEnemy = HITTED;
+	timeHitted = 0;
+	positionToMove = glm::ivec2(0,0);
+}
+
+void Player::checkCollisions()
+{
+	for each(Player *p in enemies)
+	{
+		//Abadede 35 a 110 colision ; 50 a 75
+		//puño (70 , 47) ; (95 , 53) 
+		// (minx1 < maxx2) && (minx2 < maxx1)
+		// (miny1 < maxy2) && (miny2 < maxy1)
+		int minx1, miny1, maxx1, maxy1, minx2, miny2, maxx2, maxy2;
+		minx1 = posPlayer.x + 70; miny1 = posPlayer.y + 47;
+		maxx1 = posPlayer.x + 95; maxy1 = posPlayer.y + 53;
+		if (   p->getPosition().x + 75) && (p->getPosition().x + 50 < posPlayer.x + 95)) && 
+			 (( < p->getPosition().y + 110) && (p->getPosition().y + 35 < posPlayer.y + 53))) 
+		{
+			p->setHitted();
+		}
+	}
+}
+
+void Player::setEnemies(const vector<Player *> &enemies)
+{
+
+	for each(Player *p in enemies) {
+		this->enemies.push_back(p);
+	}
+
 }
