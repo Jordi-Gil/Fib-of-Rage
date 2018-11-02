@@ -44,13 +44,13 @@ void Level1::init(int player)
 	setAnimations();
 	mainPlayer->setEnemies(characters);
 
-	glm::vec2 geom[2] = { glm::vec2(10.f, 10.f), glm::vec2(200, 30.f) };
+	glm::vec2 geom[2] = { glm::vec2(10.f, 10.f), glm::vec2(300, 40.f) };
 	glm::vec2 texCoords[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
 
 	life_bar = TexturedQuad::createTexturedQuad(geom, texCoords, texProgram);
 	tex_life.loadFromFile("Resources/LevelBackground/Level_Bridge/red_bar.png", TEXTURE_PIXEL_FORMAT_RGBA);
 
-	glm::vec2 geom2[2] = { glm::vec2(10.f, 10.f), glm::vec2(200, 30.f) };
+	glm::vec2 geom2[2] = { glm::vec2(10.f, 10.f), glm::vec2(300, 40.f) };
 	glm::vec2 texCoords2[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
 
 	yellow_bar = TexturedQuad::createTexturedQuad(geom2, texCoords2, texProgram);
@@ -60,9 +60,7 @@ void Level1::init(int player)
 	currentTime = 0.0f;
 
 	pointsText.init("Resources/Fonts/codeman38_press-start-2p/PressStart2P.ttf");
-		
-		
-
+	
 	binit = true;
 }
 
@@ -91,7 +89,7 @@ void Level1::render()
 	ss << "Points: " << points;
 	std::string s = ss.str();
 
-	pointsText.render(s, glm::vec2(200, 200), 50, glm::vec4(1, 0, 0, 1));
+	pointsText.render(s, glm::vec2(600, 50), 20, glm::vec4(1, 1, 0, 1));
 }
 
 void Level1::update(int deltaTime) {
