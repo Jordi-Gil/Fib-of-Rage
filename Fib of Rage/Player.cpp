@@ -414,8 +414,9 @@ void Player::checkCollisions()
 		int minx1, miny1, maxx1, maxy1, minx2, miny2, maxx2, maxy2;
 		minx1 = posPlayer.x + 70; miny1 = posPlayer.y + 47;
 		maxx1 = posPlayer.x + 95; maxy1 = posPlayer.y + 53;
-		if (   p->getPosition().x + 75) && (p->getPosition().x + 50 < posPlayer.x + 95)) && 
-			 (( < p->getPosition().y + 110) && (p->getPosition().y + 35 < posPlayer.y + 53))) 
+		minx2 = p->getPosition().x + 40; miny2 = p->getPosition().y + 40;
+		maxx2 = p->getPosition().x + 70; maxy2 = p->getPosition().y + 65;
+		if ((minx1 < maxx2) && (minx2<maxx1) && ((miny1 < maxy2 )&&(miny2<maxy1)))
 		{
 			p->setHitted();
 		}
