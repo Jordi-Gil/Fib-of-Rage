@@ -20,11 +20,13 @@ private:
 	bool setBackground(const string &filename);
 	void setAnimations();
 	void setMainPlayer();
+	void setBossAnimations();
 
 protected:
 
 	TileMap *collisions;
 	Player *mainPlayer;
+	Player *bossPlayer;
 	int userPlayer;
 	vector<Player *> characters;
 

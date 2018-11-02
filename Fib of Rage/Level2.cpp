@@ -193,6 +193,7 @@ void Level2::setMainPlayer() {
 void Level2::setAnimations()
 {
 	setMainPlayer();
+	setBossAnimations();
 	vector<pair<int, vector<glm::vec2>>> animations;
 
 	//Abadede
@@ -260,11 +261,40 @@ void Level2::setAnimations()
 
 }
 
+void Level2::setBossAnimations()
+{
+	vector<pair<int, vector<glm::vec2>>> animations;
+
+	animations.clear();
+	animations.resize(12);
+	//BOSS_SR, BOSS_SL, BOSS_MR, BOSS_SL, BOSS_PSR, BOSS_PSL, BOSS_PHR, BOSS_PHL, BOSS_HR, BOSS_HL, BOSS_DR, BOSS_DL
+	animations[0]  = make_pair(BOSS_SR,  vector < glm::vec2 > {	glm::vec2(0.0f,      0.0f), glm::vec2(1 / 22.f,  0.0f), glm::vec2(2  / 22.f, 0.0f)});
+	animations[1]  = make_pair(BOSS_SL,  vector < glm::vec2 > {	glm::vec2(21 / 22.f, 0.5f), glm::vec2(20 / 22.f, 0.5f), glm::vec2(19 / 22.f, 0.5f)});
+	animations[2]  = make_pair(BOSS_MR,  vector < glm::vec2 > {	glm::vec2(3  / 22.f, 0.0f), glm::vec2(4  / 22.f, 0.0f), glm::vec2(5  / 22.f, 0.0f), glm::vec2(6  / 16.f, 0.0f), glm::vec2(7  / 16.f, 0.0f), glm::vec2(8  / 16.f, 0.0f)});
+	animations[3]  = make_pair(BOSS_SL,  vector < glm::vec2 > { glm::vec2(18 / 22.f, 0.5f), glm::vec2(17 / 22.f, 0.5f), glm::vec2(16 / 22.f, 0.5f), glm::vec2(15 / 16.f, 0.5f), glm::vec2(14 / 16.f, 0.5f), glm::vec2(13 / 16.f, 0.5f)});
+	animations[4]  = make_pair(BOSS_PSR, vector < glm::vec2 > {	glm::vec2(9  / 22.f, 0.0f), glm::vec2(10 / 22.f, 0.0f), glm::vec2(11 / 22.f, 0.0f)});
+	animations[5]  = make_pair(BOSS_PSL, vector < glm::vec2 > {	glm::vec2(12 / 22.f, 0.5f), glm::vec2(11 / 22.f, 0.5f), glm::vec2(12 / 22.f, 0.5f)});
+	animations[6]  = make_pair(BOSS_PHR, vector < glm::vec2 > {	glm::vec2(12 / 22.f, 0.0f), glm::vec2(13 / 22.f, 0.0f), glm::vec2(14 / 22.f, 0.0f), glm::vec2(15 / 22.f, 0.0f), glm::vec2(16 / 22.f, 0.0f), glm::vec2(17 / 22.f, 0.0f), glm::vec2(18 / 22.f, 0.0f)});
+	animations[7]  = make_pair(BOSS_PHL, vector < glm::vec2 > {	glm::vec2(9  / 22.f, 0.5f), glm::vec2(8  / 22.f, 0.5f), glm::vec2(7  / 22.f, 0.5f), glm::vec2(6  / 22.f, 0.5f), glm::vec2(5  / 22.f, 0.5f), glm::vec2(4  / 22.f, 0.5f), glm::vec2(3  / 22.f, 0.5f)});
+	animations[8]  = make_pair(BOSS_HR,  vector < glm::vec2 > {	glm::vec2(19 / 22.f, 0.0f)});			   
+	animations[9]  = make_pair(BOSS_HL,  vector < glm::vec2 > {	glm::vec2(2  / 22.f, 0.5f)});			   
+	animations[10] = make_pair(BOSS_DR,  vector < glm::vec2 > {	glm::vec2(20 / 22.f, 0.0f), glm::vec2(21 / 22.f, 0.0f)});
+	animations[11] = make_pair(BOSS_DL,  vector < glm::vec2 > {	glm::vec2(1  / 22.f, 0.5f), glm::vec2(0.0f,      0.5f)});
+
+	bossPlayer = new Player();
+	bossPlayer->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Shiva/shiva_boss_2.png", animations, glm::ivec2(P_WIDTH, P_HEIGHT), glm::vec2(1 / 22.f, 0.5f), IA_PLAYER, mainPlayer, B2);
+	bossPlayer->setPosition(glm::vec2(INIT_PLAYER_X_TILES, INIT_PLAYER_Y_TILES));
+	bossPlayer->setTileMap(collisions); //channge for scenario when collision load is diseabled
+	bossPlayer->set_X_max_min(max_x, min_x);
+
+}
+
 void Level2::restartLevel(int player)
 {
 	if (player != userPlayer) {
 		userPlayer = player;
 		setMainPlayer();
+		mainPlayer->setEnemies(characters);
 	}
 	mainPlayer->setPosition(glm::vec2(INIT_PLAYER_X_TILES, INIT_PLAYER_Y_TILES));
 	int offsetY = 10;

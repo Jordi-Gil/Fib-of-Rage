@@ -3,21 +3,6 @@
 #include <vector>
 #include <algorithm>
 #include "Level.h"
-
-#define SCREEN_X 0
-#define SCREEN_Y 0
-
-#define INIT_PLAYER_X_TILES 4
-#define INIT_PLAYER_Y_TILES 250
-
-#define P_WIDTH 90*2
-#define P_HEIGHT 120*2
-
-#define SCREEN_WIDTH 1280
-#define SCREEN_HEIGHT 547
-
-#define USER_PLAYER 0
-#define IA_PLAYER 1
 												
 
 Level::Level(int left, int right, int bottom, int top) : Scene(left, right, bottom, top)

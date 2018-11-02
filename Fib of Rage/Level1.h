@@ -15,19 +15,18 @@ public:
 
 	void restartLevel(int player);
 	void moveCamera(int left, int right, int bottom, int top);
-	/*
-	void enableCollisionView(bool state);
-	bool getCollisionView();
-	*/
+	
 private:
 	bool setBackground(const string &filename);
 	void setAnimations();
 	void setMainPlayer();
+	void setBossAnimations();
 
 protected:
 
 	TileMap *collisions;
 	Player *mainPlayer;
+	Player *bossPlayer;
 	int userPlayer;
 	vector<Player *> characters;
 

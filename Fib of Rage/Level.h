@@ -35,6 +35,11 @@ enum EnemyAnims
 	ENE_SR, ENE_SL, ENE_MR, ENE_ML, ENE_PR, ENE_PL, ENE_HR, ENE_HL, ENE_DR, ENE_DL
 };
 
+enum BossAnims
+{
+	BOSS_SR, BOSS_SL, BOSS_MR, BOSS_SL, BOSS_PSR, BOSS_PSL, BOSS_PHR, BOSS_PHL, BOSS_HR, BOSS_HL, BOSS_DR, BOSS_DL
+};
+
 class Level : public Scene
 {
 public:
