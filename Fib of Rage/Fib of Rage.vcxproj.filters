@@ -40,6 +40,12 @@
     <ClCompile Include="Level.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
+    <ClCompile Include="Level1.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Level2.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimKeyframes.h">
@@ -79,6 +85,12 @@
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="Level.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Level1.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Level2.h">
       <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>
