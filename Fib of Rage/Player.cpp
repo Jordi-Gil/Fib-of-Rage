@@ -227,16 +227,19 @@ void Player::update(int deltaTime)
 		{
 			sprite->changeAnimation(ENE_HR);
 			stateEnemy = WAITING;
+			is_moving = false;
 		}
 		else if (orientation == LEFT && stateEnemy == HITTED)
 		{
 			sprite->changeAnimation(ENE_HL);
 			stateEnemy = WAITING;
+			is_moving = false;
 		}
 	}
 	
 	// Quitar IF
-	if(type_player == USER_PLAYER) sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
+	// if (type_player == USER_PLAYER)
+	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
 }
 
 void Player::render()
@@ -413,6 +416,7 @@ void Player::checkCollisions(char c)
 			maxx1 = posPlayer.x + 95; maxy1 = posPlayer.y + 53;
 		}
 	}
+	
 	for each(Player *p in enemies)
 	{
 		//Abadede 35 a 110 colision ; 50 a 75
