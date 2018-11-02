@@ -48,6 +48,12 @@ enum BossAnims
 	BOSS_SR, BOSS_SL, BOSS_MR, BOSS_ML, BOSS_PSR, BOSS_PSL, BOSS_PHR, BOSS_PHL, BOSS_HR, BOSS_HL, BOSS_DR, BOSS_DL
 };
 
+enum StateEnemy
+{
+	WAITING, MOVING, MOVING_TO_FIGHT, FIGHTING, HITTED, DEAD
+};
+
+
 class Level : public Scene
 {
 public:

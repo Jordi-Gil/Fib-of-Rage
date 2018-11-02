@@ -31,35 +31,15 @@
 
 #define P_WIDTH 90*2
 #define P_HEIGHT 120*2
-/*
-enum Players
-{ 
-	RYU, HONDA, BISON 
-};
-
-enum UserAnims
-{
-	MAIN_SR, MAIN_SL, MAIN_MR, MAIN_ML, MAIN_KR, MAIN_KL, MAIN_PR, MAIN_PL, MAIN_SPR, MAIN_SPL, MAIN_HR, MAIN_HL, MAIN_DR, MAIN_DL
-};
-
-enum EnemyAnims
-{
-	ENE_SR, ENE_SL, ENE_MR, ENE_ML, ENE_PR, ENE_PL, ENE_HR, ENE_HL, ENE_DR, ENE_DL
-};
-*/
-enum StateEnemy 
-{
-	WAITING, MOVING, MOVING_TO_FIGHT, FIGHTING, HITTED
-};
 
 enum Orientation
 {
 	LEFT, RIGHT
 };
 
-
-void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram, const string &filename, vector<pair<int, vector<glm::vec2>>> &animations, glm::ivec2 tam, glm::vec2 prop, int type, Player *player, CharType charType)
+void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram, const string &filename, vector<pair<int, vector<glm::vec2>>> &animations, glm::ivec2 tam, glm::vec2 prop, int type, Player *player, CharType charType, int life)
 {
+	hp = life;
 	bJumping = false;
 	width_player = tam.x;
 	height_player = tam.y;
@@ -90,8 +70,34 @@ void Player::update(int deltaTime)
 {
 	sprite->update(deltaTime);
 	if(type_player == USER_PLAYER){
-		if (sprite->getAnimationFinished() || (sprite->animation() != MAIN_KL && sprite->animation() != MAIN_KR && sprite->animation() != MAIN_PR && sprite->animation() != MAIN_PL && sprite->animation() != MAIN_SPL && sprite->animation() != MAIN_SPR)) {
-			if (!Game::instance().getKey(KEY_J) && !Game::instance().getKey(KEY_K) && !Game::instance().getKey(KEY_L)) {
+
+		if (is_dead && !one_time) 
+		{
+			one_time = true;
+			if (orientation == RIGHT)
+				sprite->changeAnimation(MAIN_DR);
+			else sprite->changeAnimation(MAIN_DL);
+		}
+		else if(is_dead && one_time)
+		{
+			sprite->setPosition(glm::vec2(-120,0));
+		}
+		if (is_hitted) {
+			if (orientation == RIGHT) {
+				sprite->changeAnimation(MAIN_HR);
+				is_hitted = false;
+			}
+			else
+			{
+				sprite->changeAnimation(MAIN_HL);
+				is_hitted = false;
+			}
+		}
+		else if (sprite->getAnimationFinished() || (sprite->animation() != MAIN_KL && sprite->animation() != MAIN_KR && sprite->animation() != MAIN_PR && sprite->animation() != MAIN_PL && sprite->animation() != MAIN_SPL && sprite->animation() != MAIN_SPR && sprite->animation() != MAIN_HR && sprite->animation() != MAIN_HL && sprite->animation() != MAIN_DR && sprite->animation() != MAIN_DL)) {
+			if (is_dead) {
+				Game::instance().changeScene(MENU, Game::instance().getPlayer());
+			}
+			else if (!Game::instance().getKey(KEY_J) && !Game::instance().getKey(KEY_K) && !Game::instance().getKey(KEY_L)) {
 				if (Game::instance().getKey(KEY_A))
 				{
 					if (sprite->animation() != MAIN_ML)
@@ -109,7 +115,7 @@ void Player::update(int deltaTime)
 					if (sprite->animation() != MAIN_MR)
 						sprite->changeAnimation(MAIN_MR);
 					posPlayer.x += 2;
-					if (map->collisionMoveRight(posPlayer, glm::ivec2(width_player, height_player)) || posPlayer.x > max_x)
+					if (map->collisionMoveRight(posPlayer, glm::ivec2(width_player, height_player)) || posPlayer.x + 90 >= max_x)
 					{
 						posPlayer.x -= 2;
 						sprite->changeAnimation(MAIN_SR);
@@ -154,9 +160,9 @@ void Player::update(int deltaTime)
 				}
 				else
 				{
-					if (sprite->animation() == MAIN_ML || sprite->animation() == MAIN_KL || sprite->animation() == MAIN_PL || sprite->animation() == MAIN_SPL)
+					if (sprite->animation() == MAIN_ML || sprite->animation() == MAIN_KL || sprite->animation() == MAIN_PL || sprite->animation() == MAIN_SPL || sprite->animation() == MAIN_HL)
 						sprite->changeAnimation(MAIN_SL);
-					else if (sprite->animation() == MAIN_MR || sprite->animation() == MAIN_KR || sprite->animation() == MAIN_PR || sprite->animation() == MAIN_SPR)
+					else if (sprite->animation() == MAIN_MR || sprite->animation() == MAIN_KR || sprite->animation() == MAIN_PR || sprite->animation() == MAIN_SPR || sprite->animation() == MAIN_HR)
 						sprite->changeAnimation(MAIN_SR);
 				}
 			}
@@ -211,6 +217,15 @@ void Player::update(int deltaTime)
 	}
 	else if (type_player == IA_PLAYER) {
 		
+		if (stateEnemy == DEAD && !one_time) 
+		{
+			one_time = true;
+			if(orientation == RIGHT)
+				sprite->changeAnimation(ENE_DL);
+			else
+				sprite->changeAnimation(ENE_DR);
+		}
+
 		if (stateEnemy == MOVING || stateEnemy == MOVING_TO_FIGHT) {
 			gotoDestination();
 
@@ -228,7 +243,7 @@ void Player::update(int deltaTime)
 		if (posPlayer.x < mainPlayer->getPosition().x) orientation = RIGHT;
 		else orientation = LEFT;
 
-		if (sprite->getAnimationFinished()) {
+		if (sprite->getAnimationFinished() && stateEnemy != DEAD) {
 			if (orientation == RIGHT && (stateEnemy == MOVING || stateEnemy == MOVING_TO_FIGHT))
 				sprite->changeAnimation(ENE_MR);
 			else if (orientation == LEFT && (stateEnemy == MOVING || stateEnemy == MOVING_TO_FIGHT))
@@ -238,22 +253,19 @@ void Player::update(int deltaTime)
 			else if (orientation == LEFT && stateEnemy == WAITING)
 				sprite->changeAnimation(ENE_SL);
 			else if (orientation == LEFT && stateEnemy == FIGHTING) {
+				sprite->changeAnimation(ENE_PL);
 				stateEnemy = WAITING;
 				is_moving = false;
+				checkCollisionsPlayer();
 			}
 			else if (orientation == RIGHT && stateEnemy == FIGHTING) {
+				sprite->changeAnimation(ENE_PR);
 				stateEnemy = WAITING;
 				is_moving = false;
+				checkCollisionsPlayer();
 			}
 		}
-		if (orientation == RIGHT && stateEnemy == FIGHTING)
-		{
-			sprite->changeAnimation(ENE_PR);
-		}
-		if (orientation == LEFT && stateEnemy == HITTED)
-		{
-			sprite->changeAnimation(ENE_PL);
-		}
+	
 		if (orientation == RIGHT && stateEnemy == HITTED)
 		{
 			sprite->changeAnimation(ENE_HR);
@@ -268,8 +280,7 @@ void Player::update(int deltaTime)
 		}
 	}
 	
-	// Quitar IF
-	// if (type_player == USER_PLAYER)
+	
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
 }
 
@@ -343,7 +354,8 @@ void Player::gotoDestination()
 
 	if (stateEnemy == HITTED) return;
 
-	if (((posPlayer.x >= mainPlayer->getPosition().x + 90)&&(posPlayer.x <= mainPlayer->getPosition().x + 30)) || (posPlayer.x + 120 >= mainPlayer->getPosition().x - 90)&& (posPlayer.x + 120 <= mainPlayer->getPosition().x - 30)) {
+	if ( ((posPlayer.x <= mainPlayer->getPosition().x + 90)&&(posPlayer.x >= mainPlayer->getPosition().x + 30)) || 
+		 ((posPlayer.x + 120 >= mainPlayer->getPosition().x - 90)&& (posPlayer.x + 120 <= mainPlayer->getPosition().x - 30)) ) {
 		if (posPlayer.y< mainPlayer->getPosition().y + 10 && posPlayer.y > mainPlayer->getPosition().y - 10) {
 			std::random_device rd;
 			std::uniform_int_distribution<int> dis(0, 4);
@@ -417,9 +429,13 @@ void Player::gotoDestination()
 
 void Player::changeState()
 {
+	
+	if (stateEnemy == DEAD) return;
+
 	std::random_device rd;
 	std::uniform_int_distribution<int> dis(0,2);
 	int value = dis(rd);
+	
 	if (value == MOVING) {
 		move_around_player();
 	}
@@ -443,19 +459,49 @@ void Player::set_X_max_min(int x_max, int x_min)
 	min_x = x_min;
 }
 
-void Player::setHitted()
+void Player::setHitted(int damage)
 {
-	stateEnemy = HITTED;
-	timeHitted = 0;
-	positionToMove = glm::ivec2(0,0);
+	if (type_player == USER_PLAYER) {
+
+		hp -= damage;
+		
+		if (hp <= 0) {
+
+			is_dead = true;
+		}
+		else {
+			
+			is_hitted = true;
+		}
+	}
+	else {
+		hp -= damage;
+		if (hp <= 0 && stateEnemy != DEAD) {
+			mainPlayer->setPoints(100);
+			mainPlayer->sumaMuerto();
+			stateEnemy = DEAD;
+			if (charType == B1)
+			{
+				Game::instance().changeScene(LEVEL_2, Game::instance().getPlayer());
+			}
+		}
+		else {
+			mainPlayer->setPoints(10);
+			stateEnemy = HITTED;
+			timeHitted = 0;
+			positionToMove = glm::ivec2(0, 0);
+		}
+	}
 }
 
 void Player::checkCollisions(char c)
 {//left 0 right 1
 	int minx1, miny1, maxx1, maxy1, minx2, miny2, maxx2, maxy2;
+	int damage;
 	bool diferentHit = false;
 	if (this->charType == RYUT) {
 		if (c == 'j') {
+			damage = 8;
 			if (this->orientation == RIGHT) {
 				minx1 = posPlayer.x + 70; miny1 = posPlayer.y + 45;
 				maxx1 = posPlayer.x + 120; maxy1 = posPlayer.y + 55;
@@ -466,6 +512,7 @@ void Player::checkCollisions(char c)
 			}
 		}
 		else if (c == 'k') {
+			damage = 12;
 			if (this->orientation == RIGHT) {
 				minx1 = posPlayer.x + 74; miny1 = posPlayer.y + 30;
 				maxx1 = posPlayer.x + 105; maxy1 = posPlayer.y + 40;
@@ -476,6 +523,7 @@ void Player::checkCollisions(char c)
 			}
 		}
 		else if (c == 'l') {
+			damage = 20;
 			if (this->orientation == RIGHT) {
 				minx1 = posPlayer.x + 89; miny1 = posPlayer.y + 48;
 				maxx1 = posPlayer.x + 135; maxy1 = posPlayer.y + 78;
@@ -488,6 +536,7 @@ void Player::checkCollisions(char c)
 	}
 	else if (this->charType == HONDAT) {
 		if (c == 'j') {
+			damage = 4;
 			if (this->orientation == RIGHT) {
 				minx1 = posPlayer.x + 80; miny1 = posPlayer.y + 50;
 				maxx1 = posPlayer.x + 135; maxy1 = posPlayer.y + 75;
@@ -498,6 +547,7 @@ void Player::checkCollisions(char c)
 			}
 		}
 		else if (c == 'k') {
+			damage = 10;
 			if (this->orientation == RIGHT) {
 				minx1 = posPlayer.x + 80; miny1 = posPlayer.y + 90;
 				maxx1 = posPlayer.x + 135; maxy1 = posPlayer.y + 110;
@@ -509,6 +559,7 @@ void Player::checkCollisions(char c)
 			diferentHit = true;
 		}
 		else if (c == 'l') {
+			damage = 15;
 			if (this->orientation == RIGHT) {
 				minx1 = posPlayer.x + 20; miny1 = posPlayer.y + 15;
 				maxx1 = posPlayer.x + 100; maxy1 = posPlayer.y + 75;
@@ -521,6 +572,7 @@ void Player::checkCollisions(char c)
 	}
 	if (this->charType == BISONT) {
 		if (c == 'j') {
+			damage = 9;
 			if (this->orientation == RIGHT) {
 				minx1 = posPlayer.x + 65; miny1 = posPlayer.y + 40;
 				maxx1 = posPlayer.x + 135; maxy1 = posPlayer.y + 55;
@@ -531,6 +583,7 @@ void Player::checkCollisions(char c)
 			}
 		}
 		else if (c == 'k') {
+			damage = 5;
 			if (this->orientation == RIGHT) {
 				minx1 = posPlayer.x + 47; miny1 = posPlayer.y + 50;
 				maxx1 = posPlayer.x + 125; maxy1 = posPlayer.y + 65;
@@ -541,6 +594,7 @@ void Player::checkCollisions(char c)
 			}
 		}
 		else if (c == 'l') {
+			damage = 25;
 			if (this->orientation == RIGHT) {
 				minx1 = posPlayer.x + 10; miny1 = posPlayer.y + 30;
 				maxx1 = posPlayer.x + 125; maxy1 = posPlayer.y + 50;
@@ -589,6 +643,16 @@ void Player::checkCollisions(char c)
 					minx2 = p->getPosition().x + (120 - 80); miny2 = p->getPosition().y + 60;
 				}
 			}
+			else if (p->charType == B1 || p->charType == B2) {
+				if (p->orientation == RIGHT) {
+					minx2 = p->getPosition().x + 40; miny2 = p->getPosition().y + 40;
+					maxx2 = p->getPosition().x + 70; maxy2 = p->getPosition().y + 65;
+				}
+				else {
+					maxx2 = p->getPosition().x + (120 - 40); maxy2 = p->getPosition().y + 65;
+					minx2 = p->getPosition().x + (120 - 70); miny2 = p->getPosition().y + 40;
+				}
+			}
 		}
 		else {
 			maxy2 = p->getPosition().y + 120;
@@ -607,7 +671,7 @@ void Player::checkCollisions(char c)
 		}
 		if ((minx1 < maxx2) && (minx2<maxx1) && ((miny1 < maxy2 )&&(miny2<maxy1)))
 		{
-			p->setHitted();
+			p->setHitted(damage);
 		}
 	}
 }
@@ -619,4 +683,137 @@ void Player::setEnemies(const vector<Player *> &enemies)
 		this->enemies.push_back(p);
 	}
 
+}
+
+void Player::checkCollisionsPlayer()
+{
+	int minx1, miny1, maxx1, maxy1, minx2, miny2, maxx2, maxy2;
+	int damage;
+
+	if (this->charType == A) {
+		damage = 5;
+		if (this->orientation == RIGHT) {
+			minx1 = posPlayer.x + 90; miny1 = posPlayer.y + 50;
+			maxx1 = posPlayer.x + 135; maxy1 = posPlayer.y + 65;
+		}
+		else {
+			maxx1 = posPlayer.x + (120 - 90); maxy1 = posPlayer.y + 65;
+			minx1 = posPlayer.x + (120 - 135); miny1 = posPlayer.y + 50;
+		}
+	}
+	else if (this->charType == J) {
+		damage = 7;
+		if (this->orientation == RIGHT) {
+			minx1 = posPlayer.x + 85; miny1 = posPlayer.y + 40;
+			maxx1 = posPlayer.x + 135; maxy1 = posPlayer.y + 60;
+		}
+		else {
+			maxx1 = posPlayer.x + (120 - 85); maxy1 = posPlayer.y + 60;
+			minx1 = posPlayer.x + (120 - 135); miny1 = posPlayer.y + 40;
+		}
+	}
+	else if (this->charType == Z) {
+		damage = 10;
+		if (this->orientation == RIGHT) {
+			minx1 = posPlayer.x + 100; miny1 = posPlayer.y + 55;
+			maxx1 = posPlayer.x + 140; maxy1 = posPlayer.y + 85;
+		}
+		else {
+			maxx1 = posPlayer.x + (120 - 100); maxy1 = posPlayer.y + 85;
+			minx1 = posPlayer.x + (120 - 140); miny1 = posPlayer.y + 55;
+		}
+	}
+	else if (this->charType == B1 || this->charType == B2) {
+		damage = 15;
+		if (this->orientation == RIGHT) {
+			minx1 = posPlayer.x + 90; miny1 = posPlayer.y + 50;
+			maxx1 = posPlayer.x + 135; maxy1 = posPlayer.y + 65;
+		}
+		else {
+			maxx1 = posPlayer.x + (120 - 90); maxy1 = posPlayer.y + 65;
+			minx1 = posPlayer.x + (120 - 135); miny1 = posPlayer.y + 50;
+		}
+	}
+
+	if (mainPlayer->charType == RYUT) {
+		if (mainPlayer->orientation == RIGHT) {
+			minx2 = mainPlayer->getPosition().x + 50; miny2 = mainPlayer->getPosition().y + 50;
+			maxx2 = mainPlayer->getPosition().x + 70; maxy2 = mainPlayer->getPosition().y + 80;
+		}
+		else {
+			maxx2 = mainPlayer->getPosition().x + (120 - 50); maxy2 = mainPlayer->getPosition().y + 80;
+			minx2 = mainPlayer->getPosition().x + (120 - 70); miny2 = mainPlayer->getPosition().y + 50;
+		}
+	}
+	else if (mainPlayer->charType == HONDAT) {
+		if (mainPlayer->orientation == RIGHT) {
+			minx2 = mainPlayer->getPosition().x + 40; miny2 = mainPlayer->getPosition().y + 50;
+			maxx2 = mainPlayer->getPosition().x + 70; maxy2 = mainPlayer->getPosition().y + 80;
+		}
+		else {
+			maxx2 = mainPlayer->getPosition().x + (120 - 40); maxy2 = mainPlayer->getPosition().y + 80;
+			minx2 = mainPlayer->getPosition().x + (120 - 70); miny2 = mainPlayer->getPosition().y + 50;
+		}
+	}
+	else if (mainPlayer->charType == BISONT) {
+		if (mainPlayer->orientation == RIGHT) {
+			minx2 = mainPlayer->getPosition().x + 40; miny2 = mainPlayer->getPosition().y + 40;
+			maxx2 = mainPlayer->getPosition().x + 65; maxy2 = mainPlayer->getPosition().y + 70;
+		}
+		else {
+			maxx2 = mainPlayer->getPosition().x + (120 - 40); maxy2 = mainPlayer->getPosition().y + 70;
+			minx2 = mainPlayer->getPosition().x + (120 - 65); miny2 = mainPlayer->getPosition().y + 40;
+		}
+	}
+
+	if ((minx1 < maxx2) && (minx2<maxx1) && ((miny1 < maxy2) && (miny2<maxy1)))
+	{
+		mainPlayer->setHitted(damage);
+	}
+
+}
+
+int Player::getHP() 
+{
+	return hp;
+}
+
+void Player::setHP(int value)
+{
+	hp = value;
+}
+
+int Player::getPoints()
+{
+	return points;
+}
+
+void Player::setPoints(int value)
+{
+	points += value;
+}
+
+int Player::getState()
+{
+	return stateEnemy;
+}
+
+void Player::sumaMuerto()
+{
+	muertos++;
+}
+
+int Player::getMuertos()
+{
+	return muertos;
+}
+
+void Player::setState(int state)
+{
+	stateEnemy = state;
+}
+
+void Player::setMuertos(int n)
+{
+	muertos = n;
 }

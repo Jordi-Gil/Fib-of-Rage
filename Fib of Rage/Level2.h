@@ -17,8 +17,7 @@ public:
 	void restartLevel(int player);
 	void moveCamera(int left, int right, int bottom, int top);
 
-	//void acabaNivel();
-	//void setPoints();
+	void avanzaLevel();
 
 private:
 	bool setBackground(const string &filename);
@@ -41,9 +40,12 @@ protected:
 	
 	int points;
 	Text pointsText;
+	Text texGo;
 
 	int max_x;
 	int min_x;
+
+	bool renderBoss;
 
 };
 

@@ -24,6 +24,7 @@ private:
 	void setAnimations();
 	void setMainPlayer();
 	void setBossAnimations();
+	void avanzaLevel();
 
 protected:
 
@@ -40,9 +41,12 @@ protected:
 
 	int points = 0;
 	Text pointsText;
+	Text texGo;
 
 	int max_x;
 	int min_x;
+
+	bool renderBoss = false;
 
 };
 

@@ -16,7 +16,7 @@ class Player
 
 public:
 	void init(	const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram, const string &filename, vector<pair<int, vector<glm::vec2>>> &animations, 
-				glm::ivec2 tam, glm::vec2 prop, int type, Player *player,CharType enemyType);
+				glm::ivec2 tam, glm::vec2 prop, int type, Player *player,CharType enemyType, int life);
 	void update(int deltaTime);
 	void render();
 
@@ -26,15 +26,25 @@ public:
 	void changeState();
 
 	void set_X_max_min(int x_max, int x_min);
-	void setHitted();
+	void setHitted(int damage);
 	void setEnemies(const vector<Player *> &enemies);
 	CharType charType;
+	int getHP();
+	void setHP(int value);
+	int getPoints();
+	void setPoints(int value);
+	int getState();
+	void sumaMuerto();
+	int getMuertos();
+	void setMuertos(int n);
+	void setState(int state);
 
 private:
 	void move_player_to_fight();
 	void move_around_player();
 	void gotoDestination();
 	void checkCollisions(char c);
+	void checkCollisionsPlayer();
 
 private:
 
@@ -65,6 +75,13 @@ private:
 
 	bool freeChooseDest = true;
 
+	bool is_hitted = false; //main
+	bool is_dead = false;
+	bool one_time = false;
+
+	int hp;
+	int points = 0;
+	int muertos = 0;
 };
 
 

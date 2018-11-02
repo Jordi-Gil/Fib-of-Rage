@@ -41,20 +41,7 @@ void Game::keyPressed(int key)
 		else
 			dynamic_cast<Level2*> (gameScenes[scene])->enableCollisionView(true);
 	}
-	if (key == 'a') {
-		if (scene == LEVEL_1) {
-			dynamic_cast<Level1*> (gameScenes[scene])->moveCamera(gameScenes[scene]->cameraLeft - 4, gameScenes[scene]->cameraRight - 4, gameScenes[scene]->cameraBottom, gameScenes[scene]->cameraTop);
-		}
-		else if (scene == LEVEL_2) {
-			dynamic_cast<Level2*> (gameScenes[scene])->moveCamera(gameScenes[scene]->cameraLeft - 4, gameScenes[scene]->cameraRight - 4, gameScenes[scene]->cameraBottom, gameScenes[scene]->cameraTop);
-		}
-	}
-	else if (key == 'd' && scene == LEVEL_1) {
-		if (scene == LEVEL_1)
-			dynamic_cast<Level1*> (gameScenes[scene])->moveCamera(gameScenes[scene]->cameraLeft + 4, gameScenes[scene]->cameraRight + 4, gameScenes[scene]->cameraBottom, gameScenes[scene]->cameraTop);
-		else if (scene == LEVEL_2)
-		dynamic_cast<Level1*> (gameScenes[scene])->moveCamera(gameScenes[scene]->cameraLeft + 4, gameScenes[scene]->cameraRight + 4, gameScenes[scene]->cameraBottom, gameScenes[scene]->cameraTop);
-	}
+	
 	if (key == ESC && (scene == LEVEL_1 || scene == LEVEL_2)) {
 		dynamic_cast<Menu*> (gameScenes[MENU])->setrenderMenu();
 		changeScene(MENU,-1); 
