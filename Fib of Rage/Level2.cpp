@@ -303,8 +303,8 @@ void Level2::setBossAnimations()
 
 	animations[0]  = make_pair(ENE_SR,  vector < glm::vec2 > {	glm::vec2(0.0f,      0.0f), glm::vec2(1 / 22.f,  0.0f), glm::vec2(2  / 22.f, 0.0f)});
 	animations[1]  = make_pair(ENE_SL,  vector < glm::vec2 > {	glm::vec2(21 / 22.f, 0.5f), glm::vec2(20 / 22.f, 0.5f), glm::vec2(19 / 22.f, 0.5f)});
-	animations[2]  = make_pair(ENE_MR,  vector < glm::vec2 > {	glm::vec2(3  / 22.f, 0.0f), glm::vec2(4  / 22.f, 0.0f), glm::vec2(5  / 22.f, 0.0f), glm::vec2(6  / 16.f, 0.0f), glm::vec2(7  / 16.f, 0.0f), glm::vec2(8  / 16.f, 0.0f)});
-	animations[3]  = make_pair(ENE_ML,  vector < glm::vec2 > { glm::vec2(18 / 22.f, 0.5f), glm::vec2(17 / 22.f, 0.5f), glm::vec2(16 / 22.f, 0.5f), glm::vec2(15 / 16.f, 0.5f), glm::vec2(14 / 16.f, 0.5f), glm::vec2(13 / 16.f, 0.5f)});
+	animations[2]  = make_pair(ENE_MR,  vector < glm::vec2 > {	glm::vec2(3  / 22.f, 0.0f), glm::vec2(4  / 22.f, 0.0f), glm::vec2(5  / 22.f, 0.0f), glm::vec2(6  / 22.f, 0.0f), glm::vec2(7  / 22.f, 0.0f), glm::vec2(8  / 22.f, 0.0f)});
+	animations[3]  = make_pair(ENE_ML,  vector < glm::vec2 > { glm::vec2(18 / 22.f, 0.5f), glm::vec2(17 / 22.f, 0.5f), glm::vec2(16 / 22.f, 0.5f), glm::vec2(15 / 22.f, 0.5f), glm::vec2(14 / 22.f, 0.5f), glm::vec2(13 / 22.f, 0.5f)});
 	animations[4]  = make_pair(ENE_PR, vector < glm::vec2 > {	glm::vec2(12 / 22.f, 0.0f), glm::vec2(13 / 22.f, 0.0f), glm::vec2(14 / 22.f, 0.0f), glm::vec2(15 / 22.f, 0.0f), glm::vec2(16 / 22.f, 0.0f), glm::vec2(17 / 22.f, 0.0f), glm::vec2(18 / 22.f, 0.0f)});
 	animations[5]  = make_pair(ENE_PL, vector < glm::vec2 > {	glm::vec2(9  / 22.f, 0.5f), glm::vec2(8  / 22.f, 0.5f), glm::vec2(7  / 22.f, 0.5f), glm::vec2(6  / 22.f, 0.5f), glm::vec2(5  / 22.f, 0.5f), glm::vec2(4  / 22.f, 0.5f), glm::vec2(3  / 22.f, 0.5f)});
 	animations[6]  = make_pair(ENE_HR,  vector < glm::vec2 > {	glm::vec2(19 / 22.f, 0.0f)});

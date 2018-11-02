@@ -169,7 +169,7 @@ void Level1::setMainPlayer() {
 		animations[12] = make_pair(MAIN_DR, vector < glm::vec2> {	glm::vec2(24 / 27.f, 0.0f), glm::vec2(25 / 27.f, 0.0f), glm::vec2(26 / 27.f, 0.0f)}); // Hit right
 		animations[13] = make_pair(MAIN_DL, vector < glm::vec2> {	glm::vec2(2 / 27.f, 0.5f), glm::vec2(1 / 27.f, 0.5f), glm::vec2(0.0f, 0.5f)}); //hit left
 
-		mainPlayer->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Ryu/ryu.png", animations, glm::ivec2(P_WIDTH, P_HEIGHT), glm::vec2(1 / 27.f, 0.5f), USER_PLAYER, NULL, RYUT, 150);
+		mainPlayer->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, "Resources/Sprites/Ryu/ryu.png", animations, glm::ivec2(P_WIDTH, P_HEIGHT), glm::vec2(1 / 27.f, 0.5f), USER_PLAYER, NULL, RYUT, 10000);
 		mainPlayer->setPosition(glm::vec2(INIT_PLAYER_X_TILES, INIT_PLAYER_Y_TILES));
 		mainPlayer->setTileMap(collisions); //channge for scenario when collision load is diseabled
 		mainPlayer->set_X_max_min(max_x, min_x);
