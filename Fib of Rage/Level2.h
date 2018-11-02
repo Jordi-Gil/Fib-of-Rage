@@ -1,6 +1,7 @@
-#pragma once
-
+#ifndef LEVEL
+#define LEVEL
 #include "Level.h"
+#endif
 
 class Level2 : public Level
 {
@@ -15,6 +16,9 @@ public:
 
 	void restartLevel(int player);
 	void moveCamera(int left, int right, int bottom, int top);
+
+	//void acabaNivel();
+	//void setPoints();
 
 private:
 	bool setBackground(const string &filename);
@@ -33,7 +37,10 @@ protected:
 	TexturedQuad *background, *life_bar, *yellow_bar;
 	Texture texBack, tex_life, tex_yellow;
 
-	int numAttackers;
+	int numAttackers; //Cada ronda
+	
+	int points;
+	Text pointsText;
 
 	int max_x;
 	int min_x;

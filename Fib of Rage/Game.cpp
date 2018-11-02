@@ -124,6 +124,11 @@ void Game::setPlayer(int player)
 	selected_player = player;
 }
 
+int Game::getPlayer()
+{
+	return selected_player;
+}
+
 void Game::exitGame() {
 	bPlay = false;
 }

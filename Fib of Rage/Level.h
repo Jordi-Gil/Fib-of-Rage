@@ -1,9 +1,16 @@
-#pragma once
 #include <cmath>
 #include <glm/gtc/matrix_transform.hpp>
 #include <vector>
 #include <algorithm>
+#include <sstream>
+#include <string>
+
+#ifndef SCENE
+#define SCENE
 #include "Scene.h"
+#endif
+
+#include "Text.h"
 
 #define SCREEN_X 0
 #define SCREEN_Y 0
@@ -20,7 +27,8 @@
 #define USER_PLAYER 0
 #define IA_PLAYER 1
 
-enum PLAYERS
+
+enum Players
 {
 	RYU, HONDA, BISON
 };
@@ -37,7 +45,7 @@ enum EnemyAnims
 
 enum BossAnims
 {
-	BOSS_SR, BOSS_SL, BOSS_MR, BOSS_SL, BOSS_PSR, BOSS_PSL, BOSS_PHR, BOSS_PHL, BOSS_HR, BOSS_HL, BOSS_DR, BOSS_DL
+	BOSS_SR, BOSS_SL, BOSS_MR, BOSS_ML, BOSS_PSR, BOSS_PSL, BOSS_PHR, BOSS_PHL, BOSS_HR, BOSS_HL, BOSS_DR, BOSS_DL
 };
 
 class Level : public Scene
@@ -47,10 +55,9 @@ public:
 	Level();
 	~Level();
 
-	void render() override;
-	void update(int deltaTime) override;
+	virtual void render() override;
+	virtual void update(int deltaTime) override;
 	void init();
-
 
 	virtual void enableCollisionView(bool state) final;
 	virtual bool getCollisionView() final;

@@ -1,10 +1,26 @@
 #ifndef _GAME_INCLUDE
 #define _GAME_INCLUDE
 
+
+#ifndef SCENE
+#define SCENE
 #include "Scene.h"
+#endif
+
+#ifndef LEVEL1
+#define LEVEL1
 #include "Level1.h"
+#endif
+
+#ifndef LEVEL2
+#define LEVEL2
 #include "Level2.h"
+#endif
+
+#ifndef MENU_
+#define MENU_
 #include "Menu.h"
+#endif
 
 
 #define SCREEN_WIDTH 1280
@@ -48,7 +64,8 @@ public:
 
 	void changeScene(int value, int player);
 	void setPlayer(int player);
-	
+	int getPlayer();
+
 
 	void exitGame();
 
@@ -58,7 +75,6 @@ private:
 	Scene **gameScenes = new Scene *[3];
 
 
-	Level level;
 	bool keys[256], specialKeys[256];
 	int scene = MENU;
 	int selected_player;

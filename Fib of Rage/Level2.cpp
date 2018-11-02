@@ -59,6 +59,8 @@ void Level2::init(int player)
 	projection = glm::ortho(float(cameraLeft), float(cameraRight), float(cameraBottom), float(cameraTop));
 	currentTime = 0.0f;
 
+	pointsText.init("Resources/Fonts/codeman38_press-start-2p/PressStart2P.ttf");
+
 	binit = true;
 }
 
@@ -81,6 +83,12 @@ void Level2::render()
 	}
 
 	if (!rendered) mainPlayer->render();
+
+	std::stringstream ss;
+	ss << "Points: " << points;
+	std::string s = ss.str();
+
+	pointsText.render(s, glm::vec2(500, 10), 32, glm::vec4(1, 1, 1, 1));
 }
 
 void Level2::update(int deltaTime) {
@@ -150,7 +158,7 @@ void Level2::setMainPlayer() {
 		animations[6] = make_pair(MAIN_PR, vector < glm::vec2> { glm::vec2(7 / 29.f, 0.0f), glm::vec2(8 / 29.f, 0.0f), glm::vec2(9 / 29.f, 0.0f), glm::vec2(10 / 29.f, 0.0f)}); //PUNCH_RIGHT
 		animations[7] = make_pair(MAIN_PL, vector < glm::vec2> { glm::vec2(21 / 29.f, 0.5f), glm::vec2(20 / 29.f, 0.5f), glm::vec2(19 / 29.f, 0.5f), glm::vec2(18 / 29.f, 0.5f)}); //PUNCH_LEFT
 		animations[8] = make_pair(MAIN_SPR, vector < glm::vec2> {glm::vec2(15 / 29.f, 0.0f), glm::vec2(16 / 29.f, 0.0f), glm::vec2(17 / 29.f, 0.0f), glm::vec2(18 / 29.f, 0.0f), glm::vec2(19 / 29.f, 0.0f), glm::vec2(20 / 29.f, 0.0f), glm::vec2(21 / 29.f, 0.0f), glm::vec2(22 / 29.f, 0.0f)}); //SPECIAL_RIGHT
-		animations[9] = make_pair(MAIN_SPL, vector < glm::vec2> {glm::vec2(13 / 29.f, 0.5f), glm::vec2(12 / 29.f, 0.5f), glm::vec2(11 / 29.f, 0.5f), glm::vec2(10 / 29.f, 0.5f), glm::vec2(9 / 29.f, 0.5f), glm::vec2(8 / 29.f, 0.0f), glm::vec2(7 / 29.f, 0.0f), glm::vec2(6 / 29.F, 0.0f)}); //SPECIAL_RIGHT
+		animations[9] = make_pair(MAIN_SPL, vector < glm::vec2> {glm::vec2(13 / 29.f, 0.5f), glm::vec2(12 / 29.f, 0.5f), glm::vec2(11 / 29.f, 0.5f), glm::vec2(10 / 29.f, 0.5f), glm::vec2(9 / 29.f, 0.5f), glm::vec2(8 / 29.f, 0.5f), glm::vec2(7 / 29.f, 0.5f), glm::vec2(6 / 29.F, 0.5f)}); //SPECIAL_RIGHT
 		animations[10] = make_pair(MAIN_HR, vector < glm::vec2> {glm::vec2(23 / 29.f, 0.0f), glm::vec2(24 / 29.f, 0.0f), glm::vec2(25 / 29.f, 0.0f)}); // Hit right
 		animations[11] = make_pair(MAIN_HL, vector < glm::vec2> {glm::vec2(5 / 29.f, 0.5f), glm::vec2(4 / 29.f, 0.5f), glm::vec2(3 / 29.f, 0.5f)}); //hit left
 		animations[12] = make_pair(MAIN_DR, vector < glm::vec2> {glm::vec2(26 / 29.f, 0.0f), glm::vec2(27 / 29.f, 0.0f), glm::vec2(28 / 29.f, 0.0f)}); // Hit right
@@ -177,7 +185,7 @@ void Level2::setMainPlayer() {
 		animations[6] = make_pair(MAIN_PR, vector < glm::vec2> { glm::vec2(8 / 29.f, 0.0f), glm::vec2(9 / 29.f, 0.0f), glm::vec2(10 / 29.f, 0.0f)}); //PUNCH_RIGHT
 		animations[7] = make_pair(MAIN_PL, vector < glm::vec2> { glm::vec2(20 / 29.f, 0.5f), glm::vec2(19 / 29.f, 0.5f), glm::vec2(18 / 29.f, 0.5f)}); //PUNCH_LEFT
 		animations[8] = make_pair(MAIN_SPR, vector < glm::vec2> {glm::vec2(14 / 29.f, 0.0f), glm::vec2(15 / 29.f, 0.0f), glm::vec2(16 / 29.f, 0.0f), glm::vec2(17 / 29.f, 0.0f), glm::vec2(18 / 29.f, 0.0f), glm::vec2(19 / 29.f, 0.0f), glm::vec2(20 / 29.f, 0.0f)}); //SPECIAL_RIGHT
-		animations[9] = make_pair(MAIN_SPL, vector < glm::vec2> {glm::vec2(14 / 29.f, 0.5f), glm::vec2(13 / 29.f, 0.5f), glm::vec2(12 / 29.f, 0.5f), glm::vec2(11 / 29.f, 0.5f), glm::vec2(10 / 29.f, 0.0f), glm::vec2(9 / 29.f, 0.0f), glm::vec2(8 / 29.F, 0.0f)}); //SPECIAL_RIGHT
+		animations[9] = make_pair(MAIN_SPL, vector < glm::vec2> {glm::vec2(14 / 29.f, 0.5f), glm::vec2(13 / 29.f, 0.5f), glm::vec2(12 / 29.f, 0.5f), glm::vec2(11 / 29.f, 0.5f), glm::vec2(10 / 29.f, 0.5f), glm::vec2(9 / 29.f, 0.5f), glm::vec2(8 / 29.F, 0.5f)}); //SPECIAL_RIGHT
 		animations[10] = make_pair(MAIN_HR, vector < glm::vec2> {glm::vec2(21 / 29.f, 0.0f), glm::vec2(22 / 29.f, 0.0f), glm::vec2(23 / 29.f, 0.0f)}); // Hit right
 		animations[11] = make_pair(MAIN_HL, vector < glm::vec2> {glm::vec2(7 / 29.f, 0.5f), glm::vec2(6 / 29.f, 0.5f), glm::vec2(5 / 29.f, 0.5f)}); //hit left
 		animations[12] = make_pair(MAIN_DR, vector < glm::vec2> {glm::vec2(24 / 29.f, 0.0f), glm::vec2(25 / 29.f, 0.0f), glm::vec2(26 / 29.f, 0.0f), glm::vec2(27 / 29.f, 0.0f), glm::vec2(28 / 29.f, 0.0f)}); // Hit right
@@ -267,11 +275,11 @@ void Level2::setBossAnimations()
 
 	animations.clear();
 	animations.resize(12);
-	//BOSS_SR, BOSS_SL, BOSS_MR, BOSS_SL, BOSS_PSR, BOSS_PSL, BOSS_PHR, BOSS_PHL, BOSS_HR, BOSS_HL, BOSS_DR, BOSS_DL
+
 	animations[0]  = make_pair(BOSS_SR,  vector < glm::vec2 > {	glm::vec2(0.0f,      0.0f), glm::vec2(1 / 22.f,  0.0f), glm::vec2(2  / 22.f, 0.0f)});
 	animations[1]  = make_pair(BOSS_SL,  vector < glm::vec2 > {	glm::vec2(21 / 22.f, 0.5f), glm::vec2(20 / 22.f, 0.5f), glm::vec2(19 / 22.f, 0.5f)});
 	animations[2]  = make_pair(BOSS_MR,  vector < glm::vec2 > {	glm::vec2(3  / 22.f, 0.0f), glm::vec2(4  / 22.f, 0.0f), glm::vec2(5  / 22.f, 0.0f), glm::vec2(6  / 16.f, 0.0f), glm::vec2(7  / 16.f, 0.0f), glm::vec2(8  / 16.f, 0.0f)});
-	animations[3]  = make_pair(BOSS_SL,  vector < glm::vec2 > { glm::vec2(18 / 22.f, 0.5f), glm::vec2(17 / 22.f, 0.5f), glm::vec2(16 / 22.f, 0.5f), glm::vec2(15 / 16.f, 0.5f), glm::vec2(14 / 16.f, 0.5f), glm::vec2(13 / 16.f, 0.5f)});
+	animations[3]  = make_pair(BOSS_ML,  vector < glm::vec2 > { glm::vec2(18 / 22.f, 0.5f), glm::vec2(17 / 22.f, 0.5f), glm::vec2(16 / 22.f, 0.5f), glm::vec2(15 / 16.f, 0.5f), glm::vec2(14 / 16.f, 0.5f), glm::vec2(13 / 16.f, 0.5f)});
 	animations[4]  = make_pair(BOSS_PSR, vector < glm::vec2 > {	glm::vec2(9  / 22.f, 0.0f), glm::vec2(10 / 22.f, 0.0f), glm::vec2(11 / 22.f, 0.0f)});
 	animations[5]  = make_pair(BOSS_PSL, vector < glm::vec2 > {	glm::vec2(12 / 22.f, 0.5f), glm::vec2(11 / 22.f, 0.5f), glm::vec2(12 / 22.f, 0.5f)});
 	animations[6]  = make_pair(BOSS_PHR, vector < glm::vec2 > {	glm::vec2(12 / 22.f, 0.0f), glm::vec2(13 / 22.f, 0.0f), glm::vec2(14 / 22.f, 0.0f), glm::vec2(15 / 22.f, 0.0f), glm::vec2(16 / 22.f, 0.0f), glm::vec2(17 / 22.f, 0.0f), glm::vec2(18 / 22.f, 0.0f)});
@@ -318,3 +326,8 @@ void Level2::moveCamera(int left, int right, int bottom, int top) {
 		projection = glm::ortho(float(left), float(right), float(bottom), float(top));
 	}
 }
+/*
+void Level2::acabaNivel()
+{
+	Game::instance().changeScene(MENU, Game::instance().getPlayer());
+}*/

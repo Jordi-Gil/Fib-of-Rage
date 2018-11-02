@@ -1,10 +1,5 @@
-#include <cmath>
-#include <glm/gtc/matrix_transform.hpp>
-#include <vector>
-#include <algorithm>
 #include "Level.h"
 												
-
 Level::Level(int left, int right, int bottom, int top) : Scene(left, right, bottom, top)
 {
 	

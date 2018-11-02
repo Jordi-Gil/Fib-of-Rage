@@ -4,6 +4,7 @@
 
 #include <glm/glm.hpp>
 #include <SOIL.h>
+
 #include "ShaderProgram.h"
 #include "TileMap.h"
 #include "Player.h"
@@ -11,8 +12,6 @@
 #include "TexturedQuad.h"
 
 
-// Scene contains all the entities of our game.
-// It is responsible for updating and render them.
 
 class Scene
 {
