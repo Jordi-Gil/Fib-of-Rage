@@ -15,13 +15,12 @@
 
 Scene::Scene(int left, int right, int bottom, int top)
 {
-	
 	cameraLeft = left;
 	cameraRight = right;
 	cameraBottom = bottom;
 	cameraTop = top;
-
 }
+
 Scene::Scene()
 {
 	
@@ -31,7 +30,6 @@ Scene::~Scene()
 {
 	
 }
-
 
 void Scene::update(int deltaTime)
 {
@@ -81,16 +79,15 @@ void Scene::initShaders()
 	fShader.free();
 }
 
-bool Scene::getInit()
-{
-	return binit;
-}
-
-
 void Scene::setCamera(glm::ivec4 pos)
 {
 	cameraLeft = pos.x;
 	cameraRight = pos.y;
 	cameraBottom = pos.z;
 	cameraTop = pos.w;
+}
+
+bool Scene::getInit()
+{
+	return binit;
 }

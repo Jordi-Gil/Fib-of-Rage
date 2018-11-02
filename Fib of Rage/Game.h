@@ -2,14 +2,15 @@
 #define _GAME_INCLUDE
 
 #include "Scene.h"
-#include "Level.h"
+#include "Level1.h"
+#include "Level2.h"
 #include "Menu.h"
 
 
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 547
 
-enum Scenes { MENU, LEVEL_1 };
+enum Scenes { MENU, LEVEL_1, LEVEL_2 };
 
 class Game
 {
@@ -18,7 +19,8 @@ public:
 	Game()
 	{
 		gameScenes[MENU] = new Menu(0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1, 0);
-		gameScenes[LEVEL_1] = new Level(0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1, 0);
+		gameScenes[LEVEL_1] = new Level1(0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1, 0);
+		gameScenes[LEVEL_2] = new Level2(0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1, 0);
 	}
 	
 	
@@ -45,21 +47,21 @@ public:
 	bool getSpecialKey(int key) const;
 
 	void changeScene(int value, int player);
+	void setPlayer(int player);
+	
 
 	void exitGame();
-	int getAttackers();
-	void setAttackers(int value);
 
 private:
 	bool bPlay;
 	
-	Scene **gameScenes = new Scene *[2];
+	Scene **gameScenes = new Scene *[3];
 
 
 	Level level;
 	bool keys[256], specialKeys[256];
 	int scene = MENU;
-
+	int selected_player;
 };
 
 

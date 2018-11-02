@@ -23,10 +23,10 @@ public:
 	~Scene();
 	void setCamera(glm::ivec4 pos);
 
-	virtual bool getInit();
-
 	virtual void update(int deltaTime);
 	virtual void render();
+
+	bool getInit();
 
 protected:
 	void initShaders();
@@ -35,6 +35,7 @@ protected:
 	ShaderProgram texProgram;
 	float currentTime;
 	glm::mat4 projection;
+
 	bool binit = false;
 
 public:

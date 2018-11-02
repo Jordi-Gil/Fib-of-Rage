@@ -19,9 +19,9 @@
 #define ESC 27
 
 enum  Animations { PLAY, INSTR, CREDITS, EXIT };
-
+/*
 enum  PLAYERS { RYU, HONDA, BISON };
-
+*/
 
 Menu::Menu(int left, int right, int bottom, int top)
 {
@@ -170,15 +170,16 @@ void Menu::update(int deltaTime)
 			else if (renderPlayers) {
 				currentAnimation = playersView->animation();
 				if (currentAnimation == RYU) {
-						Game::instance().changeScene(LEVEL_1,RYU);
-					
+					Game::instance().setPlayer(RYU);
+					Game::instance().changeScene(LEVEL_1,RYU);
 				}
 				else if (currentAnimation == HONDA) {
-						Game::instance().changeScene(LEVEL_1, HONDA);
-					
+					Game::instance().setPlayer(RYU);
+					Game::instance().changeScene(LEVEL_1, HONDA);
 				}
 				if (currentAnimation == BISON) {
-						Game::instance().changeScene(LEVEL_1, BISON);
+					Game::instance().setPlayer(BISON);
+					Game::instance().changeScene(LEVEL_1, BISON);
 				}
 			}
 		}
