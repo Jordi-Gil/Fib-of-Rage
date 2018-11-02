@@ -407,9 +407,11 @@ void Player::setHitted()
 void Player::checkCollisions(char c)
 {
 	int minx1, miny1, maxx1, maxy1, minx2, miny2, maxx2, maxy2;
-	if (c == 'j' && this->charType==RYUT) {
-		minx1 = posPlayer.x + 70; miny1 = posPlayer.y + 47;
-		maxx1 = posPlayer.x + 95; maxy1 = posPlayer.y + 53;
+	if (this->charType == RYUT) {
+		if (c == 'j') {
+			minx1 = posPlayer.x + 70; miny1 = posPlayer.y + 47;
+			maxx1 = posPlayer.x + 95; maxy1 = posPlayer.y + 53;
+		}
 	}
 	for each(Player *p in enemies)
 	{
