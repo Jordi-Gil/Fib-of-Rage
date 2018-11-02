@@ -31,7 +31,7 @@
 
 #define P_WIDTH 90*2
 #define P_HEIGHT 120*2
-
+/*
 enum Players
 { 
 	RYU, HONDA, BISON 
@@ -46,7 +46,7 @@ enum EnemyAnims
 {
 	ENE_SR, ENE_SL, ENE_MR, ENE_ML, ENE_PR, ENE_PL, ENE_HR, ENE_HL, ENE_DR, ENE_DL
 };
-
+*/
 enum StateEnemy 
 {
 	WAITING, MOVING, MOVING_TO_FIGHT, FIGHTING, HITTED
@@ -212,7 +212,7 @@ void Player::update(int deltaTime)
 	else if (type_player == IA_PLAYER) {
 		
 		if (stateEnemy == MOVING || stateEnemy == MOVING_TO_FIGHT) {
-			//gotoDestination();
+			gotoDestination();
 
 			if (map->collisionMoveUp(posPlayer, glm::ivec2(width_player, height_player)))
 				posPlayer.y += speed_player;
@@ -237,8 +237,23 @@ void Player::update(int deltaTime)
 				sprite->changeAnimation(ENE_SR);
 			else if (orientation == LEFT && stateEnemy == WAITING)
 				sprite->changeAnimation(ENE_SL);
+			else if (orientation == LEFT && stateEnemy == FIGHTING) {
+				stateEnemy = WAITING;
+				is_moving = false;
+			}
+			else if (orientation == RIGHT && stateEnemy == FIGHTING) {
+				stateEnemy = WAITING;
+				is_moving = false;
+			}
 		}
-
+		if (orientation == RIGHT && stateEnemy == FIGHTING)
+		{
+			sprite->changeAnimation(ENE_PR);
+		}
+		if (orientation == LEFT && stateEnemy == HITTED)
+		{
+			sprite->changeAnimation(ENE_PL);
+		}
 		if (orientation == RIGHT && stateEnemy == HITTED)
 		{
 			sprite->changeAnimation(ENE_HR);
@@ -327,6 +342,18 @@ void Player::gotoDestination()
 	temp.y = posPlayer.y;
 
 	if (stateEnemy == HITTED) return;
+
+	if (((posPlayer.x >= mainPlayer->getPosition().x + 90)&&(posPlayer.x <= mainPlayer->getPosition().x + 30)) || (posPlayer.x + 120 >= mainPlayer->getPosition().x - 90)&& (posPlayer.x + 120 <= mainPlayer->getPosition().x - 30)) {
+		if (posPlayer.y< mainPlayer->getPosition().y + 10 && posPlayer.y > mainPlayer->getPosition().y - 10) {
+			std::random_device rd;
+			std::uniform_int_distribution<int> dis(0, 4);
+			int value = dis(rd);
+			if (value == 0) {
+				stateEnemy = FIGHTING;
+				return;
+			}
+		}
+	}
 
 	if (temp.x == positionToMove.x && temp.y == positionToMove.y) {
 		positionToMove.x = 0;
