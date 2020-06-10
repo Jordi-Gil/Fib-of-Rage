@@ -1,0 +1,6 @@
+TILEMAP
+2080 547 											-- Size of tile map in tiles
+1 1												-- Tile size & block size
+Resources/Sprites/collision.png						-- Tilesheet
+1 1 											-- Number of tiles in tilesheet 
+level01_collision.txt.raw
